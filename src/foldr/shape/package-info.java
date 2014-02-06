@@ -1,8 +1,5 @@
 /**
- * 
- */
-/**
- * @author Ataw
+ * @author Nath
  *
  */
 package foldr.shape;
