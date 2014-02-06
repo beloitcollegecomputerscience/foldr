@@ -1,1 +1,8 @@
 /foldr
+
+/bin
+/doc
+
+/.settings
+.classpath
+.project
