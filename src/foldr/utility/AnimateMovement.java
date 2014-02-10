@@ -1,6 +1,6 @@
 package foldr.utility;
 
-import foldr.shape.Shape;
+import foldr.shape.ShapeGroup;
 
 /**
  *This class is a singleton which will handle the movement of a given shape group to a specified end point.
