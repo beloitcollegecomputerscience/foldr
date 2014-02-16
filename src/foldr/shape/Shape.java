@@ -5,7 +5,7 @@ package foldr.shape;
  * A group of objects (Vertices, Faces, "Geometries," etc.) that form a closed 3D shape of
  * some thickness.
  * </p>
- * @author vogtb and Ataww
+ * @author vogtb and couretn
  * 
  */
 public class Shape {
