@@ -9,9 +9,20 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ShapeTest {
-
+    private Shape shape;
+    double [][] vertices  = new double[][] {
+        {0, 0, 0}, {1, 0, 0}, {1, 1, 0}, {0, 1, 0},
+        {0, 0, 1}, {1, 0, 1}, {1, 1, 1}, {0, 1, 1}
+      };
+      
+      int [][] faceIndices = new int [][] {
+        {0, 1, 2, 3}, {7, 6, 5, 4}, {0, 1, 5, 4}, 
+        {1, 2, 6, 5}, {2, 3, 7, 6}, {3, 0, 4, 7} 
+      };
+      ShapeGroup sg;
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+	    
 	}
 
 	@AfterClass
@@ -20,6 +31,9 @@ public class ShapeTest {
 
 	@Before
 	public void setUp() throws Exception {
+	    shape = new Shape(vertices, faceIndices);
+	    sg = new ShapeGroup();
+	    shape.setGroup(sg);
 	}
 
 	@After
@@ -33,18 +47,22 @@ public class ShapeTest {
 	
 	@Test
 	public void testVertexCount() {
+	    assertEquals(vertices.length, shape.getVertexCount());
 	}
 	
 	@Test
 	public void testShapeGroup() {
+	    assertEquals(sg, shape.getGroup());
 	}
 	
 	@Test
 	public void testHighlighted() {
+	    assertFalse(shape.isHighlight());
 	}
 	
 	@Test
 	public void testFaceSet() {
+	    assertEquals(6, shape.getFaceSet().getFaceAttributes().getListLength());
 	}
 
 }
