@@ -1,5 +1,9 @@
 package foldr.shape;
 
+import java.util.*;
+import de.jreality.geometry.IndexedFaceSetFactory;
+import de.jreality.scene.IndexedFaceSet;
+
 /**
  * <p>
  * A group of objects (Vertices, Faces, "Geometries," etc.) that form a closed 3D shape of
@@ -15,6 +19,9 @@ public class Shape {
 	 * </p>
 	 */
 	private ShapeGroup group;
+	private Boolean isHighlighted;
+	private IndexedFaceSet set;
+	private List<Vertex> vertices;
 
 	/**
 	 * <p>
@@ -25,17 +32,43 @@ public class Shape {
 	 */
 	public Shape() {
 		group = new ShapeGroup();
+		set = new IndexedFaceSet();
+		vertices =  new ArrayList();
+		isHighlighted = false;
+	}
+	
+	/**
+	 * <p>
+	 * Adds a vertex to the vertex list.
+	 * </p>
+	 */
+	public boolean addVertex(Vertex v) {
+		return vertices.add(v);
+	}
+	
+	/**
+	 * <p>
+	 * Removes a vertex from the vertex list.
+	 * </p>
+	 */
+	public boolean removeVertex(Vertex v) {
+		return vertices.remove(v);
 	}
 
 	/**
 	 * <p>
-	 * Highlights the edges of the Shape with a bright color.
+	 * Turns the highlight appearance on or off.
 	 * </p>
 	 */
-	public void changeAppearance() {
-
+	public void setHighlight(Boolean b) {
+		isHighlighted = b;
 	}
 
+	public IndexedFaceSet getFaceSet() {
+		IndexedFaceSetFactory factory = new IndexedFaceSetFactory();
+		return set;
+	}
+	
 	/**
 	 * <p>
 	 * Returns the ShapeGroup that the Shape is in.
