@@ -9,6 +9,7 @@ import foldr.shape.ShapeGroup;
  *
  */
 
+// commit tst
 public class AnimateMovement {
 
     /**
