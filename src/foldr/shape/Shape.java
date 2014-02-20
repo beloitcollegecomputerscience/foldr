@@ -1,7 +1,6 @@
 
 package foldr.shape;
 
-import java.util.*;
 import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.scene.IndexedFaceSet;
 
@@ -66,8 +65,6 @@ public class Shape {
     }
 
     public IndexedFaceSet getFaceSet() {
-
-        IndexedFaceSetFactory factory = new IndexedFaceSetFactory();
         return set;
     }
 
