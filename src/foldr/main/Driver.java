@@ -16,7 +16,7 @@ public class Driver {
         // may improve performance.)
         try {
             UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName( ) );
-            // UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
+//             UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName( ) );
         } catch ( ClassNotFoundException e ) {
             e.printStackTrace( );
         } catch ( InstantiationException e ) {

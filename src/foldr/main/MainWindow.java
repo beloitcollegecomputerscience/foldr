@@ -11,10 +11,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 /**
  * @author Ataw
@@ -66,21 +68,23 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
     // Window
     private JMenu             window;
     private JMenu             view;
-    private JMenuItem         top;
-    private JMenuItem         back;
-    private JMenuItem         left;
-    private JMenuItem         tools;
-    private JMenuItem         informations;
+    private JCheckBoxMenuItem top;
+    private JCheckBoxMenuItem back;
+    private JCheckBoxMenuItem left;
+    private JCheckBoxMenuItem tools;
+    private JCheckBoxMenuItem informations;
     private JMenu             perspective;
     private JMenuItem         changelayout;
     private JMenuItem         savelayout;
     private JMenuItem         loadlayout;
     private JMenuItem         resizelayout;
-    
+
     // Help
     private JMenu             help;
     private JMenuItem         manual;
     private JMenuItem         guide;
+
+    private JPanel            toolbar;
 
     /**
      * @throws HeadlessException
@@ -187,11 +191,11 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
         window = new JMenu(Lg.getString(Lg.WI));
         view = new JMenu(Lg.getString(Lg.WI + ".view"));
-        top = new JMenuItem(Lg.getString(Lg.WI + ".view.top"));
-        back = new JMenuItem(Lg.getString(Lg.WI + ".view.back"));
-        left = new JMenuItem(Lg.getString(Lg.WI + ".view.left"));
-        tools = new JMenuItem(Lg.getString(Lg.WI + ".tools"));
-        informations = new JMenuItem(Lg.getString(Lg.WI + ".info"));
+        top = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".view.top"));
+        back = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".view.back"));
+        left = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".view.left"));
+        tools = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".tools"));
+        informations = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".info"));
         perspective = new JMenu(Lg.getString(Lg.WI + ".persp"));
         changelayout = new JMenuItem(Lg.getString(Lg.WI + ".persp.change"));
         savelayout = new JMenuItem(Lg.getString(Lg.WI + ".persp.save"));
