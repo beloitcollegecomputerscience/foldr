@@ -2,7 +2,6 @@ package foldr.shape;
 
 // Here to suppress errors.
 import java.awt.Point;
-import java.awt.Shape;
 import java.awt.event.MouseEvent;
 
 // Legitimate import.
@@ -64,7 +63,7 @@ public class ShapeCollection extends LinkedList<Shape> {
 	 *            Key corresponding to a Shape
 	 * @return Shape corresponding to a key
 	 */
-	public Shape getShape(int key) {
+	public static Shape getShape(int key) {
 		return null;
 	}
 
@@ -76,7 +75,7 @@ public class ShapeCollection extends LinkedList<Shape> {
 	 *            MouseEvent corresponding to where the user clicked
 	 * @return Shape clicked
 	 */
-	public Shape findShapeClicked(MouseEvent e) {
+	public static Shape findShapeClicked(MouseEvent e) {
 		return null;
 	}
 
@@ -90,7 +89,7 @@ public class ShapeCollection extends LinkedList<Shape> {
 	 *            Point where checking collision
 	 * @return True if collision detected, else False
 	 */
-	public boolean isColliding(int key, Point p) {
+	public static boolean isColliding(int key, Point p) {
 		return false;
 	}
 
