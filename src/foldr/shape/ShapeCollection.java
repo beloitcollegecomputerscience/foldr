@@ -1,52 +1,95 @@
-/**
- * 
- */
 package foldr.shape;
 
-import java.util.Collection;
+// Here to suppress errors.
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+
+// Legitimate import.
+import java.util.LinkedList;
 
 /**
- * A collection of all shapes object that are on the work panel, visible or not.
+ * Holds all Shape objects currently being manipulated on screen.
  * 
- * @author Hunter, Ben
+ * This class extends the functionality of the LinkedList class and is
+ * implemented as a singleton to guarantee only one in existence.
+ * 
+ * @author Hunter Elbourn, Jared Feldman, & Dan Gonzales
  * 
  */
-public class ShapeCollection {
-	Collection<Shape> shapes;
+public class ShapeCollection extends LinkedList<Shape> {
 
 	/**
-	 * 
+	 * Serial ID to allow implementation of Serializable. We don't actually
+	 * implement saving the file this way, but it is expected by "LinkedList".
 	 */
-	public ShapeCollection() {
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * The one and only instance of ShapeCollection.
+	 */
+	private static ShapeCollection instance = null;
+
+	/**
+	 * Private constructor used only by getInstance().
+	 */
+	private ShapeCollection() {
 	}
 
 	/**
-	 * When given the coordinates of the click, will go through the shapes,
-	 * finding which one was clicked.<br/>
-	 * Will disregard {@link ShapeGroup} and return {@link Shape} only. Returned
-	 * Shape can then be used to access its ShapeGroup.
+	 * Retrieve the instance of ShapeCollection. If this is the first time
+	 * retrieving, then create new.
 	 * 
-	 * @return the clicked shape. (if it works haha)
+	 * @return The instance of ShapeCollection
 	 */
-	public Shape findShapeClicked() {
+	public static ShapeCollection getInstance() {
+		// If null instance, create new.
+		if (instance == null) {
+			instance = new ShapeCollection();
+		}
+		return instance;
+	}
+
+	/**
+	 * Resets the instance of ShapeCollection.
+	 */
+	public static void resetList() {
+		instance = new ShapeCollection();
+	}
+
+	/**
+	 * Return the Shape corresponding to a key.
+	 * 
+	 * @param key
+	 *            Key corresponding to a Shape
+	 * @return Shape corresponding to a key
+	 */
+	public static Shape getShape(int key) {
 		return null;
 	}
 
 	/**
-	 * When passed a pair of Shape ad a pair of edges for that Shape, will join
-	 * edges together.
+	 * Return the Shape that the user clicked on in one of the four
+	 * perspectives.
+	 * 
+	 * @param e
+	 *            MouseEvent corresponding to where the user clicked
+	 * @return Shape clicked
 	 */
-	public void joinEdges() {
-
+	public static Shape findShapeClicked(MouseEvent e) {
+		return null;
 	}
 
 	/**
-	 * Checks for collision inside the entire collection. Should be used as an
-	 * indicator that further steps need to be taken to correct collision.
+	 * Checks if the Shape (provided by key) is colliding with any other Shape
+	 * at a given Point.
 	 * 
-	 * @return true if there is/will be a collision, false otherwise.
+	 * @param key
+	 *            Key corresponding to a Shape
+	 * @param p
+	 *            Point where checking collision
+	 * @return True if collision detected, else False
 	 */
-	public boolean collisionCheck() {
+	public static boolean isColliding(int key, Point p) {
 		return false;
 	}
 
