@@ -9,7 +9,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Driver {
 
 	public static void main(String[] args) {
-	    Lg.setBundle(Locale.US);
+	    Lg.setBundle(Locale.FRANCE);
+	    LgUtility.init("src/foldr/messages");
 	    
 	 // set the look & feel to the use the system one since swing look & feel
         // is awful. (also swing look & feel is drawn pixel by pixel. Using the system's look&feel

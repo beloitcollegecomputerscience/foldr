@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Locale;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -26,65 +29,67 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
     /**
      * 
      */
-    private static final long serialVersionUID = 1453878868551517672L;
+    private static final long            serialVersionUID = 1453878868551517672L;
 
     // ==================================
     // Menubar
     // ==================================
-    private JMenuBar          theMenuBar;
+    private JMenuBar                     theMenuBar;
 
     // File
-    private JMenu             file;
-    private JMenuItem         open;
-    private JMenuItem         create;
-    private JMenuItem         save;
-    private JMenuItem         saveas;
-    private JMenuItem         export;
-    private JMenuItem         close;
+    private JMenu                        file;
+    private JMenuItem                    open;
+    private JMenuItem                    create;
+    private JMenuItem                    save;
+    private JMenuItem                    saveas;
+    private JMenuItem                    export;
+    private JMenuItem                    close;
 
     // Edit
-    private JMenu             edit;
-    private JMenuItem         copy;
-    private JMenuItem         cut;
-    private JMenuItem         paste;
-    private JMenuItem         delete;
-    private JMenuItem         selectall;
-    private JMenuItem         resize;
+    private JMenu                        edit;
+    private JMenuItem                    copy;
+    private JMenuItem                    cut;
+    private JMenuItem                    paste;
+    private JMenuItem                    delete;
+    private JMenuItem                    selectall;
+    private JMenuItem                    resize;
 
     // fold/shape
-    private JMenu             fold;
-    private JMenu             angle;
-    private JMenuItem         ang30;
-    private JMenuItem         ang45;
-    private JMenuItem         ang90;
-    private JMenuItem         angcustom;
-    private JMenuItem         edgeselect;
-    private JMenuItem         pointselect;
-    private JMenu             shape;
-    private JMenuItem         foldshape;
-    private JMenuItem         connect;
-    private JMenuItem         detach;
+    private JMenu                        fold;
+    private JMenu                        angle;
+    private JMenuItem                    ang30;
+    private JMenuItem                    ang45;
+    private JMenuItem                    ang90;
+    private JMenuItem                    angcustom;
+    private JMenuItem                    edgeselect;
+    private JMenuItem                    pointselect;
+    private JMenu                        shape;
+    private JMenuItem                    foldshape;
+    private JMenuItem                    connect;
+    private JMenuItem                    detach;
 
     // Window
-    private JMenu             window;
-    private JMenu             view;
-    private JCheckBoxMenuItem top;
-    private JCheckBoxMenuItem back;
-    private JCheckBoxMenuItem left;
-    private JCheckBoxMenuItem tools;
-    private JCheckBoxMenuItem informations;
-    private JMenu             perspective;
-    private JMenuItem         changelayout;
-    private JMenuItem         savelayout;
-    private JMenuItem         loadlayout;
-    private JMenuItem         resizelayout;
+    private JMenu                        window;
+    private JMenu                        view;
+    private JCheckBoxMenuItem            top;
+    private JCheckBoxMenuItem            back;
+    private JCheckBoxMenuItem            left;
+    private JCheckBoxMenuItem            tools;
+    private JCheckBoxMenuItem            informations;
+    private JMenu                        perspective;
+    private JMenuItem                    changelayout;
+    private JMenuItem                    savelayout;
+    private JMenuItem                    loadlayout;
+    private JMenuItem                    resizelayout;
 
     // Help
-    private JMenu             help;
-    private JMenuItem         manual;
-    private JMenuItem         guide;
+    private JMenu                        help;
+    private JMenuItem                    manual;
+    private JMenuItem                    guide;
+    private JMenu                        language;
+    private ArrayList<JCheckBoxMenuItem> lngs;
 
-    private JPanel            toolbar;
+    private JPanel                       toolbar;
 
     /**
      * @throws HeadlessException
@@ -217,8 +222,16 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         help = new JMenu(Lg.getString(Lg.HE));
         manual = new JMenuItem(Lg.getString(Lg.HE + ".manual"));
         guide = new JMenuItem(Lg.getString(Lg.HE + ".guide"));
+        language = new JMenu(Lg.getString(Lg.HE + ".language"));
+        lngs = new ArrayList<>();
+        for (String s : LgUtility.getAvalaibleLanguages()) {
+            JCheckBoxMenuItem jcmi = new JCheckBoxMenuItem(s);
+            language.add(jcmi);
+            lngs.add(jcmi);
+        }
         help.add(manual);
         help.add(guide);
+        help.add(language);
         theMenuBar.add(help);
     }
 
@@ -274,8 +287,21 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent e) {
 
+        if (e.getSource().equals(this.close)) {
+            dispose();
+            System.exit(0);
+        } else {
+            for (JMenuItem j : this.lngs) {
+                if (e.getSource().equals(j)) {
+                    Locale[] l = new Locale[lngs.size()];
+                    l = LgUtility.getAvailableLocale().toArray(l);
+                    for(Locale i : l) {
+                    }
+                }
+            }
+        }
     }
 
 }
