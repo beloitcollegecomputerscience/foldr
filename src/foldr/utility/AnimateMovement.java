@@ -1,8 +1,6 @@
 package foldr.utility;
 
-import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
-import de.jreality.geometry.Primitives;
 
 
 /**
