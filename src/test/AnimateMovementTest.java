@@ -30,10 +30,10 @@ public class AnimateMovementTest {
 		ShapeGroup shapeGroupToMove = shapeToMove.getShapeGroup();
 
 		// Set positive test coordinates .
-		double[] testCordinates = new double[3];
-		testCordinates[0] = 1.1;
-		testCordinates[1] = 2.2;
-		testCordinates[2] = 3.3;
+		double[] testCoordinates = new double[3];
+		testCoordinates[0] = 1.1;
+		testCoordinates[1] = 2.2;
+		testCoordinates[2] = 3.3;
 		
 		//Animate ShapeGroup
 		toMove.moveShapeGroup(shapeGroupToMove, testCoordinates);
@@ -44,9 +44,9 @@ public class AnimateMovementTest {
 		assertEquals(shapeGroupToMove.getZ() == 3.3);
 
 		// Set negative test coordinates .
-		testCordinates[0] = -1.1;
-		testCordinates[1] = -2.2;
-		testCordinates[2] = -3.3;
+		testCoordinates[0] = -1.1;
+		testCoordinates[1] = -2.2;
+		testCoordinates[2] = -3.3;
 
 		//Animate ShapeGroup
 		toMove.moveShapeGroup(shapeGroupToMove, testCoordinates);
@@ -57,9 +57,9 @@ public class AnimateMovementTest {
 		assertEquals(shapeGroupToMove.getZ() == -3.3);
 		
 		//Set  all zero test coordinates.
-		testCordinates[0] = 0;
-		testCordinates[1] = 0;
-		testCordinates[2] = 0;
+		testCoordinates[0] = 0;
+		testCoordinates[1] = 0;
+		testCoordinates[2] = 0;
 
 		//Animate ShapeGroup
 		toMove.moveShapeGroup(shapeGroupToMove, testCoordinates);
