@@ -1,6 +1,9 @@
 package foldr.utility;
 
+import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
+import de.jreality.geometry.Primitives;
+
 
 /**
  *This class is a singleton which will handle the movement of a given shape group to a specified end point.
@@ -11,6 +14,31 @@ import foldr.shape.ShapeGroup;
 
 public class AnimateMovement {
 
+	/**
+	 * The one and only instance of AnimateMovement.
+	 */
+	private static AnimateMovement instance = null;
+
+	/**
+	 * Private constructor used only by getInstance().
+	 */
+	private AnimateMovement() {
+	}
+
+	/**
+	 * Retrieve the instance of AnimateMovement. If this is the first time
+	 * retrieving, then create new.
+	 * 
+	 * @return The instance of AnimateMovement
+	 */
+	public static AnimateMovement getInstance() {
+		// If null instance, create new.
+		if (instance == null) {
+			instance = new AnimateMovement();
+		}
+		return instance;
+	}
+	
     /**
      * 
      * Animates a shape group to an end point.
@@ -24,7 +52,7 @@ public class AnimateMovement {
      *
      */
 	 
-	public AnimateMovement(ShapeGroup toMove, double[] endPoint) {
+	public void moveShapeGroup(ShapeGroup toMove, double[] endPoint) {
 	}
 
 	
