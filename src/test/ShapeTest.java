@@ -1,4 +1,4 @@
-package foldr.shape;
+package test;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,9 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import foldr.shape.Shape;
+import foldr.shape.ShapeGroup;
 
 public class ShapeTest {
     private Shape shape;
