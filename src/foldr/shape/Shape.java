@@ -1,5 +1,10 @@
 package foldr.shape;
 
+import de.jreality.geometry.Primitives;
+import de.jreality.scene.IndexedFaceSet;
+import de.jreality.scene.SceneGraphComponent;
+import de.jreality.util.SceneGraphUtility;
+
 /**
  * <p>
  * A group of objects (Vertices, Faces, "Geometries," etc.) that form a closed 3D shape of
@@ -27,6 +32,16 @@ public class Shape {
 		group = new ShapeGroup();
 	}
 
+	
+	private SceneGraphComponent shapeSGC;
+	public Shape(int numSides, SceneGraphComponent parentScene) {
+		IndexedFaceSet shapeGeometry = Primitives.regularPolygon(numSides);
+		shapeSGC = SceneGraphUtility
+				.createFullSceneGraphComponent();
+		shapeSGC.setGeometry(shapeGeometry);
+		parentScene.addChild(shapeSGC);
+	}
+	
 	/**
 	 * <p>
 	 * Highlights the edges of the Shape with a bright color.
