@@ -11,86 +11,92 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 
 /**
- * @author Ataw
+ * @author Nathanaël COURET
  */
 public class MainWindow extends JFrame implements ActionListener, MouseListener {
 
     /**
      * 
      */
-    private static final long            serialVersionUID = 1453878868551517672L;
+    private static final long               serialVersionUID = 1453878868551517672L;
 
     // ==================================
     // Menubar
     // ==================================
-    private JMenuBar                     theMenuBar;
+    private JMenuBar                        theMenuBar;
 
     // File
-    private JMenu                        file;
-    private JMenuItem                    open;
-    private JMenuItem                    create;
-    private JMenuItem                    save;
-    private JMenuItem                    saveas;
-    private JMenuItem                    export;
-    private JMenuItem                    close;
+    private JMenu                           file;
+    private JMenuItem                       open;
+    private JMenuItem                       create;
+    private JMenuItem                       save;
+    private JMenuItem                       saveas;
+    private JMenuItem                       export;
+    private JMenuItem                       close;
 
     // Edit
-    private JMenu                        edit;
-    private JMenuItem                    copy;
-    private JMenuItem                    cut;
-    private JMenuItem                    paste;
-    private JMenuItem                    delete;
-    private JMenuItem                    selectall;
-    private JMenuItem                    resize;
+    private JMenu                           edit;
+    private JMenuItem                       copy;
+    private JMenuItem                       cut;
+    private JMenuItem                       paste;
+    private JMenuItem                       delete;
+    private JMenuItem                       selectAll;
+    private JMenuItem                       resize;
 
     // fold/shape
-    private JMenu                        fold;
-    private JMenu                        angle;
-    private JMenuItem                    ang30;
-    private JMenuItem                    ang45;
-    private JMenuItem                    ang90;
-    private JMenuItem                    angcustom;
-    private JMenuItem                    edgeselect;
-    private JMenuItem                    pointselect;
-    private JMenu                        shape;
-    private JMenuItem                    foldshape;
-    private JMenuItem                    connect;
-    private JMenuItem                    detach;
+    private JMenu                           fold;
+    private JMenu                           angle;
+    private JMenuItem                       ang30;
+    private JMenuItem                       ang45;
+    private JMenuItem                       ang90;
+    private JMenuItem                       angCustom;
+    private JMenuItem                       edgeSelect;
+    private JMenuItem                       pointSelect;
+    private JMenu                           shape;
+    private JMenuItem                       foldShape;
+    private JMenuItem                       connect;
+    private JMenuItem                       detach;
 
     // Window
-    private JMenu                        window;
-    private JMenu                        view;
-    private JCheckBoxMenuItem            top;
-    private JCheckBoxMenuItem            back;
-    private JCheckBoxMenuItem            left;
-    private JCheckBoxMenuItem            tools;
-    private JCheckBoxMenuItem            informations;
-    private JMenu                        perspective;
-    private JMenuItem                    changelayout;
-    private JMenuItem                    savelayout;
-    private JMenuItem                    loadlayout;
-    private JMenuItem                    resizelayout;
+    private JMenu                           window;
+    private JMenu                           view;
+    private JCheckBoxMenuItem               top;
+    private JCheckBoxMenuItem               back;
+    private JCheckBoxMenuItem               left;
+    private JCheckBoxMenuItem               tools;
+    private JCheckBoxMenuItem               informations;
+    private JMenu                           perspective;
+    private JMenuItem                       changeLayout;
+    private JMenuItem                       saveLayout;
+    private JMenuItem                       loadLayout;
+    private JMenuItem                       resizeLayout;
 
     // Help
-    private JMenu                        help;
-    private JMenuItem                    manual;
-    private JMenuItem                    guide;
-    private JMenu                        language;
-    private ArrayList<JCheckBoxMenuItem> lngs;
+    private JMenu                           help;
+    private JMenuItem                       manual;
+    private JMenuItem                       guide;
+    private JMenu                           language;
+    private ButtonGroup                     lngsGroup;
+    private ArrayList<JRadioButtonMenuItem> lngs;
 
-    private JPanel                       toolbar;
+    // ==================================
+    // Panels
+    // ==================================
 
+    // ==================================
+    // Constructor
+    // ==================================
     /**
      * @throws HeadlessException
      */
@@ -126,6 +132,12 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         super(arg0, arg1);
     }
 
+    // ==================================
+    // Methods
+    // ==================================
+    /**
+     * TODO write
+     */
     public void initPanesAndGUI() {
 
         this.initMenuBar();
@@ -135,17 +147,26 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         this.setVisible(true);
     }
 
+    /**
+     * TODO finish
+     */
     public void initMenuBar() {
 
         theMenuBar = new JMenuBar();
 
-        file = new JMenu(Lg.getString(Lg.FI));
-        open = new JMenuItem(Lg.getString(Lg.FI + ".open"));
-        create = new JMenuItem(Lg.getString(Lg.FI + ".new"));
-        save = new JMenuItem(Lg.getString(Lg.FI + ".save"));
-        saveas = new JMenuItem(Lg.getString(Lg.FI + ".saveas"));
-        export = new JMenuItem(Lg.getString(Lg.FI + ".export"));
-        close = new JMenuItem(Lg.getString(Lg.FI + ".close"));
+        file = new JMenu();
+        open = new JMenuItem();
+        open.addActionListener(this);
+        create = new JMenuItem();
+        create.addActionListener(this);
+        save = new JMenuItem();
+        save.addActionListener(this);
+        saveas = new JMenuItem();
+        saveas.addActionListener(this);
+        export = new JMenuItem();
+        export.addActionListener(this);
+        close = new JMenuItem();
+        close.addActionListener(this);
         file.add(open);
         file.add(create);
         file.add(save);
@@ -154,86 +175,175 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         file.add(close);
         theMenuBar.add(file);
 
-        edit = new JMenu(Lg.getString(Lg.ED));
-        copy = new JMenuItem(Lg.getString(Lg.ED + ".copy"));
-        cut = new JMenuItem(Lg.getString(Lg.ED + ".cut"));
-        paste = new JMenuItem(Lg.getString(Lg.ED + ".paste"));
-        delete = new JMenuItem(Lg.getString(Lg.ED + ".delete"));
-        selectall = new JMenuItem(Lg.getString(Lg.ED + ".selectall"));
+        edit = new JMenu();
+        copy = new JMenuItem();
+        copy.addActionListener(this);
+        cut = new JMenuItem();
+        cut.addActionListener(this);
+        paste = new JMenuItem();
+        paste.addActionListener(this);
+        delete = new JMenuItem();
+        delete.addActionListener(this);
+        selectAll = new JMenuItem();
+        selectAll.addActionListener(this);
         edit.add(copy);
         edit.add(cut);
         edit.add(paste);
         edit.add(delete);
-        edit.add(selectall);
+        edit.add(selectAll);
         theMenuBar.add(edit);
 
-        fold = new JMenu(Lg.getString(Lg.FO));
-        angle = new JMenu(Lg.getString(Lg.FO + ".angle"));
-        ang30 = new JMenuItem(Lg.getString(Lg.FO + ".angle.30"));
-        ang45 = new JMenuItem(Lg.getString(Lg.FO + ".angle.45"));
-        ang90 = new JMenuItem(Lg.getString(Lg.FO + ".angle.90"));
-        angcustom = new JMenuItem(Lg.getString(Lg.FO + ".angle.custom"));
-        edgeselect = new JMenuItem(Lg.getString(Lg.FO + ".edgesel"));
-        pointselect = new JMenuItem(Lg.getString(Lg.FO + ".pointsel"));
-        shape = new JMenu(Lg.getString(Lg.FO + ".shape"));
-        foldshape = new JMenuItem(Lg.getString(Lg.FO + ".shape.fold"));
-        connect = new JMenuItem(Lg.getString(Lg.FO + ".shape.connect"));
-        detach = new JMenuItem(Lg.getString(Lg.FO + ".shape.detach"));
-        resize = new JMenuItem(Lg.getString(Lg.FO + ".shape.resize"));
+        fold = new JMenu();
+        angle = new JMenu();
+        ang30 = new JMenuItem();
+        ang30.addActionListener(this);
+        ang45 = new JMenuItem();
+        ang45.addActionListener(this);
+        ang90 = new JMenuItem();
+        ang90.addActionListener(this);
+        angCustom = new JMenuItem();
+        angCustom.addActionListener(this);
+        edgeSelect = new JMenuItem();
+        edgeSelect.addActionListener(this);
+        pointSelect = new JMenuItem();
+        pointSelect.addActionListener(this);
+        shape = new JMenu();
+        foldShape = new JMenuItem();
+        foldShape.addActionListener(this);
+        connect = new JMenuItem();
+        connect.addActionListener(this);
+        detach = new JMenuItem();
+        detach.addActionListener(this);
+        resize = new JMenuItem();
+        resize.addActionListener(this);
         angle.add(ang30);
         angle.add(ang45);
         angle.add(ang90);
-        angle.add(angcustom);
-        shape.add(foldshape);
+        angle.add(angCustom);
+        shape.add(foldShape);
         shape.add(connect);
         shape.add(detach);
         shape.add(resize);
         fold.add(angle);
-        fold.add(edgeselect);
-        fold.add(pointselect);
+        fold.add(edgeSelect);
+        fold.add(pointSelect);
         fold.add(shape);
         theMenuBar.add(fold);
 
-        window = new JMenu(Lg.getString(Lg.WI));
-        view = new JMenu(Lg.getString(Lg.WI + ".view"));
-        top = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".view.top"));
-        back = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".view.back"));
-        left = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".view.left"));
-        tools = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".tools"));
-        informations = new JCheckBoxMenuItem(Lg.getString(Lg.WI + ".info"));
-        perspective = new JMenu(Lg.getString(Lg.WI + ".persp"));
-        changelayout = new JMenuItem(Lg.getString(Lg.WI + ".persp.change"));
-        savelayout = new JMenuItem(Lg.getString(Lg.WI + ".persp.save"));
-        loadlayout = new JMenuItem(Lg.getString(Lg.WI + ".persp.load"));
-        resizelayout = new JMenuItem(Lg.getString(Lg.WI + ".persp.resize"));
+        window = new JMenu();
+        view = new JMenu();
+        top = new JCheckBoxMenuItem();
+        top.addActionListener(this);
+        back = new JCheckBoxMenuItem();
+        back.addActionListener(this);
+        left = new JCheckBoxMenuItem();
+        left.addActionListener(this);
+        tools = new JCheckBoxMenuItem();
+        tools.addActionListener(this);
+        informations = new JCheckBoxMenuItem();
+        informations.addActionListener(this);
+        perspective = new JMenu();
+        changeLayout = new JMenuItem();
+        changeLayout.addActionListener(this);
+        saveLayout = new JMenuItem();
+        saveLayout.addActionListener(this);
+        loadLayout = new JMenuItem();
+        loadLayout.addActionListener(this);
+        resizeLayout = new JMenuItem();
+        resizeLayout.addActionListener(this);
         view.add(top);
         view.add(back);
         view.add(left);
-        perspective.add(changelayout);
-        perspective.add(savelayout);
-        perspective.add(loadlayout);
-        perspective.add(resizelayout);
+        perspective.add(changeLayout);
+        perspective.add(saveLayout);
+        perspective.add(loadLayout);
+        perspective.add(resizeLayout);
         window.add(view);
         window.add(tools);
         window.add(informations);
         window.add(perspective);
         theMenuBar.add(window);
 
-        help = new JMenu(Lg.getString(Lg.HE));
-        manual = new JMenuItem(Lg.getString(Lg.HE + ".manual"));
-        guide = new JMenuItem(Lg.getString(Lg.HE + ".guide"));
-        language = new JMenu(Lg.getString(Lg.HE + ".language"));
+        help = new JMenu();
+        manual = new JMenuItem();
+        manual.addActionListener(this);
+        guide = new JMenuItem();
+        guide.addActionListener(this);
+        language = new JMenu();
+        language.addActionListener(this);
         lngs = new ArrayList<>();
-        for (String s : LgUtility.getAvalaibleLanguages()) {
-            JCheckBoxMenuItem jcmi = new JCheckBoxMenuItem(s);
+        lngsGroup = new ButtonGroup();
+        for (String s : LgUtils.getAvalaibleLanguages()) {
+            JRadioButtonMenuItem jcmi = new JRadioButtonMenuItem(s);
+            jcmi.addActionListener(this);
             language.add(jcmi);
+            lngsGroup.add(jcmi);
             lngs.add(jcmi);
+            if (s.equalsIgnoreCase(Lg.getLocale().getDisplayLanguage())) {
+                jcmi.setSelected(true);
+            }
         }
         help.add(manual);
         help.add(guide);
         help.add(language);
         theMenuBar.add(help);
+
+        this.paintMenu();
     }
+
+    private void paintMenu() {
+
+        file.setText(Lg.getString(Lg.FI));
+        open.setText(Lg.getString(Lg.FI + ".open"));
+        create.setText(Lg.getString(Lg.FI + ".new"));
+        save.setText(Lg.getString(Lg.FI + ".save"));
+        saveas.setText(Lg.getString(Lg.FI + ".saveas"));
+        export.setText(Lg.getString(Lg.FI + ".export"));
+        close.setText(Lg.getString(Lg.FI + ".close"));
+
+        edit.setText(Lg.getString(Lg.ED));
+        copy.setText(Lg.getString(Lg.ED + ".copy"));
+        cut.setText(Lg.getString(Lg.ED + ".cut"));
+        paste.setText(Lg.getString(Lg.ED + ".paste"));
+        delete.setText(Lg.getString(Lg.ED + ".delete"));
+        selectAll.setText(Lg.getString(Lg.ED + ".selectall"));
+
+        fold.setText(Lg.getString(Lg.FO));
+        angle.setText(Lg.getString(Lg.FO + ".angle"));
+        ang30.setText(Lg.getString(Lg.FO + ".angle.30"));
+        ang45.setText(Lg.getString(Lg.FO + ".angle.45"));
+        ang90.setText(Lg.getString(Lg.FO + ".angle.90"));
+        angCustom.setText(Lg.getString(Lg.FO + ".angle.custom"));
+        edgeSelect.setText(Lg.getString(Lg.FO + "edgesel"));
+        pointSelect.setText(Lg.getString(Lg.FO + ".pointsel"));
+        shape.setText(Lg.getString(Lg.FO + ".shape"));
+        foldShape.setText(Lg.getString(Lg.FO + ".shape.fold"));
+        connect.setText(Lg.getString(Lg.FO + ".shape.connect"));
+        detach.setText(Lg.getString(Lg.FO + ".shape.detach"));
+        resize.setText(Lg.getString(Lg.FO + ".shape.resize"));
+
+        window.setText(Lg.getString(Lg.WI));
+        view.setText(Lg.getString(Lg.WI + ".view"));
+        top.setText(Lg.getString(Lg.WI + ".view.top"));
+        back.setText(Lg.getString(Lg.WI + ".view.back"));
+        left.setText(Lg.getString(Lg.WI + ".view.left"));
+        tools.setText(Lg.getString(Lg.WI + ".tools"));
+        informations.setText(Lg.getString(Lg.WI + ".info"));
+        perspective.setText(Lg.getString(Lg.WI + ".persp"));
+        changeLayout.setText(Lg.getString(Lg.WI + ".persp.change"));
+        saveLayout.setText(Lg.getString(Lg.WI + ".persp.save"));
+        loadLayout.setText(Lg.getString(Lg.WI + ".persp.load"));
+        resizeLayout.setText(Lg.getString(Lg.WI + ".persp.resize"));
+
+        help.setText(Lg.getString(Lg.HE));
+        manual.setText(Lg.getString(Lg.HE + ".manual"));
+        guide.setText(Lg.getString(Lg.HE + ".guide"));
+        language.setText(Lg.getString(Lg.HE + ".language"));
+    }
+
+    // ==================================
+    // Listeners
+    // ==================================
 
     /*
      * (non-Javadoc)
@@ -292,16 +402,21 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         if (e.getSource().equals(this.close)) {
             dispose();
             System.exit(0);
-        } else {
+        } else if(e.getSource().equals(this.open)) {
+        }else {
             for (JMenuItem j : this.lngs) {
                 if (e.getSource().equals(j)) {
-                    Locale[] l = new Locale[lngs.size()];
-                    l = LgUtility.getAvailableLocale().toArray(l);
-                    for(Locale i : l) {
+                    ArrayList<Locale> locales = LgUtils.getAvailableLocale();
+                    for (Locale l : locales) {
+                        if (l.getDisplayLanguage(l).equals(j.getText())) {
+                            Lg.setBundle(l);
+                            System.out.println(Lg.getLocale().getCountry()+" "+Lg.getLocale().getLanguage());
+                            this.paintMenu();
+                            break;
+                        }
                     }
                 }
             }
         }
     }
-
 }
