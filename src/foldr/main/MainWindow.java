@@ -314,7 +314,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         ang45.setText(Lg.getString(Lg.FO + ".angle.45"));
         ang90.setText(Lg.getString(Lg.FO + ".angle.90"));
         angCustom.setText(Lg.getString(Lg.FO + ".angle.custom"));
-        edgeSelect.setText(Lg.getString(Lg.FO + "edgesel"));
+        edgeSelect.setText(Lg.getString(Lg.FO + ".edgesel"));
         pointSelect.setText(Lg.getString(Lg.FO + ".pointsel"));
         shape.setText(Lg.getString(Lg.FO + ".shape"));
         foldShape.setText(Lg.getString(Lg.FO + ".shape.fold"));

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
+ * Utility class. Help to dynamically define available languages for GUI elements.
  * @author couretn
  */
 public final class LgUtils {
@@ -57,14 +58,30 @@ public final class LgUtils {
             localesNames[i] = localesNames[i].substring(0, localesNames[i].indexOf("."));
         }
     }
-
+    
+    /**
+     * 
+     * @return
+     */
     private static ArrayList<Locale> buildLocaleList() {
 
         localesList = new ArrayList<>(localesNames.length);
         for (String s : localesNames) {
             String[] split = s.split("_");
-            Locale l = new Locale(split[0], split[1]);
-            if (!localesList.contains(l)) {
+            Locale l = null;
+            switch(split.length) {
+                case 1:
+                    l = new Locale(split[0]);
+                    break;
+                case 2:
+                    l = new Locale(split[0], split[1]);
+                    break;
+                case 3:
+                    l = new Locale(split[0], split[1], split[2]);
+                    break;
+                default:
+            }
+            if (!localesList.contains(l) && l != null) {
                 localesList.add(l);
             }
         }
