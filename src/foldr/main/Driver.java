@@ -9,16 +9,17 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * Running class.
+ * 
  * @author couretn
- *
  */
 public class Driver {
 
     public static void main(String[] args) {
-        
-        // TODO Switch to Locale.getDefault() once the software is properly translated.
+
+        // TODO Switch to Locale.getDefault() once the software is properly
+        // translated.
         Lg.setBundle(Locale.US);
-        LgUtils.init("languages");
+        Lg.Utils.init("languages");
 
         // set the look & feel to the use the system one since swing look & feel
         // is awful. (also swing look & feel is drawn pixel by pixel. Using the
@@ -35,9 +36,9 @@ public class Driver {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-         MainWindow mw = new MainWindow("Foldr");
-         mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         mw.initPanesAndGUI();
+        MainWindow mw = new MainWindow("Foldr");
+        mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mw.initPanesAndGUI();
     }
 
 }

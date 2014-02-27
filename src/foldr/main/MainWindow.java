@@ -273,7 +273,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         language.addActionListener(this);
         lngs = new ArrayList<>();
         lngsGroup = new ButtonGroup();
-        for (String s : LgUtils.getDisplayedLanguages()) {
+        for (String s : Lg.Utils.getDisplayedLanguages()) {
             JRadioButtonMenuItem jcmi = new JRadioButtonMenuItem(s);
             jcmi.addActionListener(this);
             language.add(jcmi);
@@ -405,7 +405,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         } else if (e.getSource().equals(this.open)) {} else {
             for (JMenuItem j : this.lngs) {
                 if (e.getSource().equals(j)) {
-                    ArrayList<Locale> locales = LgUtils.getAvailableLocales();
+                    ArrayList<Locale> locales = Lg.Utils.getAvailableLocales();
                     for (Locale l : locales) {
                         if (l.getDisplayLanguage(l).equals(j.getText())) {
                             Lg.setBundle(l);

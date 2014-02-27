@@ -1,6 +1,8 @@
+
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Locale;
 
@@ -9,17 +11,17 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import foldr.main.LgUtils;
-
+import foldr.main.Lg.Utils;
 
 public class LgUtilsTest {
-    
+
     private static final String PATH = "languages";
 
     @BeforeClass
     public static void setUpBeforeClass()
         throws Exception {
-        LgUtils.init(PATH);
+
+        Utils.init(PATH);
     }
 
     @Before
@@ -36,15 +38,17 @@ public class LgUtilsTest {
 
     @Test
     public void testGetAvailableLocales() {
-        //TODO more
-        assertTrue(LgUtils.getAvailableLocales().contains(Locale.US));
-        assertFalse(LgUtils.getAvailableLocales().contains(Locale.CHINESE));
+
+        // TODO more
+        assertTrue(Utils.getAvailableLocales().contains(Locale.US));
+        assertFalse(Utils.getAvailableLocales().contains(Locale.CHINESE));
     }
 
     @Test
     public void testGetDisplayedLanguages() {
+
         // TODO more
-        assertTrue(LgUtils.getDisplayedLanguages().contains(Locale.US.getDisplayLanguage(Locale.US)));
+        assertTrue(Utils.getDisplayedLanguages().contains(Locale.US.getDisplayLanguage(Locale.US)));
     }
 
 }

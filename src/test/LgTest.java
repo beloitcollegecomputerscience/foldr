@@ -14,6 +14,7 @@ import org.junit.Test;
 import foldr.main.Lg;
 
 public class LgTest {
+
     // TODO more!
     private static final String NAME = "foldr.messages.messages";
 
