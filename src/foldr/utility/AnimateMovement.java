@@ -40,6 +40,7 @@ public class AnimateMovement {
 	}
 	
     /**
+     * TODO this method should probably be a jReality tool class-- I'm not sure if there's any other way to animate.
      * 
      * Animates a shape group to an end point.
      * Does not check for potential collisions and instead lets shapes move through each other.
