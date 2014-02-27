@@ -7,7 +7,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * auto-generated class, manages Language bundles.
+ * auto-generated class, manages message bundles.
  * 
  * @author Eclipse
  * @author couretn
@@ -25,6 +25,9 @@ public class Lg {
     // Constructor
     //
     // //////////////////////////////////////////////////////////////////////////
+    /**
+     * Should not be instantiated.
+     */
     private Lg() {
 
         // do not instantiate
@@ -44,8 +47,9 @@ public class Lg {
     }
 
     /**
-     * @param currentLocale
-     * @return
+     * Return the <code>ResourceBundle</code> associated to the given {@link Locale}, or the current bundle if the argument is <code>null</code>.
+     * @param currentLocale The <code>Locale</code> whose associated bundle is to be returned.
+     * @return The desired bundle, or the current bundle of the given <code>Locale</code> is <code>null</code>.
      */
     public static ResourceBundle loadBundle(Locale currentLocale) {
 
@@ -57,7 +61,11 @@ public class Lg {
     }
 
     /**
-     * @param currentLocale
+     * <p>
+     * Set the message bundle with the given <code>Locale</code> (if not
+     * <code>null</code>).
+     * 
+     * @param currentLocale the <code>Locale</code> to set in the message bundle.
      */
     public static void setBundle(Locale currentLocale) {
 
@@ -72,8 +80,13 @@ public class Lg {
     //
     // //////////////////////////////////////////////////////////////////////////
     /**
+     * <p>
+     * Return the value (a <code>String</code>) to which the specified key is
+     * mapped, or !key! if no such key exists in the message file.
+     * 
      * @param key
-     * @return
+     *            The key whose associated value is to be returned.
+     * @return The value to which the key is mapped, or !key!
      */
     public static String getString(String key) {
 

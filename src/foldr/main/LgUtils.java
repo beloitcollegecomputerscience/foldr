@@ -12,7 +12,10 @@ import java.util.Locale;
 import java.util.Scanner;
 
 /**
- * @author Ataw
+ * Utility class. Gives access to the languages supported by the software. For
+ * GUI.
+ * 
+ * @author couretn
  */
 public final class LgUtils {
 
@@ -53,12 +56,19 @@ public final class LgUtils {
     /**
      * <p>
      * Initialize the utility module for the messages class and load the
-     * available languages listed in the given file.
+     * available languages listed in the file located at the given path.
      * <p>
-     * This method must be called before any use of the other methods.
+     * The file located at {@link LgUtils#DEFAULT_PATH} is loaded if :<br>
+     * <ul>
+     * <li>The argument is <code>null</code>;</li>
+     * <li>The file is a directory;</li>
+     * <li>The file doesn't exist.</li>
+     * </ul>
+     * <p>
+     * This method should be called before any use of the other methods.
      * 
      * @param path
-     * @throws FileNotFoundException
+     *            The path whose file languages must be retrieved from.
      */
     public static void init(String path) {
 
@@ -79,7 +89,7 @@ public final class LgUtils {
                 String s = sc.nextLine();
                 // regexp [a-zA-Z]{2,8}_([a-zA-Z]{2}|[0-9]{3})
                 // (language_country)
-                // TODO make a smarter regex
+                // TODO make a smarter regex ???
                 if (!s.startsWith("#")) {
                     names.add(s);
                 }
@@ -92,10 +102,9 @@ public final class LgUtils {
 
     /**
      * <p>
-     * Give a list of {@link Locale} available something something je sais pas
-     * comment le dire.
+     * Give the {@link Locale} available for the software.
      * 
-     * @return a list of <code>Locale</code> defined
+     * @return a list of <code>Locale</code> available.
      */
     public static ArrayList<Locale> getAvailableLocales() {
 
@@ -107,7 +116,17 @@ public final class LgUtils {
     }
 
     /**
-     * @return
+     * <p>
+     * Give a list of languages supported in their displayed form according to
+     * the <code>Locale</code>. This method should be used for GUI display.
+     * <p>
+     * Examples:<br>
+     * <ul>
+     * <li>en_US - English</li>
+     * <li>fr_FR - français</li>
+     * </ul>
+     * 
+     * @return The list of language names.
      */
     public static ArrayList<String> getDisplayedLanguages() {
 
@@ -126,7 +145,6 @@ public final class LgUtils {
 
     /**
      * @return
-     * @throws IllegalStateException
      */
     private static ArrayList<Locale> buildLocaleList() {
 

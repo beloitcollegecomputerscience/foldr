@@ -409,8 +409,6 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
                     for (Locale l : locales) {
                         if (l.getDisplayLanguage(l).equals(j.getText())) {
                             Lg.setBundle(l);
-                            System.out.println(Lg.getLocale().getCountry() + " " +
-                                Lg.getLocale().getLanguage());
                             this.paintMenu();
                             break;
                         }

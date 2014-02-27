@@ -1,24 +1,24 @@
 
 package foldr.main;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+/**
+ * Running class.
+ * @author couretn
+ *
+ */
 public class Driver {
 
     public static void main(String[] args) {
-
+        
+        // TODO Switch to Locale.getDefault() once the software is properly translated.
         Lg.setBundle(Locale.US);
         LgUtils.init("languages");
-
-        ArrayList<String> al = LgUtils.getDisplayedLanguages();
-        for (String s : al) {
-            System.out.println(s);
-        }
 
         // set the look & feel to the use the system one since swing look & feel
         // is awful. (also swing look & feel is drawn pixel by pixel. Using the
