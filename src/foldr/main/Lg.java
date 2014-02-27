@@ -191,7 +191,7 @@ public class Lg {
         public static void init(String path) {
 
             try {
-                names = new ArrayList<>();
+                names = new ArrayList<String>();
                 File file;
                 if (path != null) {
                     file = new File(path);
@@ -214,7 +214,7 @@ public class Lg {
                 }
                 sc.close();
             } catch (FileNotFoundException e) {
-                names = new ArrayList<>(DEFAULT_LANGUAGE);
+                names = new ArrayList<String>(DEFAULT_LANGUAGE);
             }
         }
 
@@ -252,7 +252,7 @@ public class Lg {
             if (locales == null) {
                 buildLocaleList();
             }
-            ArrayList<String> ret = new ArrayList<>(locales.size());
+            ArrayList<String> ret = new ArrayList<String>(locales.size());
             for (Locale l : locales) {
                 if (!ret.contains(l.getDisplayLanguage(l))) {
                     ret.add(l.getDisplayLanguage(l));
@@ -270,7 +270,7 @@ public class Lg {
             if (names == null) {
                 init(DEFAULT_PATH);
             }
-            locales = new ArrayList<>(names.size());
+            locales = new ArrayList<Locale>(names.size());
             for (String s : names) {
                 String[] sp = s.split("_");
                 switch (sp.length) {

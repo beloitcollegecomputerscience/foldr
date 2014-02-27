@@ -89,6 +89,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
     private JMenu                           language;
     private ButtonGroup                     lngsGroup;
     private ArrayList<JRadioButtonMenuItem> lngs;
+    // FIXME explicit names
 
     // ==================================
     // Panels
@@ -271,7 +272,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         guide.addActionListener(this);
         language = new JMenu();
         language.addActionListener(this);
-        lngs = new ArrayList<>();
+        lngs = new ArrayList<JRadioButtonMenuItem>();
         lngsGroup = new ButtonGroup();
         for (String s : Lg.Utils.getDisplayedLanguages()) {
             JRadioButtonMenuItem jcmi = new JRadioButtonMenuItem(s);
