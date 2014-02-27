@@ -39,6 +39,7 @@ public class Lg {
     private static ResourceBundle RESOURCE_BUNDLE = loadBundle(Locale.getDefault());
 
     private static ResourceBundle loadBundle() {
+
         return ResourceBundle.getBundle(BUNDLE_NAME);
     }
 

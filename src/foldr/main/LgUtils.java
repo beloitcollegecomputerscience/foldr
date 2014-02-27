@@ -5,108 +5,152 @@
 package foldr.main;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Scanner;
 
 /**
- * Utility class. Help to dynamically define available languages for GUI elements.
- * @author couretn
+ * @author Ataw
  */
 public final class LgUtils {
 
-    private static String[]          localesNames = null;
-    private static ArrayList<Locale> localesList  = null;
+    private static ArrayList<String>      names            = null;
+    private static ArrayList<Locale>      locales          = null;
 
     /**
+     * <p>
+     * Default path to the file containing the list of languages. Should be
+     * passed to the {@link LgUtils#init(String)} method unless you want to
+     * define your own language list (if you want to restrict the available
+     * languages for example).
+     * <p>
+     * Keep in mind that messages files are contained inside the
+     * <code>foldr.messages</code> package and thus adding a language without
+     * adding the corresponding message file can lead to undefined behaviors.
+     */
+    public static final String            DEFAULT_PATH     = "languages";
+
+    /**
+     * <p>
+     * Default list of a locale as written inside in the languages' list file.
+     * Only list English (country: USA) as the default language.
+     * <p>
+     * Used in case
+     */
+    public static final ArrayList<String> DEFAULT_LANGUAGE =
+                                                               new ArrayList<>(
+                                                                   Arrays.asList("en_US"));
+
+    /**
+     * This class should not be instantiated.
+     */
+    private LgUtils() {
+
+    }
+
+    /**
+     * <p>
+     * Initialize the utility module for the messages class and load the
+     * available languages listed in the given file.
+     * <p>
+     * This method must be called before any use of the other methods.
+     * 
      * @param path
+     * @throws FileNotFoundException
      */
     public static void init(String path) {
 
-        doList(path);
-        buildLocaleList();
-    }
-
-    /**
-     * @return
-     */
-    private static void doList(String path) {
-
-        // Find the files matching the desired pattern
-        File root;
-        if (path.equals("") || path == null) {
-            root = new File(System.getProperty("user.dir"));
-        } else {
-            root = new File(path);
-        }
-        File[] files = root.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-
-                return name.startsWith("messages") && name.endsWith("properties") &&
-                    !name.equalsIgnoreCase("messages.properties");
+        try {
+            names = new ArrayList<>();
+            File file;
+            if (path != null) {
+                file = new File(path);
+                if (!file.exists() || file.isDirectory()) {
+                    file = new File(DEFAULT_PATH);
+                }
+            } else {
+                file = new File(DEFAULT_PATH);
             }
-        });
 
-        // extract locale from filenames. We only care about languages
-        // name so far.
-        localesNames = new String[files.length];
-        for (int i = 0; i < files.length; i++) {
-            localesNames[i] = files[i].getName();
-            localesNames[i] = localesNames[i].substring(9);
-            localesNames[i] = localesNames[i].substring(0, localesNames[i].indexOf("."));
+            Scanner sc = new Scanner(file);
+            while (sc.hasNextLine()) {
+                String s = sc.nextLine();
+                // regexp [a-zA-Z]{2,8}_([a-zA-Z]{2}|[0-9]{3})
+                // (language_country)
+                // TODO make a smarter regex
+                if (!s.startsWith("#")) {
+                    names.add(s);
+                }
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            names = new ArrayList<>(DEFAULT_LANGUAGE);
         }
     }
-    
+
     /**
+     * <p>
+     * Give a list of {@link Locale} available something something je sais pas
+     * comment le dire.
      * 
-     * @return
+     * @return a list of <code>Locale</code> defined
      */
-    private static ArrayList<Locale> buildLocaleList() {
+    public static ArrayList<Locale> getAvailableLocales() {
 
-        localesList = new ArrayList<>(localesNames.length);
-        for (String s : localesNames) {
-            String[] split = s.split("_");
-            Locale l = null;
-            switch(split.length) {
-                case 1:
-                    l = new Locale(split[0]);
-                    break;
-                case 2:
-                    l = new Locale(split[0], split[1]);
-                    break;
-                case 3:
-                    l = new Locale(split[0], split[1], split[2]);
-                    break;
-                default:
-            }
-            if (!localesList.contains(l) && l != null) {
-                localesList.add(l);
-            }
-        }
-        return localesList;
-    }
-
-    public static ArrayList<Locale> getAvailableLocale() {
-
-        if (localesList != null) {
-            return localesList;
-        } else {
+        if (locales == null) {
             return buildLocaleList();
+        } else {
+            return locales;
         }
     }
 
     /**
      * @return
      */
-    public static String[] getAvalaibleLanguages() {
+    public static ArrayList<String> getDisplayedLanguages() {
 
-        String[] ret = new String[localesNames.length];
-        ArrayList<Locale> l = getAvailableLocale();
-        for (int i = 0; i < ret.length; i++) {
-            ret[i] = l.get(i).getDisplayLanguage(l.get(i));
+        if (locales == null) {
+            buildLocaleList();
+        }
+        ArrayList<String> ret = new ArrayList<>(locales.size());
+        for (Locale l : locales) {
+            if (!ret.contains(l.getDisplayLanguage(l))) {
+                ret.add(l.getDisplayLanguage(l));
+                ret.trimToSize();
+            }
         }
         return ret;
     }
+
+    /**
+     * @return
+     * @throws IllegalStateException
+     */
+    private static ArrayList<Locale> buildLocaleList() {
+
+        if (names == null) {
+            init(DEFAULT_PATH);
+        }
+        locales = new ArrayList<>(names.size());
+        for (String s : names) {
+            String[] sp = s.split("_");
+            switch (sp.length) {
+                case 1:
+                    locales.add(new Locale(sp[0]));
+                break;
+                case 2:
+                    locales.add(new Locale(sp[0], sp[1]));
+                break;
+                case 3:
+                    locales.add(new Locale(sp[0], sp[1], sp[2]));
+                break;
+                default:
+                    // something went wrong, do nothing
+            }
+        }
+        return locales;
+    }
+
 }
