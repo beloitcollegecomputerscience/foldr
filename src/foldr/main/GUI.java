@@ -260,7 +260,7 @@ public class GUI extends JFrame implements ActionListener {
 		jRealityFrame.setVisible(true);
 
 		// put a shape in the canvas
-		Shape shapeOne = new Shape(4, topScene);
+//		Shape shapeOne = new Shape(4, topScene);
 	}
 
 	private void initPanesAndGui() {

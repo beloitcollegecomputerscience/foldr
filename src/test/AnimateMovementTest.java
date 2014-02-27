@@ -6,13 +6,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import foldr.shape.Shape;
 import foldr.shape.ShapeGroup;
 import foldr.utility.AnimateMovement;
 
 public class AnimateMovementTest {
 
-	AnimateMovement toMove = new AnimateMovement();
-
+	private AnimateMovement toMove;
+	
 	@Before
 	public void setUp() {
 	}
@@ -27,6 +28,7 @@ public class AnimateMovementTest {
 	public void testAnimateMovement() {
 		//Create a new shape group.
 		Shape shapeToMove = new Shape();
+		//TODO Write the getShapeGroup method
 		ShapeGroup shapeGroupToMove = shapeToMove.getShapeGroup();
 
 		// Set positive test coordinates .
@@ -39,9 +41,10 @@ public class AnimateMovementTest {
 		toMove.moveShapeGroup(shapeGroupToMove, testCoordinates);
 		//TODO Add the getter methods for coordinates.
 		//Check shapeGroup coordinates.
-		assertEquals(shapeGroupToMove.getX() == 1.1);
-		assertEquals(shapeGroupToMove.getY() == 2.2);
-		assertEquals(shapeGroupToMove.getZ() == 3.3);
+		assertEquals(1.1,shapeGroupToMove.getX());
+		assertEquals(2.2,shapeGroupToMove.getY());
+		assertEquals(3.3,shapeGroupToMove.getZ());
+
 
 		// Set negative test coordinates .
 		testCoordinates[0] = -1.1;
@@ -52,9 +55,9 @@ public class AnimateMovementTest {
 		toMove.moveShapeGroup(shapeGroupToMove, testCoordinates);
 		//TODO Add the getter methods for coordinates.
 		//Check shapeGroup coordinates.
-		assertEquals(shapeGroupToMove.getX() == -1.1);
-		assertEquals(shapeGroupToMove.getY() == -2.2);
-		assertEquals(shapeGroupToMove.getZ() == -3.3);
+		assertEquals(-1.1,shapeGroupToMove.getX());
+		assertEquals(-2.2,shapeGroupToMove.getY());
+		assertEquals(-3.3,shapeGroupToMove.getZ());
 		
 		//Set  all zero test coordinates.
 		testCoordinates[0] = 0;
@@ -65,9 +68,9 @@ public class AnimateMovementTest {
 		toMove.moveShapeGroup(shapeGroupToMove, testCoordinates);
 		//TODO Add the getter methods for coordinates.
 		//Check shapeGroup coordinates.
-		assertEquals(shapeGroupToMove.getX() == 0);
-		assertEquals(shapeGroupToMove.getY() == 0);
-		assertEquals(shapeGroupToMove.getZ() == 0);
+		assertEquals(0,shapeGroupToMove.getX());
+		assertEquals(0,shapeGroupToMove.getY());
+		assertEquals(0,shapeGroupToMove.getZ());
 		
 	}
 

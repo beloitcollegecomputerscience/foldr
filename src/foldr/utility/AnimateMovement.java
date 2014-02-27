@@ -20,7 +20,7 @@ public class AnimateMovement {
 	/**
 	 * Private constructor used only by getInstance().
 	 */
-	private AnimateMovement() {
+	AnimateMovement() {
 	}
 
 	/**
