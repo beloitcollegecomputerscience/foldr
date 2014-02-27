@@ -274,13 +274,13 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         language.addActionListener(this);
         lngs = new ArrayList<JRadioButtonMenuItem>();
         lngsGroup = new ButtonGroup();
-        for (String s : Lg.Utils.getDisplayedLanguages()) {
+        for (String s : Messages.Utils.getDisplayedLanguages()) {
             JRadioButtonMenuItem jcmi = new JRadioButtonMenuItem(s);
             jcmi.addActionListener(this);
             language.add(jcmi);
             lngsGroup.add(jcmi);
             lngs.add(jcmi);
-            if (s.equalsIgnoreCase(Lg.getLocale().getDisplayLanguage())) {
+            if (s.equalsIgnoreCase(Messages.getLocale().getDisplayLanguage())) {
                 jcmi.setSelected(true);
             }
         }
@@ -294,52 +294,52 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
     private void paintMenu() {
 
-        file.setText(Lg.getString(Lg.FI));
-        open.setText(Lg.getString(Lg.FI + ".open"));
-        create.setText(Lg.getString(Lg.FI + ".new"));
-        save.setText(Lg.getString(Lg.FI + ".save"));
-        saveas.setText(Lg.getString(Lg.FI + ".saveas"));
-        export.setText(Lg.getString(Lg.FI + ".export"));
-        close.setText(Lg.getString(Lg.FI + ".close"));
+        file.setText(Messages.getString(Messages.FI));
+        open.setText(Messages.getString(Messages.FI + ".open"));
+        create.setText(Messages.getString(Messages.FI + ".new"));
+        save.setText(Messages.getString(Messages.FI + ".save"));
+        saveas.setText(Messages.getString(Messages.FI + ".saveas"));
+        export.setText(Messages.getString(Messages.FI + ".export"));
+        close.setText(Messages.getString(Messages.FI + ".close"));
 
-        edit.setText(Lg.getString(Lg.ED));
-        copy.setText(Lg.getString(Lg.ED + ".copy"));
-        cut.setText(Lg.getString(Lg.ED + ".cut"));
-        paste.setText(Lg.getString(Lg.ED + ".paste"));
-        delete.setText(Lg.getString(Lg.ED + ".delete"));
-        selectAll.setText(Lg.getString(Lg.ED + ".selectall"));
+        edit.setText(Messages.getString(Messages.ED));
+        copy.setText(Messages.getString(Messages.ED + ".copy"));
+        cut.setText(Messages.getString(Messages.ED + ".cut"));
+        paste.setText(Messages.getString(Messages.ED + ".paste"));
+        delete.setText(Messages.getString(Messages.ED + ".delete"));
+        selectAll.setText(Messages.getString(Messages.ED + ".selectall"));
 
-        fold.setText(Lg.getString(Lg.FO));
-        angle.setText(Lg.getString(Lg.FO + ".angle"));
-        ang30.setText(Lg.getString(Lg.FO + ".angle.30"));
-        ang45.setText(Lg.getString(Lg.FO + ".angle.45"));
-        ang90.setText(Lg.getString(Lg.FO + ".angle.90"));
-        angCustom.setText(Lg.getString(Lg.FO + ".angle.custom"));
-        edgeSelect.setText(Lg.getString(Lg.FO + ".edgesel"));
-        pointSelect.setText(Lg.getString(Lg.FO + ".pointsel"));
-        shape.setText(Lg.getString(Lg.FO + ".shape"));
-        foldShape.setText(Lg.getString(Lg.FO + ".shape.fold"));
-        connect.setText(Lg.getString(Lg.FO + ".shape.connect"));
-        detach.setText(Lg.getString(Lg.FO + ".shape.detach"));
-        resize.setText(Lg.getString(Lg.FO + ".shape.resize"));
+        fold.setText(Messages.getString(Messages.FO));
+        angle.setText(Messages.getString(Messages.FO + ".angle"));
+        ang30.setText(Messages.getString(Messages.FO + ".angle.30"));
+        ang45.setText(Messages.getString(Messages.FO + ".angle.45"));
+        ang90.setText(Messages.getString(Messages.FO + ".angle.90"));
+        angCustom.setText(Messages.getString(Messages.FO + ".angle.custom"));
+        edgeSelect.setText(Messages.getString(Messages.FO + ".edgesel"));
+        pointSelect.setText(Messages.getString(Messages.FO + ".pointsel"));
+        shape.setText(Messages.getString(Messages.FO + ".shape"));
+        foldShape.setText(Messages.getString(Messages.FO + ".shape.fold"));
+        connect.setText(Messages.getString(Messages.FO + ".shape.connect"));
+        detach.setText(Messages.getString(Messages.FO + ".shape.detach"));
+        resize.setText(Messages.getString(Messages.FO + ".shape.resize"));
 
-        window.setText(Lg.getString(Lg.WI));
-        view.setText(Lg.getString(Lg.WI + ".view"));
-        top.setText(Lg.getString(Lg.WI + ".view.top"));
-        back.setText(Lg.getString(Lg.WI + ".view.back"));
-        left.setText(Lg.getString(Lg.WI + ".view.left"));
-        tools.setText(Lg.getString(Lg.WI + ".tools"));
-        informations.setText(Lg.getString(Lg.WI + ".info"));
-        perspective.setText(Lg.getString(Lg.WI + ".persp"));
-        changeLayout.setText(Lg.getString(Lg.WI + ".persp.change"));
-        saveLayout.setText(Lg.getString(Lg.WI + ".persp.save"));
-        loadLayout.setText(Lg.getString(Lg.WI + ".persp.load"));
-        resizeLayout.setText(Lg.getString(Lg.WI + ".persp.resize"));
+        window.setText(Messages.getString(Messages.WI));
+        view.setText(Messages.getString(Messages.WI + ".view"));
+        top.setText(Messages.getString(Messages.WI + ".view.top"));
+        back.setText(Messages.getString(Messages.WI + ".view.back"));
+        left.setText(Messages.getString(Messages.WI + ".view.left"));
+        tools.setText(Messages.getString(Messages.WI + ".tools"));
+        informations.setText(Messages.getString(Messages.WI + ".info"));
+        perspective.setText(Messages.getString(Messages.WI + ".persp"));
+        changeLayout.setText(Messages.getString(Messages.WI + ".persp.change"));
+        saveLayout.setText(Messages.getString(Messages.WI + ".persp.save"));
+        loadLayout.setText(Messages.getString(Messages.WI + ".persp.load"));
+        resizeLayout.setText(Messages.getString(Messages.WI + ".persp.resize"));
 
-        help.setText(Lg.getString(Lg.HE));
-        manual.setText(Lg.getString(Lg.HE + ".manual"));
-        guide.setText(Lg.getString(Lg.HE + ".guide"));
-        language.setText(Lg.getString(Lg.HE + ".language"));
+        help.setText(Messages.getString(Messages.HE));
+        manual.setText(Messages.getString(Messages.HE + ".manual"));
+        guide.setText(Messages.getString(Messages.HE + ".guide"));
+        language.setText(Messages.getString(Messages.HE + ".language"));
     }
 
     // ==================================
@@ -406,10 +406,10 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         } else if (e.getSource().equals(this.open)) {} else {
             for (JMenuItem j : this.lngs) {
                 if (e.getSource().equals(j)) {
-                    ArrayList<Locale> locales = Lg.Utils.getAvailableLocales();
+                    ArrayList<Locale> locales = Messages.Utils.getAvailableLocales();
                     for (Locale l : locales) {
                         if (l.getDisplayLanguage(l).equals(j.getText())) {
-                            Lg.setBundle(l);
+                            Messages.setBundle(l);
                             this.paintMenu();
                             break;
                         }

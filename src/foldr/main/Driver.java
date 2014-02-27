@@ -18,8 +18,8 @@ public class Driver {
 
         // TODO Switch to Locale.getDefault() once the software is properly
         // translated.
-        Lg.setBundle(Locale.US);
-        Lg.Utils.init("languages");
+        Messages.setBundle(Locale.US);
+        Messages.Utils.init("languages");
 
         // set the look & feel to the use the system one since swing look & feel
         // is awful. (also swing look & feel is drawn pixel by pixel. Using the

@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import foldr.main.Lg.Utils;
+import foldr.main.Messages.Utils;
 
-public class LgUtilsTest {
+public class MessagesUtilsTest {
 
     private static final String PATH = "languages";
 

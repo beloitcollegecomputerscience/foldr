@@ -17,7 +17,7 @@ import java.util.Scanner;
  * @author Eclipse
  * @author couretn
  */
-public class Lg {
+public class Messages {
 
     public static final String FI = "menu.file";
     public static final String ED = "menu.edit";
@@ -33,7 +33,7 @@ public class Lg {
     /**
      * Should not be instantiated.
      */
-    private Lg() {
+    private Messages() {
 
         // do not instantiate
     }

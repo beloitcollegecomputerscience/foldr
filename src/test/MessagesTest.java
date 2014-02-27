@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import foldr.main.Lg;
+import foldr.main.Messages;
 
-public class LgTest {
+public class MessagesTest {
 
     // TODO more!
     private static final String NAME = "foldr.messages.messages";
@@ -22,14 +22,14 @@ public class LgTest {
     public static void setUpBeforeClass()
         throws Exception {
 
-        Lg.setBundle(Locale.US);
+        Messages.setBundle(Locale.US);
     }
 
     @Before
     public void setUp()
         throws Exception {
 
-        Lg.setBundle(Locale.US);
+        Messages.setBundle(Locale.US);
 
     }
 
@@ -42,24 +42,24 @@ public class LgTest {
     @Test
     public void testLoadBundle() {
 
-        assertEquals(ResourceBundle.getBundle(NAME, Locale.US), Lg.loadBundle(Locale.US));
-        Lg.setBundle(Locale.FRANCE);
-        assertNotEquals(ResourceBundle.getBundle(NAME, Locale.US), Lg.loadBundle(null));
+        assertEquals(ResourceBundle.getBundle(NAME, Locale.US), Messages.loadBundle(Locale.US));
+        Messages.setBundle(Locale.FRANCE);
+        assertNotEquals(ResourceBundle.getBundle(NAME, Locale.US), Messages.loadBundle(null));
 
     }
 
     @Test
     public void testGetString() {
 
-        assertEquals("File", Lg.getString(Lg.FI));
-        Lg.setBundle(Locale.FRANCE);
-        assertEquals("Fichier", Lg.getString(Lg.FI));
+        assertEquals("File", Messages.getString(Messages.FI));
+        Messages.setBundle(Locale.FRANCE);
+        assertEquals("Fichier", Messages.getString(Messages.FI));
     }
 
     @Test
     public void testGetLocale() {
 
-        assertEquals(Locale.US, Lg.getLocale());
+        assertEquals(Locale.US, Messages.getLocale());
     }
 
 }
