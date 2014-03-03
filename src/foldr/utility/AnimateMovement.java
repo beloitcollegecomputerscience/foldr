@@ -1,7 +1,5 @@
 package foldr.utility;
 
-import de.jreality.math.MatrixBuilder;
-import foldr.shape.Shape;
 import foldr.shape.ShapeGroup;
 
 
@@ -40,18 +38,10 @@ public class AnimateMovement {
 	}
 	
     /**
-     * TODO this method should probably be a jReality tool class-- I'm not sure if there's any other way to animate.
      * 
      * Animates a shape group to an end point.
      * Does not check for potential collisions and instead lets shapes move through each other.
      *
-     * There are two reason this method will be called:
-     * 1. The user is manually moving a ShapeGroup using the 'move' tool - or should it just automatically move in this case, with no animation? Probably.
-     * 2. The user is using the 'join edge' tool. 
-     * 
-     * Any calculations should probably be done in another class. 
-     * For now, AnimateMovement simply takes end coordinates and translates a shape group that much. 
-     * 
      * @param toMove
      *            the ShapeGroup you want to animate. This can contain one or more shapes.
      * @param endPoint
@@ -60,28 +50,8 @@ public class AnimateMovement {
      *
      */
 	 
-	public void moveShapeGroup(ShapeGroup shapeGroupToMove, double[] endPoint) {
-		// TODO the ShapeGroup class should have either an public list of the Shape objects it stores, or a method to return this list. 
-		// for now, I'm pretending that allShapesToMove has a method to return an array of Shape objects in its group.
-		Shape[] allShapesToMove = shapeGroupToMove.getShapesInGroup();
-		
-		/*TODO
-		 * 
-		 * I think this is going to move each shape in the group one at a time.
-		 * What we'll probably want to do is translate each shape a small fraction of the endpoints.
-		 * Then we can nest this loop inside another for, which iterates to the scale we used on the endpoints. 
-		 * This should make it appear that all shapes are moving together.
-		 *  
-		 */
-		for (Shape currentShape : allShapesToMove) {
-			// TODO anything onscreen will have to be a sceneGraphComponent. For now, I'm just pretending that this object will be stored somewhere in Shape and can be returned.
-			MatrixBuilder.euclidean().translate(endPoint[0], endPoint[1], endPoint[2]).assignTo(currentShape.getSceneGraphComponent());
-		}
+	public void moveShapeGroup(ShapeGroup toMove, double[] endPoint) {
 	}
-	
+
 	
 }
-
-	
-	
-
