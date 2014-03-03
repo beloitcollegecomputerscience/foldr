@@ -67,11 +67,15 @@ public class Shape {
 		shapeSGC.setGeometry(shapeGeometry);
 
 		parentScene.addChild(shapeSGC);
-		// attach the animation tool to this sgc
-		shapeSGC.addTool(animateShape);
-
 	}
 
+	/**
+	 * Method that translates shape.
+	 * Just using it to test animation.
+	 */
+	public void translate(double x, double y, double z) {
+		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
+	}
 	/**
 	 * <p>
 	 * Highlights the edges of the Shape with a bright color.
@@ -109,7 +113,7 @@ public class Shape {
 	 *            Which vertex to get the coordinates of
 	 * @return An array of doubles in the format [x,y,z]
 	 */
-	public Double[] getCurrentVertexCoordinates(int vertex) {
+	public double[] getCurrentVertexCoordinates(int vertex) {
 
 		// the original vertex coordinates as strings
 		String vertexCoorX = shapeSGC.getGeometry().getAttributes("VERTEX")
@@ -120,24 +124,24 @@ public class Shape {
 				.get(Attribute.COORDINATES, vertex).get(2).toString();
 
 		// the original vertex coordinates as doubles
-		Double originalVertexX = Double.parseDouble(vertexCoorX.substring(1,
+		double originalVertexX = Double.parseDouble(vertexCoorX.substring(1,
 				vertexCoorX.length() - 1));
-		Double originalVertexY = Double.parseDouble(vertexCoorY.substring(1,
+		double originalVertexY = Double.parseDouble(vertexCoorY.substring(1,
 				vertexCoorY.length() - 1));
-		Double originalVertexZ = Double.parseDouble(vertexCoorZ.substring(1,
+		double originalVertexZ = Double.parseDouble(vertexCoorZ.substring(1,
 				vertexCoorZ.length() - 1));
 
 		// the current translation
-		Double currentTranslationX = shapeSGC.getTransformation().getMatrix()[3];
-		Double currentTranslationY = shapeSGC.getTransformation().getMatrix()[7];
-		Double currentTranslationZ = shapeSGC.getTransformation().getMatrix()[11];
+		double currentTranslationX = shapeSGC.getTransformation().getMatrix()[3];
+		double currentTranslationY = shapeSGC.getTransformation().getMatrix()[7];
+		double currentTranslationZ = shapeSGC.getTransformation().getMatrix()[11];
 
 		// the array with the current coordinates of the selected vertex
-		Double[] allCurrentVertexCoor = {
+		double[] allCurrentVertexCoor = {
 				originalVertexX + currentTranslationX,
 				originalVertexY + currentTranslationY,
 				originalVertexZ + currentTranslationZ };
-		return allCurrentVertexCoor;
+		return allCurrentVertexCoor;	
 	}
 
 	/**
@@ -156,6 +160,8 @@ public class Shape {
 			return false;
 		} else {
 			inMotion = true;
+			// attach the animation tool to this sgc
+			shapeSGC.addTool(animateShape);
 			animateShape.setEndPoints(this, endPoints);
 			return true;
 		}
@@ -172,23 +178,19 @@ public class Shape {
 		int currentFrame = 0;
 		// this variable determines the number of frames the animation will
 		// occur in
-		int totalFramesForAnimation = 20;
+		int totalFramesForAnimation = 100;
 
 		// the shape and scg that are being moved
 		Shape shapeToMove;
 		SceneGraphComponent sgcToMove;
 
-		// the current coordinates of a reference vertex
-		double currentX;
-		double currentY;
-		double currentZ;
-
+		
 		// the interval each coordinate will change every frame
 		double intervalToMoveX;
 		double intervalToMoveY;
 		double intervalToMoveZ;
 
-		// the new coordinates to translate the shape to
+		// the new coordinates to translate the shape to. These start as equal to the current coordinates.
 		double newX;
 		double newY;
 		double newZ;
@@ -196,13 +198,19 @@ public class Shape {
 		private final InputSlot TIME = InputSlot.SYSTEM_TIME;
 
 		public AnimationTool() {
-			addCurrentSlot(TIME, "triggers perform");
+			addCurrentSlot(TIME);
+			
 		}
 
 		public void setEndPoints(Shape newShapeToMove, double[] newEndPoints) {
 
 			shapeToMove = newShapeToMove;
 			sgcToMove = shapeToMove.getShapeSGC();
+
+			// the new coordinates to translate the shape to. These start as equal to the current coordinates.
+			newX = shapeToMove.getCurrentVertexCoordinates(0)[0];
+			newY = shapeToMove.getCurrentVertexCoordinates(0)[1];
+			newZ = shapeToMove.getCurrentVertexCoordinates(0)[2];
 
 			// set the distance to move for each coordinate
 			double distanceToMoveX = newEndPoints[0];
@@ -216,30 +224,17 @@ public class Shape {
 					/ (double) totalFramesForAnimation;
 			intervalToMoveZ = distanceToMoveZ
 					/ (double) totalFramesForAnimation;
-
-			// make sure there's a current time slot, in case this isn't the
-			// first animation being performed on this shape
-			addCurrentSlot(TIME, "triggers perform");
 		}
 
 		@Override
 		public void perform(ToolContext tc) {
 
-			// update the current coordinates every frame, using vertex 0 as a
-			// reference
-			currentX = getCurrentVertexCoordinates(0)[0];
-			currentY = getCurrentVertexCoordinates(0)[1];
-			currentZ = getCurrentVertexCoordinates(0)[2];
-
 			// check if we've looped through the correct number of frames
 			if (currentFrame == totalFramesForAnimation) {
 				System.out.println("goal reached!");
-				System.out.println("X: " + currentX);
-				System.out.println("Y: " + currentY);
-				System.out.println("Z: " + currentZ);
 				shapeToMove.inMotion = false;
-				// animation is done, so get rid of the current slot
-				removeCurrentSlot(TIME);
+				// animation is done, so get remove this tool from the shape
+				sgcToMove.removeTool(this);
 			} else {
 				// update the new coordinates
 				newX += intervalToMoveX;
