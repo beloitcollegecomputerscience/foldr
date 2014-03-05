@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -20,7 +19,6 @@ import javax.swing.KeyStroke;
 
 import de.jreality.geometry.Primitives;
 import de.jreality.plugin.JRViewer;
-import de.jreality.plugin.content.ContentTools;
 import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
@@ -36,15 +34,24 @@ import foldr.shape.Shape;
  */
 public class GUI extends JFrame implements ActionListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// the main scene graph component. All other SGC's will be a child of this.
-	static SceneGraphComponent topScene = SceneGraphUtility
-			.createFullSceneGraphComponent("topScene");
+	static SceneGraphComponent scene = SceneGraphUtility
+			.createFullSceneGraphComponent("scene");
 
 	// the swing components to create the jreality frame
 	protected JFrame f;
 	protected JDesktopPane desktop = new JDesktopPane();
-	protected JPanel viewOne;
-
+	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
+	
+	//the viewer components that render the difference camera views
+	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
+	Viewer freeViewer, topViewer, sideViewer, frontViewer;
+	
 	// the swing components to create the menu bar
 	protected JPanel menuBarPane;
 	protected JMenuBar menuBar;
@@ -61,7 +68,7 @@ public class GUI extends JFrame implements ActionListener {
 			windowSaveLoadPerspective, windowResizePerspective;
 	protected JMenuItem helpManual, helpQuickStartGuide;
 
-	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
+	
 	
 	// This method creates the menu bar
 	protected void initMenuBarPane() {
@@ -250,52 +257,72 @@ public class GUI extends JFrame implements ActionListener {
 		System.out.println("That action is not yet implemented");
 	}
 
-	// Create the jReality canvas
-	public void createJRCanvas() {
-		//Testing with a visible shape
-		IndexedFaceSet octo = Primitives.regularPolygon(6);
+	// Create the jReality viewers for each panel
+	public void createJRViewers() {
+		//TESTING with a visible shape @TODO: Remove this.
+		IndexedFaceSet octo = Primitives.regularPolygon(8);
 		SceneGraphComponent octoOne = SceneGraphUtility
 				.createFullSceneGraphComponent("octogon1");
 		octoOne.setGeometry(octo);
-		topScene.addChild(octoOne);
+		scene.addChild(octoOne);
 		
-		JRViewer freeViewer = new JRViewer();
-		freeViewer.setContent(topScene);
-		freeViewer.startupLocal();
-		ContentTools tools = new ContentTools();
-		tools.setRotationEnabled(true);
-		freeViewer.registerPlugin(tools);
-		Viewer viewer = freeViewer.getViewer();
-		
+		//Setting up the free view
+		freeJRViewer = new JRViewer();
+		freeJRViewer.setContent(scene);
+		freeJRViewer.startupLocal();
+		freeViewer = freeJRViewer.getViewer();
 		freeViewPanel.setLayout(new GridLayout());
-		freeViewPanel.add((Component) viewer.getViewingComponent());
+		freeViewPanel.add((Component) freeViewer.getViewingComponent());
 		freeViewPanel.setVisible(true);
+		
+		//Setting up the top view
+		topJRViewer = new JRViewer();
+		topJRViewer.setContent(scene);
+		topJRViewer.startupLocal();
+		topViewer = topJRViewer.getViewer();
+		topPanel.setLayout(new GridLayout());
+		topPanel.add((Component) topViewer.getViewingComponent());
+		topPanel.setVisible(true);
+		
+		//Setting up the side view
+		sideJRViewer = new JRViewer();
+		sideJRViewer.setContent(scene);
+		sideJRViewer.startupLocal();
+		sideViewer = sideJRViewer.getViewer();
+		sidePanel.setLayout(new GridLayout());
+		sidePanel.add((Component) sideViewer.getViewingComponent());
+		sidePanel.setVisible(true);
+		
+		//Setting up the side view
+		frontJRViewer = new JRViewer();
+		frontJRViewer.setContent(scene);
+		frontJRViewer.startupLocal();
+		frontViewer = frontJRViewer.getViewer();
+		frontPanel.setLayout(new GridLayout());
+		frontPanel.add((Component) frontViewer.getViewingComponent());
+		frontPanel.setVisible(true);
+		
 	}
 	
+	//Create the panes, panels and other gui elements and pack them up.
 	private void initPanesAndGui() {
-		// create the jReality canvas and menu bars
+		//Adding the view panels (free, top, side, front)
 		GridLayout gl = new GridLayout(2, 2);
-		
 		mainPanel = new JPanel(gl, true);
 		mainPanel.setBackground(new Color(128, 128, 64));
-
 		freeViewPanel = new JPanel();
 		mainPanel.add(freeViewPanel);
-
 		topPanel = new JPanel();
 		topPanel.setBackground(Color.WHITE);
 		mainPanel.add(topPanel);
-
 		sidePanel = new JPanel();
 		sidePanel.setBackground(Color.WHITE);
 		mainPanel.add(sidePanel);
-
 		frontPanel = new JPanel();
 		frontPanel.setBackground(Color.GRAY);
 		mainPanel.add(frontPanel);
-		
-		
-		createJRCanvas();
+
+		createJRViewers();
 		initMenuBarPane();
 		
 		// stick them both in a desktop pane
@@ -303,15 +330,13 @@ public class GUI extends JFrame implements ActionListener {
 		desktop.add(menuBarPane, "North");
 		desktop.add(mainPanel);
 		pack();
-		//setSize(800, 645); // Has to happen after "pack()"
-		//setVisible(true);
 		
 		// Create the top frame to store desktop
 		f = new JFrame("Polyhedra");
 		f.setLayout(new GridLayout());
 		f.add(desktop);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(800, 600);
+		f.setSize(1000, 700);
 		f.setVisible(true);
 
 	}
