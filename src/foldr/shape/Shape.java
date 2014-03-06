@@ -175,7 +175,7 @@ public class Shape {
 	 */
 	class AnimationTool extends AbstractTool {
 
-		int currentFrame = 0;
+		double currentFrame = 0.0;
 		// this variable determines the number of frames the animation will
 		// occur in
 		int totalFramesForAnimation = 100;
@@ -207,11 +207,6 @@ public class Shape {
 			shapeToMove = newShapeToMove;
 			sgcToMove = shapeToMove.getShapeSGC();
 
-			// the new coordinates to translate the shape to. These start as equal to the current coordinates.
-			newX = shapeToMove.getCurrentVertexCoordinates(0)[0];
-			newY = shapeToMove.getCurrentVertexCoordinates(0)[1];
-			newZ = shapeToMove.getCurrentVertexCoordinates(0)[2];
-
 			// set the distance to move for each coordinate
 			double distanceToMoveX = newEndPoints[0];
 			double distanceToMoveY = newEndPoints[1];
@@ -237,9 +232,10 @@ public class Shape {
 				sgcToMove.removeTool(this);
 			} else {
 				// update the new coordinates
-				newX += intervalToMoveX;
-				newY += intervalToMoveY;
-				newZ += intervalToMoveZ;
+				newX = intervalToMoveX*currentFrame;
+				newY = intervalToMoveY*currentFrame;
+				newZ = intervalToMoveZ*currentFrame;
+				
 				// translate the shape
 				MatrixBuilder.euclidean().translate(newX, newY, newZ)
 						.assignTo(sgcToMove);
