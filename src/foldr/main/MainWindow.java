@@ -4,10 +4,12 @@
 
 package foldr.main;
 
+import java.awt.Component;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -15,11 +17,20 @@ import java.util.Locale;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
+
+import de.jreality.plugin.JRViewer;
+import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.Viewer;
+import de.jreality.ui.JRealitySplashScreen;
+import de.jreality.util.SceneGraphUtility;
 
 /**
  * @author Nathanaël COURET
@@ -38,62 +49,47 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
 
     // File
     private JMenu                           file;
-    private JMenuItem                       open;
-    private JMenuItem                       create;
-    private JMenuItem                       save;
-    private JMenuItem                       saveas;
-    private JMenuItem                       export;
-    private JMenuItem                       close;
+    private JMenuItem                       open, create, save, saveas, export, close;
 
     // Edit
     private JMenu                           edit;
-    private JMenuItem                       copy;
-    private JMenuItem                       cut;
-    private JMenuItem                       paste;
-    private JMenuItem                       delete;
-    private JMenuItem                       selectAll;
-    private JMenuItem                       resize;
-
+    private JMenuItem                       copy, cut, paste, delete, selectAll, resize;
     // fold/shape
     private JMenu                           fold;
     private JMenu                           angle;
-    private JMenuItem                       ang30;
-    private JMenuItem                       ang45;
-    private JMenuItem                       ang90;
-    private JMenuItem                       angCustom;
-    private JMenuItem                       edgeSelect;
-    private JMenuItem                       pointSelect;
+    private JMenuItem                       ang30, ang45, ang90, angCustom;
+    private JMenuItem                       edgeSelect, pointSelect;
     private JMenu                           shape;
-    private JMenuItem                       foldShape;
-    private JMenuItem                       connect;
-    private JMenuItem                       detach;
+    private JMenuItem                       foldShape, connect, detach;
 
     // Window
     private JMenu                           window;
     private JMenu                           view;
-    private JCheckBoxMenuItem               top;
-    private JCheckBoxMenuItem               back;
-    private JCheckBoxMenuItem               left;
-    private JCheckBoxMenuItem               tools;
+    private JCheckBoxMenuItem               top, back, left, tools;
     private JCheckBoxMenuItem               informations;
     private JMenu                           perspective;
-    private JMenuItem                       changeLayout;
-    private JMenuItem                       saveLayout;
-    private JMenuItem                       loadLayout;
-    private JMenuItem                       resizeLayout;
+    private JMenuItem                       changeLayout, saveLayout, loadLayout, resizeLayout;
 
     // Help
     private JMenu                           help;
-    private JMenuItem                       manual;
-    private JMenuItem                       guide;
-    private JMenu                           language;
+    private JMenuItem                       manual, guide;
+    private JMenu                           languages;
     private ButtonGroup                     lngsGroup;
-    private ArrayList<JRadioButtonMenuItem> lngs;
+    private ArrayList<JRadioButtonMenuItem> languagesList;
+
     // FIXME explicit names
 
     // ==================================
     // Panels
     // ==================================
+    private JDesktopPane                    internalDesktop;
+    private JInternalFrame                  JRFrame;
+
+    // ==================================
+    // JReality
+    // ==================================
+    private static SceneGraphComponent      root             =
+                                                                 SceneGraphUtility.createFullSceneGraphComponent("root");
 
     // ==================================
     // Constructor
@@ -144,30 +140,50 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         this.initMenuBar();
         this.setJMenuBar(theMenuBar);
 
+        JRViewer viewer = JRViewer.createJRViewer(root);
+        viewer.startupLocal();
+
+        Viewer v = viewer.getViewer();
+
+        internalDesktop = new JDesktopPane();
+        JRFrame = new JInternalFrame("canvas", true, true, true, true);
+        JRFrame.setSize(480, 320);
+        JRFrame.add((Component) v.getViewingComponent());
+        internalDesktop.add(JRFrame);
+        this.add(internalDesktop);
+        JRFrame.setVisible(true);
         this.pack();
         this.setVisible(true);
     }
 
     /**
-     * TODO finish
+     * TODO finish. almost
      */
     public void initMenuBar() {
 
         theMenuBar = new JMenuBar();
 
+        // File menu
         file = new JMenu();
         open = new JMenuItem();
         open.addActionListener(this);
+        open.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); // CTRL+O
         create = new JMenuItem();
         create.addActionListener(this);
+        create.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK)); // CTRL+N
         save = new JMenuItem();
         save.addActionListener(this);
+        save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK)); // CTRL+S
         saveas = new JMenuItem();
         saveas.addActionListener(this);
+        saveas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK |
+            ActionEvent.SHIFT_MASK));
         export = new JMenuItem();
         export.addActionListener(this);
+        export.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
         close = new JMenuItem();
         close.addActionListener(this);
+        close.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
         file.add(open);
         file.add(create);
         file.add(save);
@@ -176,17 +192,23 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         file.add(close);
         theMenuBar.add(file);
 
+        // edit Menu
         edit = new JMenu();
         copy = new JMenuItem();
         copy.addActionListener(this);
+        copy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         cut = new JMenuItem();
         cut.addActionListener(this);
+        cut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
         paste = new JMenuItem();
         paste.addActionListener(this);
+        paste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
         delete = new JMenuItem();
         delete.addActionListener(this);
+        delete.setAccelerator(KeyStroke.getKeyStroke((char) KeyEvent.VK_DELETE));
         selectAll = new JMenuItem();
         selectAll.addActionListener(this);
+        selectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         edit.add(copy);
         edit.add(cut);
         edit.add(paste);
@@ -194,6 +216,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         edit.add(selectAll);
         theMenuBar.add(edit);
 
+        // Fold menu
         fold = new JMenu();
         angle = new JMenu();
         ang30 = new JMenuItem();
@@ -231,6 +254,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         fold.add(shape);
         theMenuBar.add(fold);
 
+        // Window Menu
         window = new JMenu();
         view = new JMenu();
         top = new JCheckBoxMenuItem();
@@ -265,33 +289,37 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         window.add(perspective);
         theMenuBar.add(window);
 
+        // Help menu
         help = new JMenu();
         manual = new JMenuItem();
         manual.addActionListener(this);
         guide = new JMenuItem();
         guide.addActionListener(this);
-        language = new JMenu();
-        language.addActionListener(this);
-        lngs = new ArrayList<JRadioButtonMenuItem>();
+        languages = new JMenu();
+        languages.addActionListener(this);
+        languagesList = new ArrayList<JRadioButtonMenuItem>();
         lngsGroup = new ButtonGroup();
         for (String s : Messages.Utils.getDisplayedLanguages()) {
             JRadioButtonMenuItem jcmi = new JRadioButtonMenuItem(s);
             jcmi.addActionListener(this);
-            language.add(jcmi);
+            languages.add(jcmi);
             lngsGroup.add(jcmi);
-            lngs.add(jcmi);
+            languagesList.add(jcmi);
             if (s.equalsIgnoreCase(Messages.getLocale().getDisplayLanguage())) {
                 jcmi.setSelected(true);
             }
         }
         help.add(manual);
         help.add(guide);
-        help.add(language);
+        help.add(languages);
         theMenuBar.add(help);
 
         this.paintMenu();
     }
 
+    /**
+     * 
+     */
     private void paintMenu() {
 
         file.setText(Messages.getString(Messages.FI));
@@ -339,7 +367,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         help.setText(Messages.getString(Messages.HE));
         manual.setText(Messages.getString(Messages.HE + ".manual"));
         guide.setText(Messages.getString(Messages.HE + ".guide"));
-        language.setText(Messages.getString(Messages.HE + ".language"));
+        languages.setText(Messages.getString(Messages.HE + ".language"));
     }
 
     // ==================================
@@ -404,7 +432,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
             dispose();
             System.exit(0);
         } else if (e.getSource().equals(this.open)) {} else {
-            for (JMenuItem j : this.lngs) {
+            for (JMenuItem j : this.languagesList) {
                 if (e.getSource().equals(j)) {
                     ArrayList<Locale> locales = Messages.Utils.getAvailableLocales();
                     for (Locale l : locales) {

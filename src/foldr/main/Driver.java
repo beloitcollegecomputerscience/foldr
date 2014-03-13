@@ -36,9 +36,9 @@ public class Driver {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        MainWindow mw = new MainWindow("Foldr");
+        GUI mw = new GUI("Foldr");
         mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mw.initPanesAndGUI();
+        mw.initPanesAndGui();
     }
 
 }
