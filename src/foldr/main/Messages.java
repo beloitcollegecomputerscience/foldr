@@ -256,10 +256,29 @@ public class Messages {
             for (Locale l : locales) {
                 if (!ret.contains(l.getDisplayLanguage(l))) {
                     ret.add(l.getDisplayLanguage(l));
-                    ret.trimToSize();
                 }
             }
             return ret;
+        }
+
+        /**
+         * Get the <code>Locale</code> associated to the given displayed
+         * language. If no <code>Locale</code> is found, the current
+         * <code>Locale</code> returned by {@link Messages#getLocale()} is used.
+         * 
+         * @param displayed
+         *            The displayed language whose <code>Locale</code> must be
+         *            found.
+         * @return The <code>Locale</code> returning the given Displayed
+         *         language, or the <code>Locale</code> currently used by the
+         *         <code>MessageBundle</code>.
+         */
+        public static Locale getLocale(String displayed) {
+            ArrayList<String> languages = getDisplayedLanguages();
+            if(languages.contains(displayed)) {
+                return locales.get(languages.indexOf(displayed));
+            }
+            return Messages.getLocale();
         }
 
         /**
