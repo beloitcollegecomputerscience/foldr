@@ -3,6 +3,7 @@ package test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
@@ -49,6 +50,13 @@ public class MessagesUtilsTest {
 
         // TODO more
         assertTrue(Utils.getDisplayedLanguages().contains(Locale.US.getDisplayLanguage(Locale.US)));
+        assertTrue(Utils.getDisplayedLanguages().contains("français"));
+    }
+    
+    @Test
+    public void testGetLocale() {
+        assertEquals(Locale.US, Utils.getLocale("English"));
+        assertEquals(Locale.FRANCE, Utils.getLocale("français"));
     }
 
 }
