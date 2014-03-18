@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -18,9 +20,12 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
 import de.jreality.geometry.Primitives;
+import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
+import de.jreality.scene.Camera;
 import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.SceneGraphPath;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
 import foldr.shape.Shape;
@@ -32,7 +37,7 @@ import foldr.shape.Shape;
  * @author Charles Gunn
  * 
  */
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener, MouseListener {
 
 	/**
 	 * 
@@ -252,11 +257,6 @@ public class GUI extends JFrame implements ActionListener {
 		menuBarPane.add(menuBar);
 	}
 
-	// Action listener. For now, this method is just a placeholder.
-	public void actionPerformed(ActionEvent e) {
-		System.out.println("That action is not yet implemented");
-	}
-
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
 		//TESTING with a visible shape @TODO: Remove this.
@@ -271,6 +271,14 @@ public class GUI extends JFrame implements ActionListener {
 		freeJRViewer.setContent(scene);
 		freeJRViewer.startupLocal();
 		freeViewer = freeJRViewer.getViewer();
+		
+		//Manipulating the camera
+		SceneGraphComponent cameraContainer = null;
+		cameraContainer = (SceneGraphComponent)freeJRViewer.getViewer().getCameraPath().get(freeJRViewer.getViewer().getCameraPath().getLength()-2);
+		MatrixBuilder.euclidean().translate(0.1,0.9,0.4).assignTo(cameraContainer);
+//		freeJRViewer.getViewer().render();
+		
+		//Setting up the free view panel
 		freeViewPanel.setLayout(new GridLayout());
 		freeViewPanel.add((Component) freeViewer.getViewingComponent());
 		freeViewPanel.setVisible(true);
@@ -301,7 +309,6 @@ public class GUI extends JFrame implements ActionListener {
 		frontPanel.setLayout(new GridLayout());
 		frontPanel.add((Component) frontViewer.getViewingComponent());
 		frontPanel.setVisible(true);
-		
 	}
 	
 	//Create the panes, panels and other gui elements and pack them up.
@@ -321,6 +328,7 @@ public class GUI extends JFrame implements ActionListener {
 		frontPanel = new JPanel();
 		frontPanel.setBackground(Color.GRAY);
 		mainPanel.add(frontPanel);
+		mainPanel.addMouseListener(this);
 
 		createJRViewers();
 		initMenuBarPane();
@@ -338,7 +346,6 @@ public class GUI extends JFrame implements ActionListener {
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(1000, 700);
 		f.setVisible(true);
-
 	}
 
 	private static GUI theProgram;
@@ -346,6 +353,39 @@ public class GUI extends JFrame implements ActionListener {
 		theProgram = new GUI();
 		theProgram.initPanesAndGui();
 		theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+
+	// Action listener. For now, this method is just a placeholder.
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("That action is not yet implemented");
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		System.out.println("That action is not yet implemented");
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		System.out.println("That action is not yet implemented");
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		System.out.println("That action is not yet implemented");
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		System.out.println("That action is not yet implemented");
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
