@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -37,7 +38,7 @@ import foldr.shape.Shape;
  * @author Charles Gunn
  * 
  */
-public class GUI extends JFrame implements ActionListener, MouseListener {
+public class GUI extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -56,6 +57,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	//the viewer components that render the difference camera views
 	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
 	Viewer freeViewer, topViewer, sideViewer, frontViewer;
+	// the camera containers for the different cameras of the different views
+	SceneGraphComponent freeCameraContainer, topCameraContainer, sideCameraContainer, frontCameraContainer;
 	
 	// the swing components to create the menu bar
 	protected JPanel menuBarPane;
@@ -271,44 +274,48 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		freeJRViewer.setContent(scene);
 		freeJRViewer.startupLocal();
 		freeViewer = freeJRViewer.getViewer();
-		
-		//Manipulating the camera
-		SceneGraphComponent cameraContainer = null;
-		cameraContainer = (SceneGraphComponent)freeJRViewer.getViewer().getCameraPath().get(freeJRViewer.getViewer().getCameraPath().getLength()-2);
-		MatrixBuilder.euclidean().translate(0.1,0.9,0.4).assignTo(cameraContainer);
-//		freeJRViewer.getViewer().render();
-		
-		//Setting up the free view panel
+		freeCameraContainer = (SceneGraphComponent)freeViewer.getCameraPath().get(freeViewer.getCameraPath().getLength()-2);
 		freeViewPanel.setLayout(new GridLayout());
 		freeViewPanel.add((Component) freeViewer.getViewingComponent());
 		freeViewPanel.setVisible(true);
+		freeViewPanel.getComponent(0).addMouseMotionListener(theProgram);
+		freeViewPanel.getComponent(0).addMouseListener(theProgram);
 		
 		//Setting up the top view
 		topJRViewer = new JRViewer();
 		topJRViewer.setContent(scene);
 		topJRViewer.startupLocal();
 		topViewer = topJRViewer.getViewer();
+		topCameraContainer = (SceneGraphComponent)topViewer.getCameraPath().get(topViewer.getCameraPath().getLength()-2);
 		topPanel.setLayout(new GridLayout());
 		topPanel.add((Component) topViewer.getViewingComponent());
 		topPanel.setVisible(true);
+		topPanel.getComponent(0).addMouseMotionListener(theProgram);
+		topPanel.getComponent(0).addMouseListener(theProgram);
 		
 		//Setting up the side view
 		sideJRViewer = new JRViewer();
 		sideJRViewer.setContent(scene);
 		sideJRViewer.startupLocal();
 		sideViewer = sideJRViewer.getViewer();
+		sideCameraContainer = (SceneGraphComponent)sideViewer.getCameraPath().get(sideViewer.getCameraPath().getLength()-2);
 		sidePanel.setLayout(new GridLayout());
 		sidePanel.add((Component) sideViewer.getViewingComponent());
 		sidePanel.setVisible(true);
+		sidePanel.getComponent(0).addMouseMotionListener(theProgram);
+		sidePanel.getComponent(0).addMouseListener(theProgram);
 		
 		//Setting up the side view
 		frontJRViewer = new JRViewer();
 		frontJRViewer.setContent(scene);
 		frontJRViewer.startupLocal();
 		frontViewer = frontJRViewer.getViewer();
+		frontCameraContainer = (SceneGraphComponent)frontViewer.getCameraPath().get(frontViewer.getCameraPath().getLength()-2);
 		frontPanel.setLayout(new GridLayout());
 		frontPanel.add((Component) frontViewer.getViewingComponent());
 		frontPanel.setVisible(true);
+		frontPanel.getComponent(0).addMouseMotionListener(theProgram);
+		frontPanel.getComponent(0).addMouseListener(theProgram);
 	}
 	
 	//Create the panes, panels and other gui elements and pack them up.
@@ -362,30 +369,41 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		System.out.println("That action is not yet implemented");
+		//System.out.println("Mouse Clicked: " + arg0.toString());
+		//MOVE CAMERA ON CLICK
+		//MatrixBuilder.euclidean().translate(0.1,0.9,0.4).assignTo(freeCameraContainer);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		System.out.println("That action is not yet implemented");
+		//System.out.println("Mouse Entered: " + arg0.toString());
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		System.out.println("That action is not yet implemented");
+		//System.out.println("Mouse Exited: " + arg0.toString());
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		System.out.println("That action is not yet implemented");
+		//System.out.println("Mouse Pressed: " + arg0.toString());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//System.out.println("Mouse Released: " + arg0.toString());
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		//System.out.println("Mouse Dragged: " + e.toString());
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		//System.out.println("Mouse Moved: " + e.toString());
 	}
 
 }
