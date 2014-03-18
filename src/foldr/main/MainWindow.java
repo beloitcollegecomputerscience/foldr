@@ -150,6 +150,7 @@ public class MainWindow extends JFrame implements ActionListener, MouseListener 
         JRFrame.setSize(480, 320);
         JRFrame.add((Component) v.getViewingComponent());
         internalDesktop.add(JRFrame);
+        internalDesktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         this.add(internalDesktop);
         JRFrame.setVisible(true);
         this.pack();

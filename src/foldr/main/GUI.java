@@ -9,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -375,10 +373,11 @@ public class GUI extends JFrame implements ActionListener {
         v.startupLocal();
         Viewer viewer = v.getViewer();
 
-        jRealityFrame = new JInternalFrame("jReality canvas", true, false, true, true);
+        jRealityFrame = new JInternalFrame("jReality canvas", true, true, true, true);
         jRealityFrame.setSize(480, 320);
         jRealityFrame.setLayout(new GridLayout());
         jRealityFrame.add((Component) viewer.getViewingComponent());
+        jRealityFrame.pack();
         jRealityFrame.setVisible(true);
 
         // put a shape in the canvas
@@ -395,7 +394,6 @@ public class GUI extends JFrame implements ActionListener {
         initMenuBar();
 
         // stick them both in a desktop pane
-        desktop.setLayout(new BorderLayout());
         desktop.add(jRealityFrame);
         pack();
         // setSize(800, 645); // Has to happen after "pack()"
@@ -403,6 +401,7 @@ public class GUI extends JFrame implements ActionListener {
 
         // Create the top frame to store desktop
         setLayout(new GridLayout());
+        desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
         add(desktop);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -410,7 +409,8 @@ public class GUI extends JFrame implements ActionListener {
         setVisible(true);
 
     }
-
+    
+    // delete?
     private static GUI theProgram;
 
     public static void main(String[] args) {
