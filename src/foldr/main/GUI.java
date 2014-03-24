@@ -286,7 +286,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		topJRViewer.setContent(scene);
 		topJRViewer.startupLocal();
 		topViewer = topJRViewer.getViewer();
-		topCameraContainer = (SceneGraphComponent)topViewer.getCameraPath().get(topViewer.getCameraPath().getLength()-2);
+		topCameraContainer = (SceneGraphComponent)topViewer.getCameraPath().get(topViewer.getCameraPath().getLength()-2);		
 		topPanel.setLayout(new GridLayout());
 		topPanel.add((Component) topViewer.getViewingComponent());
 		topPanel.setVisible(true);
@@ -305,7 +305,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		sidePanel.getComponent(0).addMouseMotionListener(theProgram);
 		sidePanel.getComponent(0).addMouseListener(theProgram);
 		
-		//Setting up the side view
+		//Setting up the front view
 		frontJRViewer = new JRViewer();
 		frontJRViewer.setContent(scene);
 		frontJRViewer.startupLocal();
@@ -316,6 +316,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		frontPanel.setVisible(true);
 		frontPanel.getComponent(0).addMouseMotionListener(theProgram);
 		frontPanel.getComponent(0).addMouseListener(theProgram);
+		
+		
+		//Setting the initial camera positions
+		MatrixBuilder.euclidean().translate(0, 0, 4.5).assignTo(frontCameraContainer);
+		MatrixBuilder.euclidean().translate(7, 0, -4.5).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
+		MatrixBuilder.euclidean().translate(0, 7, -4.5).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
+		MatrixBuilder.euclidean().translate(-3, 3, 3).rotateX(Math.toRadians(-30)).rotateY(Math.toRadians(-20)).assignTo(freeCameraContainer);
 	}
 	
 	//Create the panes, panels and other gui elements and pack them up.
@@ -370,8 +377,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//System.out.println("Mouse Clicked: " + arg0.toString());
-		//MOVE CAMERA ON CLICK
-		//MatrixBuilder.euclidean().translate(0.1,0.9,0.4).assignTo(freeCameraContainer);
 	}
 
 	@Override
@@ -398,7 +403,19 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		//System.out.println("Mouse Dragged: " + e.toString());
+		System.out.println(e.getComponent().getName());
+		//Front View/Camera -- Bottom right
+//		if(e.getComponent().getName().equals("canvas0")) {
+//			System.out.println("Bottom Right");
+//		}
+//		//Side View/Camera -- Bottom left
+//		if (e.getComponent().getName().equals("canvas1")) {
+//			System.out.println("Bottom Left");
+//		}
+//		//Free View/Camera
+//		if(e.getComponent().getName().equals("canvas2")) {
+//			System.out.println("asda");
+//		}
 	}
 
 	@Override
