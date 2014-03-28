@@ -161,7 +161,7 @@ public class Messages {
          * <p>
          * Used in case the languages can't be retrieved from the file.
          */
-        public static final ArrayList<String> DEFAULT_LANGUAGE = new ArrayList<>(
+        public static final ArrayList<String> DEFAULT_LANGUAGE = new ArrayList<String>(
                                                                    Arrays.asList("en_US"));
 
         /**
