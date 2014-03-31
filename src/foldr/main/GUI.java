@@ -1,11 +1,20 @@
 package foldr.main;
 
+import static de.jreality.shader.CommonAttributes.DIFFUSE_COLOR;
+import static de.jreality.shader.CommonAttributes.LINE_SHADER;
+import static de.jreality.shader.CommonAttributes.POINT_RADIUS;
+import static de.jreality.shader.CommonAttributes.POINT_SHADER;
+import static de.jreality.shader.CommonAttributes.TUBE_RADIUS;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.Scanner;
+import java.util.Vector;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -17,11 +26,16 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
+import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
+import de.jreality.scene.Appearance;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
+import de.jreality.shader.DefaultPointShader;
 import de.jreality.util.SceneGraphUtility;
 import foldr.shape.Shape;
+import foldr.shape.ShapeCollection;
+import foldr.shape.ShapeGroup;
 import foldr.utility.AnimateMovement;
 
 /**
@@ -32,10 +46,13 @@ import foldr.utility.AnimateMovement;
  * 
  */
 public class GUI extends JFrame implements ActionListener {
-	private AnimateMovement animateMovement;
+
+	static ShapeCollection allShapes = ShapeCollection.getInstance();
+
 	// the main scene graph component. All other SGC's will be a child of this.
 	static SceneGraphComponent topScene = SceneGraphUtility
 			.createFullSceneGraphComponent("topScene");
+	Scanner input = new Scanner(System.in);
 
 	// the swing components to create the jreality frame
 	protected JFrame f;
@@ -242,7 +259,50 @@ public class GUI extends JFrame implements ActionListener {
 
 	// Action listener. For now, this method is just a placeholder.
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("That action is not yet implemented");
+		String theCommand = e.getActionCommand();
+		System.out.println("You clicked " + theCommand);
+		if (theCommand.equals("Connect Shapes")) {
+
+			// TODO figure out how to do this by clicking on the shapes!
+			// use the console to grab the shapes and vertices to connect
+			// the number of a shape is its index number where it's stored in
+			// ShapeCollection
+			System.out.println("Enter the number of the first shape");
+			int firstShape = input.nextInt();
+			System.out.println("Enter the number of the vertex");
+			int firstVertex = input.nextInt();
+			System.out.println("Enter the number of the second shape");
+			int secondShape = input.nextInt();
+			System.out.println("Enter the number of the vertex");
+			int secondVertex = input.nextInt();
+
+			// grab the 2 shapes the user inputed
+			Shape shapeOne = allShapes.getShapeFromCollection(firstShape);
+			Shape shapeTwo = allShapes.getShapeFromCollection(secondShape);
+
+			System.out.println("Connecting...");
+
+			// figure out how much to move shape one in each direction
+			double targetX = shapeTwo.getCurrentVertexCoordinates(secondVertex)[0]
+					- shapeOne.getCurrentVertexCoordinates(firstVertex)[0];
+			double targetY = shapeTwo.getCurrentVertexCoordinates(secondVertex)[1]
+					- shapeOne.getCurrentVertexCoordinates(firstVertex)[1];
+			double targetZ = shapeTwo.getCurrentVertexCoordinates(secondVertex)[2]
+					- shapeOne.getCurrentVertexCoordinates(firstVertex)[2];
+
+			double[] endPoint = new double[3];
+			endPoint[0] = targetX;
+			endPoint[1] = targetY;
+			endPoint[2] = targetZ;
+
+			ShapeGroup shapeGroupToMove = shapeOne.getGroup();
+			// animate all shapes in the group
+			shapeGroupToMove.animateGroup(endPoint);
+			// put the newly glued shapes into the same group
+			shapeGroupToMove.resetGroup(shapeTwo.getGroup());
+		} else {
+			System.out.println("The command is not yet implemented!");
+		}
 	}
 
 	// Create the jReality canvas
@@ -287,18 +347,28 @@ public class GUI extends JFrame implements ActionListener {
 	private static GUI theProgram;
 
 	public static void main(String[] args) {
+
 		theProgram = new GUI();
 		theProgram.initPanesAndGui();
 		theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-		// put a shape in the canvas and animate it
-		Shape shapeOne = new Shape(4, topScene);
-		double[] endPoint = new double[3];
-		endPoint[0] = -1;
-		endPoint[1] = -1;
-		endPoint[2] = 0;
-		shapeOne.animateShape(endPoint);
-		
+		Appearance ap = topScene.getAppearance();
+		ap.setAttribute(LINE_SHADER + "." + DIFFUSE_COLOR, Color.yellow);
+		ap.setAttribute(LINE_SHADER + "." + TUBE_RADIUS, .05);
+		ap.setAttribute(POINT_SHADER + "." + DIFFUSE_COLOR, Color.red);
+		ap.setAttribute(POINT_SHADER + "." + POINT_RADIUS, .1);
+
+		// put shapes on the canvas
+		Shape shapeOne = new Shape(3, topScene);
+		Shape shapeTwo = new Shape(4, topScene);
+		Shape shapeThree = new Shape(5, topScene);
+		Shape shapeFour = new Shape(6, topScene);
+
+		// translate the shapes around so that the animation tests actually are interesting
+		shapeOne.translate(1, 0, 0);
+		shapeTwo.translate(2, 1, 1);
+		shapeThree.translate(-2, -1, 0);
+
 	}
 
 }
