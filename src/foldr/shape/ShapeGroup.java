@@ -1,6 +1,7 @@
 package foldr.shape;
 
 import java.util.Collection;
+import java.util.Vector;
 
 /**
  * <p>
@@ -17,7 +18,8 @@ import java.util.Collection;
  * 
  */
 public class ShapeGroup {
-	Collection<Shape> shapes;
+	public Vector<Shape> shapesInGroup = new Vector<Shape>();
+
 
 	/**
 	 * <p>
@@ -28,6 +30,27 @@ public class ShapeGroup {
 	public ShapeGroup() {
 	}
 
+	/**
+	 * Goes through and calls the animation method on every shape held in the group.
+	 * @param endPoints
+	 */
+	public void animateGroup(double[] endPoints) {
+		for (int i=0; i < shapesInGroup.size(); i++) {
+			Shape currentShape = shapesInGroup.get(i);
+			currentShape.animateShape(endPoints);
+		}
+	}
+	
+	/**
+	 * Resets all shapes in this group to be in a new shape group
+	 * @param newGroup
+	 */
+	public void resetGroup(ShapeGroup newGroup) {
+		for (int i=0; i < shapesInGroup.size(); i++) {
+			Shape currentShape = shapesInGroup.get(i);
+			currentShape.setGroup(newGroup);;
+		}
+	}
 	/**
 	 * <p>
 	 * <b>Dan :</b> Updates the internal location values of the shapes in the
