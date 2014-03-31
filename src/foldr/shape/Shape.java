@@ -8,6 +8,13 @@ import de.jreality.scene.data.Attribute;
 import de.jreality.scene.tool.AbstractTool;
 import de.jreality.scene.tool.InputSlot;
 import de.jreality.scene.tool.ToolContext;
+import de.jreality.tools.DragEventTool;
+import de.jreality.tools.FaceDragEvent;
+import de.jreality.tools.FaceDragListener;
+import de.jreality.tools.LineDragEvent;
+import de.jreality.tools.LineDragListener;
+import de.jreality.tools.PointDragEvent;
+import de.jreality.tools.PointDragListener;
 import de.jreality.util.SceneGraphUtility;
 
 /**
@@ -26,13 +33,19 @@ public class Shape {
 	 * of.
 	 * </p>
 	 */
+	private ShapeCollection allShapes = ShapeCollection.getInstance();
 	private ShapeGroup group;
-	private SceneGraphComponent shapeSGC;
+	public SceneGraphComponent shapeSGC;
 	// make a new instance of the animation tool
 	private AnimationTool animateShape = new AnimationTool();
-
+	private DragEventTool shapeClicked = new DragEventTool();
+	public static int selectedVertex;
 	public boolean inMotion = false;
 
+	private double currentX = 0;
+	private double currentY = 0;
+	private double currentZ = 0;
+	
 	/**
 	 * <p>
 	 * Default constructor creates a Shape with no points, edges, or faces.
@@ -58,24 +71,58 @@ public class Shape {
 	 */
 	public Shape(int numSides, SceneGraphComponent parentScene) {
 
+		// create the polygon
 		IndexedFaceSet shapeGeometry = Primitives.regularPolygon(numSides);
-
-		shapeSGC = SceneGraphUtility
-
-		.createFullSceneGraphComponent();
-
+		shapeSGC = SceneGraphUtility.createFullSceneGraphComponent();
 		shapeSGC.setGeometry(shapeGeometry);
-
 		parentScene.addChild(shapeSGC);
+		//add it to the collection of all shapes on screen
+		allShapes.addShapeToCollection(this);
+		//make a new shape group and add this shape into it
+		group = new ShapeGroup();
+		group.shapesInGroup.add(this);
+		
+		/**
+		 * Experimenting around with premade listeners. 
+		 * This tells you how many shapes are in a shapegroup when you click on a face.
+		 */
+		shapeClicked.addFaceDragListener(new FaceDragListener() {
+
+
+			@Override
+			public void faceDragged(FaceDragEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void faceDragEnd(FaceDragEvent e) {
+				System.out.println("This shape group has " + group.shapesInGroup.size() + " shapes in it");
+			}
+
+			@Override
+			public void faceDragStart(FaceDragEvent e) {
+				// TODO Auto-generated method stub
+				
+			}			
+		});
+		shapeSGC.addTool(shapeClicked);
+		
 	}
 
+	
+	
+
 	/**
-	 * Method that translates shape.
-	 * Just using it to test animation.
+	 * Method that translates shape. Just using it to test animation.
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
+		currentX += x;
+		currentY += y;
+		currentZ += z;
 	}
+
 	/**
 	 * <p>
 	 * Highlights the edges of the Shape with a bright color.
@@ -104,6 +151,7 @@ public class Shape {
 	 */
 	public void setGroup(ShapeGroup group) {
 		this.group = group;
+		this.group.shapesInGroup.add(this);
 	}
 
 	/**
@@ -141,9 +189,10 @@ public class Shape {
 				originalVertexX + currentTranslationX,
 				originalVertexY + currentTranslationY,
 				originalVertexZ + currentTranslationZ };
-		return allCurrentVertexCoor;	
+		return allCurrentVertexCoor;
 	}
 
+	
 	/**
 	 * The public method used for animation. Will only run an animation if the
 	 * shape is not already being animated. If called on a shape in animation,
@@ -175,42 +224,59 @@ public class Shape {
 	 */
 	class AnimationTool extends AbstractTool {
 
-		double currentFrame = 0.0;
+		int currentFrame;
 		// this variable determines the number of frames the animation will
 		// occur in
-		int totalFramesForAnimation = 100;
+		int totalFramesForAnimation = 200;
 
 		// the shape and scg that are being moved
 		Shape shapeToMove;
 		SceneGraphComponent sgcToMove;
 
-		
+		// the target coordinates
+		double distanceToMoveX;
+		double distanceToMoveY;
+		double distanceToMoveZ;
+
 		// the interval each coordinate will change every frame
 		double intervalToMoveX;
 		double intervalToMoveY;
 		double intervalToMoveZ;
 
-		// the new coordinates to translate the shape to. These start as equal to the current coordinates.
+		// the new coordinates to translate the shape to.
 		double newX;
 		double newY;
 		double newZ;
 
+		// the original coordinates of the shape
+		double originalX;
+		double originalY;
+		double originalZ;
+		
 		private final InputSlot TIME = InputSlot.SYSTEM_TIME;
 
 		public AnimationTool() {
 			addCurrentSlot(TIME);
-			
+
 		}
 
 		public void setEndPoints(Shape newShapeToMove, double[] newEndPoints) {
-
+			
 			shapeToMove = newShapeToMove;
 			sgcToMove = shapeToMove.getShapeSGC();
 
+			//reset the current frame
+			currentFrame = 0;
+			
+			//store the original distance
+			originalX = shapeToMove.currentX;
+			originalY = shapeToMove.currentY;
+			originalZ = shapeToMove.currentZ;
+			
 			// set the distance to move for each coordinate
-			double distanceToMoveX = newEndPoints[0];
-			double distanceToMoveY = newEndPoints[1];
-			double distanceToMoveZ = newEndPoints[2];
+			distanceToMoveX = newEndPoints[0];
+			distanceToMoveY = newEndPoints[1];
+			distanceToMoveZ = newEndPoints[2];
 
 			// calculate the interval to change each coordinate every frame
 			intervalToMoveX = distanceToMoveX
@@ -223,21 +289,24 @@ public class Shape {
 
 		@Override
 		public void perform(ToolContext tc) {
-
 			// check if we've looped through the correct number of frames
 			if (currentFrame == totalFramesForAnimation) {
 				System.out.println("goal reached!");
 				shapeToMove.inMotion = false;
+				// reset current distance TODO is this necessary?
+				shapeToMove.currentX += distanceToMoveX;
+				shapeToMove.currentY += distanceToMoveY;
+				shapeToMove.currentZ += distanceToMoveZ;
 				// animation is done, so get remove this tool from the shape
 				sgcToMove.removeTool(this);
 			} else {
 				// update the new coordinates
-				newX = intervalToMoveX*currentFrame;
-				newY = intervalToMoveY*currentFrame;
-				newZ = intervalToMoveZ*currentFrame;
-				
+				newX = intervalToMoveX * currentFrame;
+				newY = intervalToMoveY * currentFrame;
+				newZ = intervalToMoveZ * currentFrame;
+
 				// translate the shape
-				MatrixBuilder.euclidean().translate(newX, newY, newZ)
+				MatrixBuilder.euclidean().translate(originalX + newX, originalY + newY, originalZ + newZ)
 						.assignTo(sgcToMove);
 
 				currentFrame++;
