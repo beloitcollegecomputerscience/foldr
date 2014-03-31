@@ -4,6 +4,11 @@
 package foldr.shape;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
+
+import de.jreality.scene.SceneGraphComponent;
+import foldr.utility.AnimateMovement;
 
 /**
  * A collection of all shapes object that are on the work panel, visible or not.
@@ -12,13 +17,45 @@ import java.util.Collection;
  * 
  */
 public class ShapeCollection {
-	Collection<Shape> shapes;
+	
+	public Shape currentlySelected;
+	private Vector<Shape> shapes = new Vector<Shape>();
+
+	 /** The one and only instance of AnimateMovement.
+	 */
+	private static ShapeCollection instance = null;
 
 	/**
-	 * 
+	 * Private constructor used only by getInstance().
 	 */
-	public ShapeCollection() {
+	private ShapeCollection() {
 	}
+
+	/**
+	 * Retrieve the instance of AnimateMovement. If this is the first time
+	 * retrieving, then create new.
+	 * 
+	 * @return The instance of AnimateMovement
+	 */
+	public static ShapeCollection getInstance() {
+		// If null instance, create new.
+		if (instance == null) {
+			instance = new ShapeCollection();
+		}
+		return instance;
+	}
+	
+	
+	
+	//return the collection of shapes
+	public Shape getShapeFromCollection(int index) {
+		return shapes.get(index);
+	}
+
+	//add a shape to the end of the Collection
+		public void addShapeToCollection(Shape shapeToAdd) {
+			shapes.add(shapeToAdd);
+		}
 
 	/**
 	 * When given the coordinates of the click, will go through the shapes,
