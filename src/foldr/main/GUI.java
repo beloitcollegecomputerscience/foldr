@@ -297,7 +297,9 @@ public class GUI extends JFrame implements ActionListener {
 		endPoint[0] = -1;
 		endPoint[1] = -1;
 		endPoint[2] = 0;
-		shapeOne.animateShape(endPoint);
+//		shapeOne.animateShape(endPoint);
+//		shapeOne.rotateShape(45, 'x');
+		shapeOne.rotateShape(30, 'z');
 		
 	}
 

@@ -30,6 +30,8 @@ public class Shape {
 	private SceneGraphComponent shapeSGC;
 	// make a new instance of the animation tool
 	private AnimationTool animateShape = new AnimationTool();
+	// make a new instance of the rotate tool
+	private RotateTool rotateShape = new RotateTool();
 
 	public boolean inMotion = false;
 
@@ -70,12 +72,12 @@ public class Shape {
 	}
 
 	/**
-	 * Method that translates shape.
-	 * Just using it to test animation.
+	 * Method that translates shape. Just using it to test animation.
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
 	}
+
 	/**
 	 * <p>
 	 * Highlights the edges of the Shape with a bright color.
@@ -141,7 +143,97 @@ public class Shape {
 				originalVertexX + currentTranslationX,
 				originalVertexY + currentTranslationY,
 				originalVertexZ + currentTranslationZ };
-		return allCurrentVertexCoor;	
+		return allCurrentVertexCoor;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean rotateShape(double angleToRotate, char planeOfRotation) {
+		if (inMotion) {
+			return false;
+		} else {
+			inMotion = true;
+			// attach rotate shape tool
+			shapeSGC.addTool(rotateShape);
+			rotateShape.setEndPoints(this, angleToRotate, planeOfRotation);
+		}
+		return true;
+	}
+
+	/**
+	 * 
+	 * @author elleryaddington-white
+	 * 
+	 */
+	class RotateTool extends AbstractTool {
+		double currentFrame = 0.0;
+		// this variable determines the number of frames the animation will
+		// occur in
+		int totalFramesForAnimation = 100;
+
+		// the shape and scg that are being moved
+		Shape shapeToMove;
+		SceneGraphComponent sgcToMove;
+
+		// the interval the shape will rotate every frame
+		double intervalToRotate;
+		// Which plane the shape is being rotated in
+		char planeOfRotation;
+
+		// the new coordinates to translate the shape to. These start as equal
+		// to the current coordinates.
+		double newX;
+		double newY;
+		double newZ;
+
+		private final InputSlot TIME = InputSlot.SYSTEM_TIME;
+
+		public RotateTool() {
+			addCurrentSlot(TIME);
+
+		}
+
+		public void setEndPoints( Shape newShapeToMove, double angleToRotate, char planeOfRotation){
+			shapeToMove = newShapeToMove;
+			sgcToMove = shapeToMove.getShapeSGC();
+			
+			intervalToRotate = angleToRotate/totalFramesForAnimation;
+			
+			currentFrame = 0;
+			
+			
+		}
+		@Override
+		public void perform(ToolContext tc) {
+
+			// check if we've looped through the correct number of frames
+			if (currentFrame == totalFramesForAnimation) {
+				System.out.println("goal reached!");
+				shapeToMove.inMotion = false;
+				// animation is done, so get remove this tool from the shape
+				sgcToMove.removeTool(this);
+			} else {
+				//TODO Do I need this?
+				// update the new coordinates
+//				newX = intervalToMoveX * currentFrame;
+//				newY = intervalToMoveY * currentFrame;
+//				newZ = intervalToMoveZ * currentFrame;
+
+				// Rotate the shape
+				if(planeOfRotation == 'x'){
+					MatrixBuilder.euclidean().rotateX(intervalToRotate*currentFrame).assignTo(sgcToMove);
+				}else if (planeOfRotation == 'y'){
+					MatrixBuilder.euclidean().rotateY(intervalToRotate*currentFrame).assignTo(sgcToMove);
+				}else{
+					MatrixBuilder.euclidean().rotateZ(intervalToRotate*currentFrame).assignTo(sgcToMove);
+				}
+
+				currentFrame++;
+			}
+
+		}
 	}
 
 	/**
@@ -184,13 +276,13 @@ public class Shape {
 		Shape shapeToMove;
 		SceneGraphComponent sgcToMove;
 
-		
 		// the interval each coordinate will change every frame
 		double intervalToMoveX;
 		double intervalToMoveY;
 		double intervalToMoveZ;
 
-		// the new coordinates to translate the shape to. These start as equal to the current coordinates.
+		// the new coordinates to translate the shape to. These start as equal
+		// to the current coordinates.
 		double newX;
 		double newY;
 		double newZ;
@@ -199,7 +291,7 @@ public class Shape {
 
 		public AnimationTool() {
 			addCurrentSlot(TIME);
-			
+
 		}
 
 		public void setEndPoints(Shape newShapeToMove, double[] newEndPoints) {
@@ -232,10 +324,10 @@ public class Shape {
 				sgcToMove.removeTool(this);
 			} else {
 				// update the new coordinates
-				newX = intervalToMoveX*currentFrame;
-				newY = intervalToMoveY*currentFrame;
-				newZ = intervalToMoveZ*currentFrame;
-				
+				newX = intervalToMoveX * currentFrame;
+				newY = intervalToMoveY * currentFrame;
+				newZ = intervalToMoveZ * currentFrame;
+
 				// translate the shape
 				MatrixBuilder.euclidean().translate(newX, newY, newZ)
 						.assignTo(sgcToMove);
