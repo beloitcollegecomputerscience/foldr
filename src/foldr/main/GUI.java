@@ -280,6 +280,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		freeViewPanel.setVisible(true);
 		freeViewPanel.getComponent(0).addMouseMotionListener(theProgram);
 		freeViewPanel.getComponent(0).addMouseListener(theProgram);
+		freeViewPanel.getComponent(0).setName("freeViewPanel");
 		
 		//Setting up the top view
 		topJRViewer = new JRViewer();
@@ -292,6 +293,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		topPanel.setVisible(true);
 		topPanel.getComponent(0).addMouseMotionListener(theProgram);
 		topPanel.getComponent(0).addMouseListener(theProgram);
+		topPanel.getComponent(0).setName("topPanel");
 		
 		//Setting up the side view
 		sideJRViewer = new JRViewer();
@@ -304,6 +306,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		sidePanel.setVisible(true);
 		sidePanel.getComponent(0).addMouseMotionListener(theProgram);
 		sidePanel.getComponent(0).addMouseListener(theProgram);
+		sidePanel.getComponent(0).setName("sidePanel");
 		
 		//Setting up the front view
 		frontJRViewer = new JRViewer();
@@ -316,6 +319,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		frontPanel.setVisible(true);
 		frontPanel.getComponent(0).addMouseMotionListener(theProgram);
 		frontPanel.getComponent(0).addMouseListener(theProgram);
+		frontPanel.getComponent(0).setName("frontPanel");
 		
 		
 		//Setting the initial camera positions
@@ -403,7 +407,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		System.out.println(e.getComponent().getName());
+		System.out.println(e.getComponent().getParent().getParent().getName());
 		//Front View/Camera -- Bottom right
 //		if(e.getComponent().getName().equals("canvas0")) {
 //			System.out.println("Bottom Right");
