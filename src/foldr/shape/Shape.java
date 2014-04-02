@@ -37,19 +37,12 @@ public class Shape {
 	private ShapeGroup group;
 	public SceneGraphComponent shapeSGC;
 	// make a new instance of the animation tool
-	private AnimationTool animateShape = new AnimationTool();
-	// make a new instance of the rotate tool
-	private RotateTool rotateShape = new RotateTool();
-
-
+	//TODO leave public or make a getter? The only reason for making it public is so that the JUnit test can see it
+	public AnimateMovement animateShape = new AnimateMovement();
 	private DragEventTool shapeClicked = new DragEventTool();
-	public static int selectedVertex;
-
 	public boolean inMotion = false;
 
-	private double currentX = 0;
-	private double currentY = 0;
-	private double currentZ = 0;
+
 	
 	/**
 	 * <p>
@@ -86,7 +79,7 @@ public class Shape {
 		//make a new shape group and add this shape into it
 		group = new ShapeGroup();
 		group.shapesInGroup.add(this);
-		
+
 		/**
 		 * Experimenting around with pre-made listeners. 
 		 * This tells you how many shapes are in a shapegroup when you click on a face.
@@ -97,7 +90,7 @@ public class Shape {
 			@Override
 			public void faceDragged(FaceDragEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
@@ -108,15 +101,15 @@ public class Shape {
 			@Override
 			public void faceDragStart(FaceDragEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}			
 		});
 		shapeSGC.addTool(shapeClicked);
-		
+
 	}
 
-	
-	
+
+
 
 	/**
 	 * Method that simplifies translation of shapes. Just using it to test animation.
@@ -192,102 +185,9 @@ public class Shape {
 				originalVertexY + currentTranslationY,
 				originalVertexZ + currentTranslationZ };
 		return allCurrentVertexCoor;
-
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean rotateShape(double angleToRotate, char planeOfRotation) {
-		if (inMotion) {
-			return false;
-		} else {
-			inMotion = true;
-			// attach rotate shape tool
-			shapeSGC.addTool(rotateShape);
-			rotateShape.setEndPoints(this, angleToRotate, planeOfRotation);
-		}
-		return true;
-	}
 
-	/**
-	 * 
-	 * @author elleryaddington-white
-	 * 
-	 */
-	class RotateTool extends AbstractTool {
-		double currentFrame = 0.0;
-		// this variable determines the number of frames the animation will
-		// occur in
-		int totalFramesForAnimation = 100;
-
-		// the shape and scg that are being moved
-		Shape shapeToMove;
-		SceneGraphComponent sgcToMove;
-
-		// the interval the shape will rotate every frame
-		double intervalToRotate;
-		// Which plane the shape is being rotated in
-		char planeOfRotation;
-
-		// the new coordinates to translate the shape to. These start as equal
-		// to the current coordinates.
-		double newX;
-		double newY;
-		double newZ;
-
-		private final InputSlot TIME = InputSlot.SYSTEM_TIME;
-
-		public RotateTool() {
-			addCurrentSlot(TIME);
-
-		}
-
-		public void setEndPoints( Shape newShapeToMove, double angleToRotate, char planeOfRotation){
-			shapeToMove = newShapeToMove;
-			sgcToMove = shapeToMove.getShapeSGC();
-			
-			intervalToRotate = angleToRotate/totalFramesForAnimation;
-			
-			currentFrame = 0;
-			
-			
-		}
-		@Override
-		public void perform(ToolContext tc) {
-
-			// check if we've looped through the correct number of frames
-			if (currentFrame == totalFramesForAnimation) {
-				System.out.println("goal reached!");
-				shapeToMove.inMotion = false;
-				// animation is done, so get remove this tool from the shape
-				sgcToMove.removeTool(this);
-			} else {
-				//TODO Do I need this?
-				// update the new coordinates
-//				newX = intervalToMoveX * currentFrame;
-//				newY = intervalToMoveY * currentFrame;
-//				newZ = intervalToMoveZ * currentFrame;
-
-				// Rotate the shape
-				if(planeOfRotation == 'x'){
-					MatrixBuilder.euclidean().rotateX(intervalToRotate*currentFrame).assignTo(sgcToMove);
-				}else if (planeOfRotation == 'y'){
-					MatrixBuilder.euclidean().rotateY(intervalToRotate*currentFrame).assignTo(sgcToMove);
-				}else{
-					MatrixBuilder.euclidean().rotateZ(intervalToRotate*currentFrame).assignTo(sgcToMove);
-				}
-
-				currentFrame++;
-			}
-
-		}
-
-		return allCurrentVertexCoor;
-	}
-
-	
 	/**
 	 * The public method used for animation. Will only run an animation if the
 	 * shape is not already being animated. If called on a shape in animation,
@@ -355,7 +255,7 @@ public class Shape {
 		double originalX;
 		double originalY;
 		double originalZ;
-		
+
 		private final InputSlot TIME = InputSlot.SYSTEM_TIME;
 
 		public AnimationTool() {
@@ -364,18 +264,18 @@ public class Shape {
 		}
 
 		public void setEndPoints(Shape newShapeToMove, double[] newEndPoints) {
-			
+
 			shapeToMove = newShapeToMove;
 			sgcToMove = shapeToMove.getShapeSGC();
 
 			//reset the current frame
 			currentFrame = 0;
-			
+
 			//store the original distance
 			originalX = shapeToMove.currentX;
 			originalY = shapeToMove.currentY;
 			originalZ = shapeToMove.currentZ;
-			
+
 			// set the distance to move for each coordinate
 			distanceToMoveX = newEndPoints[0];
 			distanceToMoveY = newEndPoints[1];
@@ -410,7 +310,7 @@ public class Shape {
 
 				// translate the shape
 				MatrixBuilder.euclidean().translate(originalX + newX, originalY + newY, originalZ + newZ)
-						.assignTo(sgcToMove);
+				.assignTo(sgcToMove);
 
 				currentFrame++;
 			}
@@ -419,6 +319,20 @@ public class Shape {
 
 	}
 
-	
-	
+
+
+
+}
+
+}
+
+
+
+//TODO leave public or make a getter? The only reason for making it public is so that the JUnit test can see it
+public AnimateMovement animateShape = new AnimateMovement();
+
+private DragEventTool shapeClicked = new DragEventTool();
+public boolean inMotion = false;
+
+
 }
