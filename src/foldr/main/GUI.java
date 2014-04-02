@@ -281,30 +281,45 @@ public class GUI extends JFrame implements ActionListener {
 			Shape shapeTwo = allShapes.getShapeFromCollection(secondShape);
 
 			System.out.println("Connecting...");
+			
+			// animate it
+			connectTwoShapes(shapeOne, firstVertex, shapeTwo, secondVertex);
 
-			// figure out how much to move shape one in each direction
-			double targetX = shapeTwo.getCurrentVertexCoordinates(secondVertex)[0]
-					- shapeOne.getCurrentVertexCoordinates(firstVertex)[0];
-			double targetY = shapeTwo.getCurrentVertexCoordinates(secondVertex)[1]
-					- shapeOne.getCurrentVertexCoordinates(firstVertex)[1];
-			double targetZ = shapeTwo.getCurrentVertexCoordinates(secondVertex)[2]
-					- shapeOne.getCurrentVertexCoordinates(firstVertex)[2];
-
-			double[] endPoint = new double[3];
-			endPoint[0] = targetX;
-			endPoint[1] = targetY;
-			endPoint[2] = targetZ;
-
-			ShapeGroup shapeGroupToMove = shapeOne.getGroup();
-			// animate all shapes in the group
-			shapeGroupToMove.animateGroup(endPoint);
-			// put the newly glued shapes into the same group
-			shapeGroupToMove.resetGroup(shapeTwo.getGroup());
 		} else {
 			System.out.println("The command is not yet implemented!");
 		}
 	}
 
+	/**
+	 * Animates connecting two shapes at a vertex. The entire ShapeGroup is moved as if it is one shape. 
+	 * @param shapeOne
+	 * @param vertexOne
+	 * @param shapeTwo
+	 * @param vertexTwo
+	 */
+	public void connectTwoShapes(Shape shapeOne, int vertexOne, Shape shapeTwo, int vertexTwo) {
+
+		// figure out how much to move the first shape in each direction
+		double targetX = shapeTwo.getCurrentVertexCoordinates(vertexTwo)[0]
+				- shapeOne.getCurrentVertexCoordinates(vertexOne)[0];
+		double targetY = shapeTwo.getCurrentVertexCoordinates(vertexTwo)[1]
+				- shapeOne.getCurrentVertexCoordinates(vertexOne)[1];
+		double targetZ = shapeTwo.getCurrentVertexCoordinates(vertexTwo)[2]
+				- shapeOne.getCurrentVertexCoordinates(vertexOne)[2];
+
+		// set the target coordinates
+		double[] endPoint = new double[3];
+		endPoint[0] = targetX;
+		endPoint[1] = targetY;
+		endPoint[2] = targetZ;
+
+		// animate all shapes in the group
+		ShapeGroup shapeGroupToMove = shapeOne.getGroup();
+		shapeGroupToMove.animateGroup(endPoint);
+		// put the newly glued shapes into the same group
+		shapeGroupToMove.resetGroup(shapeTwo.getGroup());
+	}
+	
 	// Create the jReality canvas
 	public void createJRCanvas() {
 		JRViewer v = JRViewer.createJRViewer(topScene);
