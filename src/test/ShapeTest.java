@@ -34,7 +34,8 @@ public class ShapeTest {
 	@Test
 	public void testAnimateShape() {
 
-		// the error that's ok when testing if the shape moved to the right place
+		// the error that's ok when testing if the shape moved to the right
+		// place
 		double allowedError = .01;
 
 		double xOriginal;
@@ -46,7 +47,6 @@ public class ShapeTest {
 		double zNew;
 
 		double[] testCoordinates = new double[3];
-		;
 
 		/*
 		 * test moving a single shape with positive coordinates
@@ -66,7 +66,7 @@ public class ShapeTest {
 
 		// wait for the shape to finish moving
 		while (shapeOne.inMotion) {
-			//shapeOne.animateShape.perform(null);
+			// shapeOne.animateShape.perform(null);
 			shapeOne.getShapeSGC().getTools().get(1).perform(null);
 		}
 
@@ -109,6 +109,70 @@ public class ShapeTest {
 		assertEquals(yOriginal + testCoordinates[1], yNew, allowedError);
 		assertEquals(zOriginal + testCoordinates[2], zNew, allowedError);
 
+	}
+
+	/**
+	 * This rotates a shape to make sure the method is rotating shapes in the
+	 * right direction.
+	 * 
+	 * @author Ellery Addington-White
+	 * 
+	 *         TODO Bugs: This does not really accurately test if the shape has
+	 *         been rotated properly is only looking at vertices. Ask Darrah
+	 *         what he thinks the best way to do this is. possibly look at
+	 *         matrix before and after and then compare? Still looking for good
+	 *         method to use may require some math instead... :(
+	 */
+	public void testRotateShape() {
+		double xOriginal;
+		double yOriginal;
+		double zOriginal;
+
+		double xNew;
+		double yNew;
+		double zNew;
+
+		/*
+		 * test rotating a single shape with positive rotation.
+		 */
+
+		// grab the original coordinates of a vertex
+		xOriginal = shapeOne.getCurrentVertexCoordinates(0)[0];
+		yOriginal = shapeOne.getCurrentVertexCoordinates(0)[1];
+		zOriginal = shapeOne.getCurrentVertexCoordinates(0)[2];
+
+		shapeOne.rotateShape(30, 'x');
+		shapeOne.rotateShape(30, 'y');
+		shapeOne.rotateShape(30, 'z');
+
+		xNew = shapeOne.getCurrentVertexCoordinates(0)[0];
+		yNew = shapeOne.getCurrentVertexCoordinates(0)[1];
+		zNew = shapeOne.getCurrentVertexCoordinates(0)[2];
+
+		assert (xOriginal < xNew);
+		assert (yOriginal < yNew);
+		assert (zOriginal < zNew);
+
+		/*
+		 * Test rotating a single shape with negative rotation.
+		 */
+
+		// grab the original coordinates of a vertex
+		xOriginal = shapeTwo.getCurrentVertexCoordinates(0)[0];
+		yOriginal = shapeTwo.getCurrentVertexCoordinates(0)[1];
+		zOriginal = shapeTwo.getCurrentVertexCoordinates(0)[2];
+
+		shapeOne.rotateShape(-30, 'x');
+		shapeOne.rotateShape(-30, 'y');
+		shapeOne.rotateShape(-30, 'z');
+
+		xNew = shapeOne.getCurrentVertexCoordinates(0)[0];
+		yNew = shapeOne.getCurrentVertexCoordinates(0)[1];
+		zNew = shapeOne.getCurrentVertexCoordinates(0)[2];
+
+		assert (xOriginal > xNew);
+		assert (yOriginal > yNew);
+		assert (zOriginal > zNew);
 
 	}
 }
