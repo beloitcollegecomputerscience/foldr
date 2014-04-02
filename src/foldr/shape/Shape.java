@@ -37,13 +37,12 @@ public class Shape {
 	private ShapeGroup group;
 	public SceneGraphComponent shapeSGC;
 	// make a new instance of the animation tool
-	//TODO leave public or make a getter? The only reason for making it public is so that the JUnit test can see it
+	// TODO leave public or make a getter? The only reason for making it public
+	// is so that the JUnit test can see it
 	public AnimateMovement animateShape = new AnimateMovement();
 	private DragEventTool shapeClicked = new DragEventTool();
 	public boolean inMotion = false;
 
-
-	
 	/**
 	 * <p>
 	 * Default constructor creates a Shape with no points, edges, or faces.
@@ -74,18 +73,17 @@ public class Shape {
 		shapeSGC = SceneGraphUtility.createFullSceneGraphComponent();
 		shapeSGC.setGeometry(shapeGeometry);
 		parentScene.addChild(shapeSGC);
-		//add it to the collection of all shapes on screen
+		// add it to the collection of all shapes on screen
 		allShapes.addShapeToCollection(this);
-		//make a new shape group and add this shape into it
+		// make a new shape group and add this shape into it
 		group = new ShapeGroup();
 		group.shapesInGroup.add(this);
 
 		/**
-		 * Experimenting around with pre-made listeners. 
-		 * This tells you how many shapes are in a shapegroup when you click on a face.
+		 * Experimenting around with pre-made listeners. This tells you how many
+		 * shapes are in a shapegroup when you click on a face.
 		 */
 		shapeClicked.addFaceDragListener(new FaceDragListener() {
-
 
 			@Override
 			public void faceDragged(FaceDragEvent e) {
@@ -95,24 +93,23 @@ public class Shape {
 
 			@Override
 			public void faceDragEnd(FaceDragEvent e) {
-				System.out.println("This shape group has " + group.shapesInGroup.size() + " shapes in it");
+				System.out.println("This shape group has "
+						+ group.shapesInGroup.size() + " shapes in it");
 			}
 
 			@Override
 			public void faceDragStart(FaceDragEvent e) {
 				// TODO Auto-generated method stub
 
-			}			
+			}
 		});
 		shapeSGC.addTool(shapeClicked);
 
 	}
 
-
-
-
 	/**
-	 * Method that simplifies translation of shapes. Just using it to test animation.
+	 * Method that simplifies translation of shapes. Just using it to test
+	 * animation.
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
@@ -186,153 +183,5 @@ public class Shape {
 				originalVertexZ + currentTranslationZ };
 		return allCurrentVertexCoor;
 	}
-
-
-	/**
-	 * The public method used for animation. Will only run an animation if the
-	 * shape is not already being animated. If called on a shape in animation,
-	 * this method will simply return false.
-	 * 
-	 * @param endPoints
-	 *            The coordinates the shape will be translated to.
-	 * @param vertexToTranslate
-	 *            The vertex
-	 * @return false if the shape is already being animated, true if it is not
-	 */
-	public boolean animateShape(double[] endPoints) {
-		if (inMotion) {
-			return false;
-		} else {
-			inMotion = true;
-			// attach the animation tool to this sgc
-			shapeSGC.addTool(animateShape);
-			animateShape.setEndPoints(this, endPoints);
-			return true;
-		}
-	}
-
-	/**
-	 * 
-	 * A Jreality tool, which animates a shape an input distance over a set
-	 * amount of frames. Currently will only work for translation.
-	 * 
-	 */
-	class AnimationTool extends AbstractTool {
-
-		int currentFrame;
-		// this variable determines the number of frames the animation will
-		// occur in
-		int totalFramesForAnimation = 200;
-
-		// the shape and scg that are being moved
-		Shape shapeToMove;
-		SceneGraphComponent sgcToMove;
-
-
-		// the target coordinates
-		double distanceToMoveX;
-		double distanceToMoveY;
-		double distanceToMoveZ;
-
-
-		// the interval each coordinate will change every frame
-		double intervalToMoveX;
-		double intervalToMoveY;
-		double intervalToMoveZ;
-
-
-		// the new coordinates to translate the shape to. These start as equal
-		// to the current coordinates.
-
-		// the new coordinates to translate the shape to.
-
-		// the new coordinates to translate the shape to.
-		double newX;
-		double newY;
-		double newZ;
-
-		// the original coordinates of the shape
-		double originalX;
-		double originalY;
-		double originalZ;
-
-		private final InputSlot TIME = InputSlot.SYSTEM_TIME;
-
-		public AnimationTool() {
-			addCurrentSlot(TIME);
-
-		}
-
-		public void setEndPoints(Shape newShapeToMove, double[] newEndPoints) {
-
-			shapeToMove = newShapeToMove;
-			sgcToMove = shapeToMove.getShapeSGC();
-
-			//reset the current frame
-			currentFrame = 0;
-
-			//store the original distance
-			originalX = shapeToMove.currentX;
-			originalY = shapeToMove.currentY;
-			originalZ = shapeToMove.currentZ;
-
-			// set the distance to move for each coordinate
-			distanceToMoveX = newEndPoints[0];
-			distanceToMoveY = newEndPoints[1];
-			distanceToMoveZ = newEndPoints[2];
-
-			// calculate the interval to change each coordinate every frame
-			intervalToMoveX = distanceToMoveX
-					/ (double) totalFramesForAnimation;
-			intervalToMoveY = distanceToMoveY
-					/ (double) totalFramesForAnimation;
-			intervalToMoveZ = distanceToMoveZ
-					/ (double) totalFramesForAnimation;
-		}
-
-		@Override
-		public void perform(ToolContext tc) {
-			// check if we've looped through the correct number of frames
-			if (currentFrame == totalFramesForAnimation) {
-				System.out.println("goal reached!");
-				shapeToMove.inMotion = false;
-				// reset current distance TODO is this necessary?
-				shapeToMove.currentX += distanceToMoveX;
-				shapeToMove.currentY += distanceToMoveY;
-				shapeToMove.currentZ += distanceToMoveZ;
-				// animation is done, so get remove this tool from the shape
-				sgcToMove.removeTool(this);
-			} else {
-				// update the new coordinates
-				newX = intervalToMoveX * currentFrame;
-				newY = intervalToMoveY * currentFrame;
-				newZ = intervalToMoveZ * currentFrame;
-
-				// translate the shape
-				MatrixBuilder.euclidean().translate(originalX + newX, originalY + newY, originalZ + newZ)
-				.assignTo(sgcToMove);
-
-				currentFrame++;
-			}
-
-		}
-
-	}
-
-
-
-
-}
-
-}
-
-
-
-//TODO leave public or make a getter? The only reason for making it public is so that the JUnit test can see it
-public AnimateMovement animateShape = new AnimateMovement();
-
-private DragEventTool shapeClicked = new DragEventTool();
-public boolean inMotion = false;
-
 
 }
