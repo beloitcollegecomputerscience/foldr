@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,12 +20,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import javax.vecmath.Vector3d;
 
 import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
 import de.jreality.scene.Camera;
 import de.jreality.scene.IndexedFaceSet;
+import de.jreality.scene.PointSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.SceneGraphPath;
 import de.jreality.scene.Viewer;
@@ -40,6 +43,9 @@ import foldr.shape.Shape;
  */
 public class GUI extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
 
+	Vector3d frontCameraLocation = new Vector3d(0, 0, 4.5);
+	Point previousMouseLocation = null;
+	
 	/**
 	 * 
 	 */
@@ -403,23 +409,26 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		//System.out.println("Mouse Released: " + arg0.toString());
+		previousMouseLocation = null;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		System.out.println(e.getComponent().getParent().getParent().getName());
-		//Front View/Camera -- Bottom right
-//		if(e.getComponent().getName().equals("canvas0")) {
-//			System.out.println("Bottom Right");
-//		}
-//		//Side View/Camera -- Bottom left
-//		if (e.getComponent().getName().equals("canvas1")) {
-//			System.out.println("Bottom Left");
-//		}
-//		//Free View/Camera
-//		if(e.getComponent().getName().equals("canvas2")) {
-//			System.out.println("asda");
-//		}
+		
+		if (previousMouseLocation == null) {
+			previousMouseLocation = new Point(e.getX(), e.getY());
+		} else {
+			double xDiff = e.getX() - previousMouseLocation.x;
+			System.out.println(xDiff);
+			double yDiff = e.getY() -previousMouseLocation.y;
+			frontCameraLocation.set(frontCameraLocation.x + xDiff/-100, frontCameraLocation.y + yDiff/100, frontCameraLocation.z);
+			MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
+			previousMouseLocation.x = e.getX();
+			previousMouseLocation.y = e.getY();
+		}
+		
+		
+		
 	}
 
 	@Override
