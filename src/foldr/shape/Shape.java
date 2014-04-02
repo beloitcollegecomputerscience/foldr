@@ -40,6 +40,7 @@ public class Shape {
 	// TODO leave public or make a getter? The only reason for making it public
 	// is so that the JUnit test can see it
 	public AnimateMovement animateShape = new AnimateMovement();
+	public AnimateRotation rotateShape = new AnimateRotation();
 	private DragEventTool shapeClicked = new DragEventTool();
 	public boolean inMotion = false;
 
@@ -206,6 +207,22 @@ public class Shape {
 			animateShape.setEndPoints(this, endPoints);
 			return true;
 		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean rotateShape(double angleToRotate, char planeOfRotation) {
+		if (inMotion) {
+			return false;
+		} else {
+			inMotion = true;
+			// attach rotate shape tool
+			shapeSGC.addTool(rotateShape);
+			rotateShape.setEndPoints(this, angleToRotate, planeOfRotation);
+		}
+		return true;
 	}
 	
 }
