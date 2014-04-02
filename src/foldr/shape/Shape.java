@@ -44,8 +44,7 @@ public class Shape {
 
 	private DragEventTool shapeClicked = new DragEventTool();
 	public static int selectedVertex;
-	private DragEventTool shapeClicked = new DragEventTool();
-	public static int selectedVertex;
+
 	public boolean inMotion = false;
 
 	private double currentX = 0;
@@ -89,7 +88,7 @@ public class Shape {
 		group.shapesInGroup.add(this);
 		
 		/**
-		 * Experimenting around with premade listeners. 
+		 * Experimenting around with pre-made listeners. 
 		 * This tells you how many shapes are in a shapegroup when you click on a face.
 		 */
 		shapeClicked.addFaceDragListener(new FaceDragListener() {
@@ -120,13 +119,10 @@ public class Shape {
 	
 
 	/**
-	 * Method that translates shape. Just using it to test animation.
+	 * Method that simplifies translation of shapes. Just using it to test animation.
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
-		currentX += x;
-		currentY += y;
-		currentZ += z;
 	}
 
 	/**
@@ -338,10 +334,6 @@ public class Shape {
 		double distanceToMoveY;
 		double distanceToMoveZ;
 
-		// the target coordinates
-		double distanceToMoveX;
-		double distanceToMoveY;
-		double distanceToMoveZ;
 
 		// the interval each coordinate will change every frame
 		double intervalToMoveX;
@@ -427,4 +419,5 @@ public class Shape {
 
 	}
 
+	
 }
