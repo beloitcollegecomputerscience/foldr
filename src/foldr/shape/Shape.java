@@ -184,4 +184,28 @@ public class Shape {
 		return allCurrentVertexCoor;
 	}
 
+
+	/**
+	 * The public method used for animation. Will only run an animation if the
+	 * shape is not already being animated. If called on a shape in animation,
+	 * this method will simply return false.
+	 * 
+	 * @param endPoints
+	 *            The coordinates the shape will be translated to.
+	 * @param vertexToTranslate
+	 *            The vertex
+	 * @return false if the shape is already being animated, true if it is not
+	 */
+	public boolean animateShape(double[] endPoints) {
+		if (inMotion) {
+			return false;
+		} else {
+			inMotion = true;
+			// attach the animation tool to this sgc
+			shapeSGC.addTool(animateShape);
+			animateShape.setEndPoints(this, endPoints);
+			return true;
+		}
+	}
+	
 }
