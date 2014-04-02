@@ -35,12 +35,11 @@ public class Shape {
 	 */
 	private ShapeCollection allShapes = ShapeCollection.getInstance();
 	private ShapeGroup group;
-	private SceneGraphComponent shapeSGC;
+	public SceneGraphComponent shapeSGC;
 	// make a new instance of the animation tool
 	//TODO leave public or make a getter? The only reason for making it public is so that the JUnit test can see it
-	private AnimateMovement animateShape = new AnimateMovement();
+	public AnimateMovement animateShape = new AnimateMovement();
 	private DragEventTool shapeClicked = new DragEventTool();
-
 	public boolean inMotion = false;
 
 	

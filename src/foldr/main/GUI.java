@@ -299,6 +299,11 @@ public class GUI extends JFrame implements ActionListener {
 	 */
 	public void connectTwoShapes(Shape shapeOne, int vertexOne, Shape shapeTwo, int vertexTwo) {
 
+		//store original coordinates for error calculation
+		double originalX = shapeOne.getShapeSGC().getTransformation().getMatrix()[3];
+		double originalY = shapeOne.getShapeSGC().getTransformation().getMatrix()[7];
+		double originalZ = shapeOne.getShapeSGC().getTransformation().getMatrix()[11];
+		
 		// figure out how much to move the first shape in each direction
 		double targetX = shapeTwo.getCurrentVertexCoordinates(vertexTwo)[0]
 				- shapeOne.getCurrentVertexCoordinates(vertexOne)[0];
@@ -318,6 +323,13 @@ public class GUI extends JFrame implements ActionListener {
 		shapeGroupToMove.animateGroup(endPoint);
 		// put the newly glued shapes into the same group
 		shapeGroupToMove.resetGroup(shapeTwo.getGroup());
+		
+		//print out error
+		double errorX = shapeOne.getShapeSGC().getTransformation().getMatrix()[3] - (originalX + targetX);
+		double errorY = shapeOne.getShapeSGC().getTransformation().getMatrix()[7] - (originalY + targetY);
+		double errorZ = shapeOne.getShapeSGC().getTransformation().getMatrix()[11] - (originalZ + targetZ);
+		//System.out.println("X error: " + errorX + ", Y error: " + errorY + ", Z error: " + errorZ);
+		
 	}
 	
 	// Create the jReality canvas
