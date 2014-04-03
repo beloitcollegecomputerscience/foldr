@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -62,7 +63,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	Vector3d frontCameraLocation = new Vector3d(0, 0, 4.5);
 	Vector3d sideCameraLocation = new Vector3d(7, 0, -4.5);
 	Vector3d topCameraLocation = new Vector3d(0, 7, -4.5);
-	Vector3d freeCameraLocation = new Vector3d(-3, 3, 3);
+	Vector3d freeCameraLocation = new Vector3d(0, 0, 0);
 	
 	double freeCamRotationDegX = 0;
 	double freeCamRotationDegY = 0;
@@ -336,7 +337,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
 		MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
 		MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
-		//MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z).rotateX(Math.toRadians(-30)).rotateY(Math.toRadians(-20)).assignTo(freeCameraContainer);
 	
 		
 	}
@@ -360,6 +360,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		mainPanel.add(frontPanel);
 		mainPanel.addMouseListener(this);
 
+		//Adding border
+		freeViewPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		topPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		sidePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		frontPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		
 		createJRViewers();
 		initMenuBarPane();
 		
@@ -446,17 +453,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 				mouseDragLocation.x = e.getX();
 				mouseDragLocation.y = e.getY();
 			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
-				//TODO: Orient the free-view camera
 				double xDiff = e.getX() - mouseDragLocation.x;
 				double yDiff = e.getY() - mouseDragLocation.y;
 				freeCamRotationDegX = freeCamRotationDegX + xDiff/4;
 				freeCamRotationDegY = freeCamRotationDegY + yDiff/4;
-				//MatrixBuilder.euclidean().rotateX(Math.toRadians(freeCamRotationDegY)).rotateY(Math.toRadians(freeCamRotationDegX)).assignTo(freeCameraContainer);
-				
-				MatrixBuilder.euclidean().rotateX(Math.toRadians(freeCamRotationDegY)).rotateY(Math.toRadians(freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(0, 0, -4).getMatrix().getArray()).assignTo(freeCameraContainer);
-//				MatrixBuilder.euclidean().translate(0, 0, -10).conjugateBy(MatrixBuilder.euclidean().rotateX(Math.toRadians(freeCamRotationDegY)).rotateY(Math.toRadians(freeCamRotationDegX)).getMatrix().getArray()).assignTo(freeCameraContainer);
-				
-				
+				MatrixBuilder.euclidean().rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(0, 0, -4.5).getMatrix().getArray()).assignTo(freeCameraContainer);
 				mouseDragLocation.x = e.getX();
 				mouseDragLocation.y = e.getY();
 			}
