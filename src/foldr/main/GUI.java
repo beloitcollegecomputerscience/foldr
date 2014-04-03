@@ -64,6 +64,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	Vector3d topCameraLocation = new Vector3d(0, 7, -4.5);
 	Vector3d freeCameraLocation = new Vector3d(-3, 3, 3);
 	
+	double freeCamRotationDegX = 0;
+	double freeCamRotationDegY = 0;
+	
 	//Capture the mouse location during drag events
 	Point mouseDragLocation = null;
 	
@@ -333,7 +336,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
 		MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
 		MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
-		MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z).rotateX(Math.toRadians(-30)).rotateY(Math.toRadians(-20)).assignTo(freeCameraContainer);
+		//MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z).rotateX(Math.toRadians(-30)).rotateY(Math.toRadians(-20)).assignTo(freeCameraContainer);
+	
+		
 	}
 	
 	//Create the panes, panels and other gui elements and pack them up.
@@ -440,8 +445,20 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 				MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
 				mouseDragLocation.x = e.getX();
 				mouseDragLocation.y = e.getY();
-			} else if (e.getComponent().getParent().getParent().getName().equals("freePanel")) {
+			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
 				//TODO: Orient the free-view camera
+				double xDiff = e.getX() - mouseDragLocation.x;
+				double yDiff = e.getY() - mouseDragLocation.y;
+				freeCamRotationDegX = freeCamRotationDegX + xDiff/4;
+				freeCamRotationDegY = freeCamRotationDegY + yDiff/4;
+				//MatrixBuilder.euclidean().rotateX(Math.toRadians(freeCamRotationDegY)).rotateY(Math.toRadians(freeCamRotationDegX)).assignTo(freeCameraContainer);
+				
+				MatrixBuilder.euclidean().rotateX(Math.toRadians(freeCamRotationDegY)).rotateY(Math.toRadians(freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(0, 0, -4).getMatrix().getArray()).assignTo(freeCameraContainer);
+//				MatrixBuilder.euclidean().translate(0, 0, -10).conjugateBy(MatrixBuilder.euclidean().rotateX(Math.toRadians(freeCamRotationDegY)).rotateY(Math.toRadians(freeCamRotationDegX)).getMatrix().getArray()).assignTo(freeCameraContainer);
+				
+				
+				mouseDragLocation.x = e.getX();
+				mouseDragLocation.y = e.getY();
 			}
 		}
 	}
