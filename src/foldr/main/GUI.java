@@ -396,8 +396,6 @@ public class GUI extends JFrame implements ActionListener {
 		shapeTwo.translate(2, 1, 1);
 		shapeThree.translate(-2, -1, 0);
 		
-		
-
 	}
 
 }

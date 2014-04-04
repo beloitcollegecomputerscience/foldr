@@ -12,6 +12,9 @@ import de.jreality.scene.tool.ToolContext;
  * 
  * @author Ellery Addington-White
  * 
+ *         Bugs: Is it possibly the rotate methods are using raidians as the
+ *         degree to rotate? No Documentation.
+ * 
  */
 public class AnimateRotation extends AbstractTool {
 	int currentFrame = 0;
