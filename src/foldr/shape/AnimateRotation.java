@@ -14,7 +14,7 @@ import de.jreality.scene.tool.ToolContext;
  * 
  */
 public class AnimateRotation extends AbstractTool {
-	double currentFrame = 0.0;
+	int currentFrame = 0;
 	// this variable determines the number of frames the animation will
 	// occur in
 	int totalFramesForAnimation = 200;
@@ -42,12 +42,13 @@ public class AnimateRotation extends AbstractTool {
 	}
 
 	public void setEndPoints(Shape newShapeToMove, double angleToRotate,
-			char planeOfRotation) {
+			char plane) {
 		shapeToMove = newShapeToMove;
 		sgcToMove = shapeToMove.getShapeSGC();
 
-		intervalToRotate = angleToRotate / totalFramesForAnimation;
-
+		planeOfRotation = plane;
+		intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
+		System.out.println(intervalToRotate);
 		currentFrame = 0;
 
 	}
