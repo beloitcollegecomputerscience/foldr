@@ -11,6 +11,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
@@ -39,7 +41,7 @@ import foldr.shape.Shape;
  *
  * 
  */
-public class GUI extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
+public class GUI extends JFrame implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -63,7 +65,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	Vector3d frontCameraLocation = new Vector3d(0, 0, 4.5);
 	Vector3d sideCameraLocation = new Vector3d(7, 0, -4.5);
 	Vector3d topCameraLocation = new Vector3d(0, 7, -4.5);
-	Vector3d freeCameraLocation = new Vector3d(0, 0, 0);
+	Vector3d freeCameraLocation = new Vector3d(0, 0, -4.5);
 	
 	double freeCamRotationDegX = 0;
 	double freeCamRotationDegY = 0;
@@ -291,6 +293,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		freeViewPanel.setVisible(true);
 		freeViewPanel.getComponent(0).addMouseMotionListener(theProgram);
 		freeViewPanel.getComponent(0).addMouseListener(theProgram);
+		freeViewPanel.getComponent(0).addMouseWheelListener(theProgram);
 		freeViewPanel.getComponent(0).setName("freeViewPanel");
 		
 		//Setting up the top view
@@ -304,6 +307,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		topPanel.setVisible(true);
 		topPanel.getComponent(0).addMouseMotionListener(theProgram);
 		topPanel.getComponent(0).addMouseListener(theProgram);
+		topPanel.getComponent(0).addMouseWheelListener(theProgram);
 		topPanel.getComponent(0).setName("topPanel");
 		
 		//Setting up the side view
@@ -317,6 +321,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		sidePanel.setVisible(true);
 		sidePanel.getComponent(0).addMouseMotionListener(theProgram);
 		sidePanel.getComponent(0).addMouseListener(theProgram);
+		sidePanel.getComponent(0).addMouseWheelListener(theProgram);
 		sidePanel.getComponent(0).setName("sidePanel");
 		
 		//Setting up the front view
@@ -330,6 +335,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		frontPanel.setVisible(true);
 		frontPanel.getComponent(0).addMouseMotionListener(theProgram);
 		frontPanel.getComponent(0).addMouseListener(theProgram);
+		frontPanel.getComponent(0).addMouseWheelListener(theProgram);
 		frontPanel.getComponent(0).setName("frontPanel");
 		
 		
@@ -467,6 +473,24 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		//System.out.println("Mouse Moved: " + e.toString());
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		double amountZoom = e.getWheelRotation();
+		if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
+			topCameraLocation.set(topCameraLocation.x, topCameraLocation.y + amountZoom/20, topCameraLocation.z);
+			MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
+		} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
+			sideCameraLocation.set(sideCameraLocation.x + amountZoom/20, sideCameraLocation.y, sideCameraLocation.z);
+			MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
+		} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
+			frontCameraLocation.set(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z + amountZoom/20);
+			MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
+		} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
+			//TODO: zoom camera for free view panel
+		}
+		
 	}
 
 }
