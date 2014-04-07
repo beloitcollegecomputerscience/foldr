@@ -1,9 +1,6 @@
 
 package foldr.main;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +9,7 @@ import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -31,7 +26,7 @@ import de.jreality.util.SceneGraphUtility;
  * A simple class showing how to use a {@link JRViewer} to get a viewing
  * component which is then packed into another frame.
  * 
- * @author Charles Gunn
+ * @author Beloit College software engineering 2014 class
  */
 public class GUI extends JFrame implements ActionListener {
 
@@ -45,9 +40,8 @@ public class GUI extends JFrame implements ActionListener {
                                                                  SceneGraphUtility.createFullSceneGraphComponent("topScene");
 
     // the swing components to create the jreality frame
-    // XXX Removed the JFrame here.
-    protected JDesktopPane                  desktop          = new JDesktopPane();
-    protected JInternalFrame                jRealityFrame;
+    // XXX the class extends JFrame so you don't have to add a member. Add
+    // components such as panels here.
 
     // the swing components to create the menu bar
     private JMenuBar                        menuBar;
@@ -355,7 +349,8 @@ public class GUI extends JFrame implements ActionListener {
                 if (Messages.Utils.getDisplayedLanguages().contains(j.getText())) {
                     Messages.setBundle(Messages.Utils.getLocale(j.getText()));
                     paintMenu();
-                    // add paint methods for other components.
+                    // TODO add paint methods for other components if we have
+                    // panels or other stuff with text.
                     return;
                 }
             }
@@ -367,21 +362,7 @@ public class GUI extends JFrame implements ActionListener {
     // Create the jReality canvas
     private void createJRCanvas() {
 
-        JRViewer v = JRViewer.createJRViewer(topScene);
-
-        // call this to avoid creating a Frame
-        v.startupLocal();
-        Viewer viewer = v.getViewer();
-
-        jRealityFrame = new JInternalFrame("jReality canvas", true, true, true, true);
-        jRealityFrame.setSize(480, 320);
-        jRealityFrame.setLayout(new GridLayout());
-        jRealityFrame.add((Component) viewer.getViewingComponent());
-        jRealityFrame.pack();
-        jRealityFrame.setVisible(true);
-
-        // put a shape in the canvas
-        // Shape shapeOne = new Shape(4, topScene);
+        // TODO add branch specific code here
     }
 
     /**
@@ -393,32 +374,12 @@ public class GUI extends JFrame implements ActionListener {
         createJRCanvas();
         initMenuBar();
 
-        // stick them both in a desktop pane
-        desktop.add(jRealityFrame);
-        pack();
-        // setSize(800, 645); // Has to happen after "pack()"
-        // setVisible(true);
+        // TODO add branch specific code here.
 
-        // Create the top frame to store desktop
-        setLayout(new GridLayout());
-        desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
-        add(desktop);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         this.pack();
         setVisible(true);
-
-    }
-    
-    // delete?
-    private static GUI theProgram;
-
-    public static void main(String[] args) {
-
-        theProgram = new GUI();
-        theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        theProgram.initPanesAndGui();
-        theProgram.setTitle("Foldr");
 
     }
 
