@@ -62,7 +62,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	Vector3d frontCameraLocation = new Vector3d(0, 0, 4.5);
 	Vector3d sideCameraLocation = new Vector3d(7, 0, -4.5);
 	Vector3d topCameraLocation = new Vector3d(0, 7, -4.5);
-	Vector3d freeCameraLocation = new Vector3d(0, 0, -4.5);
+	Vector3d freeCameraLocation = new Vector3d(0, 0, 0);
 	
 	double freeCamRotationDegX = 0;
 	double freeCamRotationDegY = 0;
@@ -461,8 +461,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 				double yDiff = e.getY() - mouseDragLocation.y;
 				freeCamRotationDegX = freeCamRotationDegX + xDiff/4;
 				freeCamRotationDegY = freeCamRotationDegY + yDiff/4;
-				MatrixBuilder.euclidean().rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(0, 0, -4.5).getMatrix().getArray()).assignTo(freeCameraContainer);
-				mouseDragLocation.x = e.getX();
+				MatrixBuilder.euclidean().translate(-freeCameraLocation.x, -freeCameraLocation.y, -freeCameraLocation.z).rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z - 4.5).getMatrix().getArray()).assignTo(freeCameraContainer);				mouseDragLocation.x = e.getX();
 				mouseDragLocation.y = e.getY();
 			}
 		}
@@ -486,7 +485,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 			frontCameraLocation.set(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z + amountZoom/20);
 			MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
 		} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
-			//TODO: zoom camera for free view panel
+			freeCameraLocation.set(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z + amountZoom/20);
+			MatrixBuilder.euclidean().translate(-freeCameraLocation.x, -freeCameraLocation.y, -freeCameraLocation.z).rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z - 4.5).getMatrix().getArray()).assignTo(freeCameraContainer);
 		}
 		
 	}
