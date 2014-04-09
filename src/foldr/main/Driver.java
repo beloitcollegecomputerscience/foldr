@@ -3,7 +3,6 @@ package foldr.main;
 
 import java.util.Locale;
 
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -36,9 +35,9 @@ public class Driver {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        MainWindow mw = new MainWindow("Foldr");
-        mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mw.initPanesAndGUI();
+        GUI mw = new GUI();
+        mw.initPanesAndGui();
+        mw.setDefaultCloseOperation(GUI.EXIT_ON_CLOSE);
     }
 
 }

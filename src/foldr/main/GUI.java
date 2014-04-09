@@ -1,3 +1,4 @@
+
 package foldr.main;
 
 import java.awt.BorderLayout;
@@ -28,14 +29,10 @@ import javax.vecmath.Vector3d;
 import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
-import de.jreality.scene.Camera;
 import de.jreality.scene.IndexedFaceSet;
-import de.jreality.scene.PointSet;
 import de.jreality.scene.SceneGraphComponent;
-import de.jreality.scene.SceneGraphPath;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
-import foldr.shape.Shape;
 
 /**
  *
@@ -291,9 +288,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		freeViewPanel.setLayout(new GridLayout());
 		freeViewPanel.add((Component) freeViewer.getViewingComponent());
 		freeViewPanel.setVisible(true);
-		freeViewPanel.getComponent(0).addMouseMotionListener(theProgram);
-		freeViewPanel.getComponent(0).addMouseListener(theProgram);
-		freeViewPanel.getComponent(0).addMouseWheelListener(theProgram);
+		freeViewPanel.getComponent(0).addMouseMotionListener(this);
+		freeViewPanel.getComponent(0).addMouseListener(this);
+		freeViewPanel.getComponent(0).addMouseWheelListener(this);
 		freeViewPanel.getComponent(0).setName("freeViewPanel");
 		
 		//Setting up the top view
@@ -305,9 +302,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		topPanel.setLayout(new GridLayout());
 		topPanel.add((Component) topViewer.getViewingComponent());
 		topPanel.setVisible(true);
-		topPanel.getComponent(0).addMouseMotionListener(theProgram);
-		topPanel.getComponent(0).addMouseListener(theProgram);
-		topPanel.getComponent(0).addMouseWheelListener(theProgram);
+		topPanel.getComponent(0).addMouseMotionListener(this);
+		topPanel.getComponent(0).addMouseListener(this);
+		topPanel.getComponent(0).addMouseWheelListener(this);
 		topPanel.getComponent(0).setName("topPanel");
 		
 		//Setting up the side view
@@ -319,9 +316,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		sidePanel.setLayout(new GridLayout());
 		sidePanel.add((Component) sideViewer.getViewingComponent());
 		sidePanel.setVisible(true);
-		sidePanel.getComponent(0).addMouseMotionListener(theProgram);
-		sidePanel.getComponent(0).addMouseListener(theProgram);
-		sidePanel.getComponent(0).addMouseWheelListener(theProgram);
+		sidePanel.getComponent(0).addMouseMotionListener(this);
+		sidePanel.getComponent(0).addMouseListener(this);
+		sidePanel.getComponent(0).addMouseWheelListener(this);
 		sidePanel.getComponent(0).setName("sidePanel");
 		
 		//Setting up the front view
@@ -333,9 +330,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		frontPanel.setLayout(new GridLayout());
 		frontPanel.add((Component) frontViewer.getViewingComponent());
 		frontPanel.setVisible(true);
-		frontPanel.getComponent(0).addMouseMotionListener(theProgram);
-		frontPanel.getComponent(0).addMouseListener(theProgram);
-		frontPanel.getComponent(0).addMouseWheelListener(theProgram);
+		frontPanel.getComponent(0).addMouseMotionListener(this);
+		frontPanel.getComponent(0).addMouseListener(this);
+		frontPanel.getComponent(0).addMouseWheelListener(this);
 		frontPanel.getComponent(0).setName("frontPanel");
 		
 		
@@ -348,7 +345,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	}
 	
 	//Create the panes, panels and other gui elements and pack them up.
-	private void initPanesAndGui() {
+	public void initPanesAndGui() {
 		//Adding the view panels (free, top, side, front)
 		GridLayout gl = new GridLayout(2, 2);
 		mainPanel = new JPanel(gl, true);
@@ -391,6 +388,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		f.setVisible(true);
 	}
 
+	//So we can run quickly test without having to start from Driver.java
 	private static GUI theProgram;
 	public static void main(String[] args) {
 		theProgram = new GUI();
