@@ -332,6 +332,8 @@ public class TestGUI extends JFrame implements ActionListener, MouseListener, Mo
 		shapeOne.translate(1, 0, 0);
 		shapeTwo.translate(2, 1, 1);
 		
+		
+		
 		//Setting up the free view
 		freeJRViewer = new JRViewer();
 		freeJRViewer.setContent(scene);

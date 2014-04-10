@@ -41,6 +41,7 @@ public class Shape {
 	// is so that the JUnit test can see it
 	public AnimateMovement animateShape = new AnimateMovement();
 	public AnimateRotation rotateShape = new AnimateRotation();
+	public AnimateRotation2 rotateShapeTheOtherWay = new AnimateRotation2();
 	private DragEventTool shapeClicked = new DragEventTool();
 	public boolean inMotion = false;
 
@@ -185,7 +186,6 @@ public class Shape {
 		return allCurrentVertexCoor;
 	}
 
-
 	/**
 	 * The public method used for animation. Will only run an animation if the
 	 * shape is not already being animated. If called on a shape in animation,
@@ -208,7 +208,7 @@ public class Shape {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -224,5 +224,23 @@ public class Shape {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean rotateShapeOtherWay(double angleToRotate,
+			double[] vertexToMatch1, double[] vertexToMatch2) {
+		if (inMotion) {
+			return false;
+		} else {
+			inMotion = true;
+			// attach rotate shape tool
+			shapeSGC.addTool(rotateShapeTheOtherWay);
+			rotateShapeTheOtherWay.setEndPoints(this, angleToRotate, vertexToMatch1,
+					vertexToMatch2);
+		}
+		return true;
+	}
+
 }
