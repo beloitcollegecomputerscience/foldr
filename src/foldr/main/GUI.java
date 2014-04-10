@@ -1,64 +1,83 @@
 package foldr.main;
 
-import static de.jreality.shader.CommonAttributes.DIFFUSE_COLOR;
-import static de.jreality.shader.CommonAttributes.LINE_SHADER;
-import static de.jreality.shader.CommonAttributes.POINT_RADIUS;
-import static de.jreality.shader.CommonAttributes.POINT_SHADER;
-import static de.jreality.shader.CommonAttributes.TUBE_RADIUS;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.Scanner;
-import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
+import javax.vecmath.Vector3d;
 
+import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
-import de.jreality.scene.Appearance;
+import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
-import de.jreality.shader.DefaultPointShader;
 import de.jreality.util.SceneGraphUtility;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
-import foldr.utility.AnimateMovement;
 
 /**
- * A simple class showing how to use a {@link JRViewer} to get a viewing
- * component which is then packed into another frame.
- * 
- * @author Charles Gunn
+ *
  * 
  */
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
-	static ShapeCollection allShapes = ShapeCollection.getInstance();
+	
+	private static final long serialVersionUID = 1L;
 
-	// the main scene graph component. All other SGC's will be a child of this.
-	static SceneGraphComponent topScene = SceneGraphUtility
-			.createFullSceneGraphComponent("topScene");
 	Scanner input = new Scanner(System.in);
+	
+	ShapeCollection allShapes = ShapeCollection.getInstance();
+	
+	// the main scene graph component. All other SGC's will be a child of this.
+	static SceneGraphComponent scene = SceneGraphUtility
+			.createFullSceneGraphComponent("scene");
 
 	// the swing components to create the jreality frame
 	protected JFrame f;
 	protected JDesktopPane desktop = new JDesktopPane();
-	protected JInternalFrame jRealityFrame;
 
+	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
+	
+	//the viewer components that render the difference camera views
+	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
+	Viewer freeViewer, topViewer, sideViewer, frontViewer;
+	// the camera containers for the different cameras of the different views
+	SceneGraphComponent freeCameraContainer, topCameraContainer, sideCameraContainer, frontCameraContainer;
+	
+	//Hold the different camera locations (hard-coded for now)
+	Vector3d frontCameraLocation = new Vector3d(0, 0, 4.5);
+	Vector3d sideCameraLocation = new Vector3d(7, 0, -4.5);
+	Vector3d topCameraLocation = new Vector3d(0, 7, -4.5);
+	Vector3d freeCameraLocation = new Vector3d(0, 0, 0);
+	
+	double freeCamRotationDegX = 0;
+	double freeCamRotationDegY = 0;
+	
+	//Capture the mouse location during drag events
+	Point mouseDragLocation = null;
+	
 	// the swing components to create the menu bar
 	protected JPanel menuBarPane;
 	protected JMenuBar menuBar;
@@ -342,80 +361,222 @@ public class GUI extends JFrame implements ActionListener {
 
 	}
 
-	// Create the jReality canvas
-	public void createJRCanvas() {
-		JRViewer v = JRViewer.createJRViewer(topScene);
 
-		// call this to avoid creating a Frame
-		v.startupLocal();
-		Viewer viewer = v.getViewer();
-
-		jRealityFrame = new JInternalFrame("jReality canvas");
-		jRealityFrame.setSize(600, 400);
-		jRealityFrame.setLayout(new GridLayout());
-		jRealityFrame.add((Component) viewer.getViewingComponent());
-		jRealityFrame.setResizable(true);
-		jRealityFrame.setVisible(true);
+	// Create the jReality viewers for each panel
+	public void createJRViewers() {
+		//TESTING with a visible shape @TODO: Remove this.
+		IndexedFaceSet octo = Primitives.regularPolygon(8);
+		SceneGraphComponent octoOne = SceneGraphUtility
+				.createFullSceneGraphComponent("octogon1");
+		octoOne.setGeometry(octo);
+		scene.addChild(octoOne);
+		
+		//Setting up the free view
+		freeJRViewer = new JRViewer();
+		freeJRViewer.setContent(scene);
+		freeJRViewer.startupLocal();
+		freeViewer = freeJRViewer.getViewer();
+		freeCameraContainer = (SceneGraphComponent)freeViewer.getCameraPath().get(freeViewer.getCameraPath().getLength()-2);
+		freeViewPanel.setLayout(new GridLayout());
+		freeViewPanel.add((Component) freeViewer.getViewingComponent());
+		freeViewPanel.setVisible(true);
+		freeViewPanel.getComponent(0).addMouseMotionListener(this);
+		freeViewPanel.getComponent(0).addMouseListener(this);
+		freeViewPanel.getComponent(0).addMouseWheelListener(this);
+		freeViewPanel.getComponent(0).setName("freeViewPanel");
+		
+		//Setting up the top view
+		topJRViewer = new JRViewer();
+		topJRViewer.setContent(scene);
+		topJRViewer.startupLocal();
+		topViewer = topJRViewer.getViewer();
+		topCameraContainer = (SceneGraphComponent)topViewer.getCameraPath().get(topViewer.getCameraPath().getLength()-2);		
+		topPanel.setLayout(new GridLayout());
+		topPanel.add((Component) topViewer.getViewingComponent());
+		topPanel.setVisible(true);
+		topPanel.getComponent(0).addMouseMotionListener(this);
+		topPanel.getComponent(0).addMouseListener(this);
+		topPanel.getComponent(0).addMouseWheelListener(this);
+		topPanel.getComponent(0).setName("topPanel");
+		
+		//Setting up the side view
+		sideJRViewer = new JRViewer();
+		sideJRViewer.setContent(scene);
+		sideJRViewer.startupLocal();
+		sideViewer = sideJRViewer.getViewer();
+		sideCameraContainer = (SceneGraphComponent)sideViewer.getCameraPath().get(sideViewer.getCameraPath().getLength()-2);
+		sidePanel.setLayout(new GridLayout());
+		sidePanel.add((Component) sideViewer.getViewingComponent());
+		sidePanel.setVisible(true);
+		sidePanel.getComponent(0).addMouseMotionListener(this);
+		sidePanel.getComponent(0).addMouseListener(this);
+		sidePanel.getComponent(0).addMouseWheelListener(this);
+		sidePanel.getComponent(0).setName("sidePanel");
+		
+		//Setting up the front view
+		frontJRViewer = new JRViewer();
+		frontJRViewer.setContent(scene);
+		frontJRViewer.startupLocal();
+		frontViewer = frontJRViewer.getViewer();
+		frontCameraContainer = (SceneGraphComponent)frontViewer.getCameraPath().get(frontViewer.getCameraPath().getLength()-2);
+		frontPanel.setLayout(new GridLayout());
+		frontPanel.add((Component) frontViewer.getViewingComponent());
+		frontPanel.setVisible(true);
+		frontPanel.getComponent(0).addMouseMotionListener(this);
+		frontPanel.getComponent(0).addMouseListener(this);
+		frontPanel.getComponent(0).addMouseWheelListener(this);
+		frontPanel.getComponent(0).setName("frontPanel");
+		
+		
+		//Setting the initial camera positions
+		MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
+		MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
+		MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
+	
+		
 	}
+	
+	//Create the panes, panels and other gui elements and pack them up.
+	public void initPanesAndGui() {
+		//Adding the view panels (free, top, side, front)
+		GridLayout gl = new GridLayout(2, 2);
+		mainPanel = new JPanel(gl, true);
+		mainPanel.setBackground(new Color(128, 128, 64));
+		freeViewPanel = new JPanel();
+		mainPanel.add(freeViewPanel);
+		topPanel = new JPanel();
+		topPanel.setBackground(Color.WHITE);
+		mainPanel.add(topPanel);
+		sidePanel = new JPanel();
+		sidePanel.setBackground(Color.WHITE);
+		mainPanel.add(sidePanel);
+		frontPanel = new JPanel();
+		frontPanel.setBackground(Color.GRAY);
+		mainPanel.add(frontPanel);
+		mainPanel.addMouseListener(this);
 
-	private void initPanesAndGui() {
-		// create the jReality canvas and menu bars
-		createJRCanvas();
+		//Adding border
+		freeViewPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		topPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		sidePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		frontPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		
+		createJRViewers();
 		initMenuBarPane();
-
+		
 		// stick them both in a desktop pane
 		desktop.setLayout(new BorderLayout());
 		desktop.add(menuBarPane, "North");
-		desktop.add(jRealityFrame);
+		desktop.add(mainPanel);
 		pack();
-		// setSize(800, 645); // Has to happen after "pack()"
-		// setVisible(true);
-
+		
 		// Create the top frame to store desktop
 		f = new JFrame("Polyhedra");
 		f.setLayout(new GridLayout());
 		f.add(desktop);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(800, 600);
+		f.setSize(1000, 700);
 		f.setVisible(true);
-
 	}
 
+	//So we can run quickly test without having to start from Driver.java
 	private static GUI theProgram;
-
 	public static void main(String[] args) {
-
 		theProgram = new GUI();
 		theProgram.initPanesAndGui();
 		theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
 
-		Appearance ap = topScene.getAppearance();
-		ap.setAttribute(LINE_SHADER + "." + DIFFUSE_COLOR, Color.yellow);
-		ap.setAttribute(LINE_SHADER + "." + TUBE_RADIUS, .05);
-		ap.setAttribute(POINT_SHADER + "." + DIFFUSE_COLOR, Color.red);
-		ap.setAttribute(POINT_SHADER + "." + POINT_RADIUS, .1);
 
-		// put shapes on the canvas
-		Shape shapeOne = new Shape(4, topScene);
-		Shape shapeTwo = new Shape(4, topScene);
+	
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		//System.out.println("Mouse Clicked: " + arg0.toString());
+	}
 
-		// translate the shapes around so that the animation tests actually are
-		// interesting
-		shapeOne.translate(1, 0, 0);
-		shapeTwo.translate(2, 1, 1);
-
-		shapeOne.rotateShape(Math.PI / 2, 'x');
-		try {
-			Thread.sleep(8000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		shapeTwo.rotateShapeOtherWay(Math.PI / 2,
-				shapeOne.getCurrentVertexCoordinates(0),
-				shapeOne.getCurrentVertexCoordinates(1));
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		//System.out.println("Mouse Entered: " + arg0.toString());
 		
-		System.out.print("made it!");
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		//System.out.println("Mouse Exited: " + arg0.toString());
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		//System.out.println("Mouse Pressed: " + arg0.toString());
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		//Reset the previous mouse location between drags, so we're only recording drag position
+		mouseDragLocation = null;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (mouseDragLocation == null) {
+			mouseDragLocation = new Point(e.getX(), e.getY());
+		} else {
+			//Handling the event depending on which panel the even originated from.
+			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
+				double xDiff = e.getX() - mouseDragLocation.x;
+				double yDiff = e.getY() - mouseDragLocation.y;
+				topCameraLocation.set(topCameraLocation.x + xDiff/-100, topCameraLocation.y, topCameraLocation.z + yDiff/-100);
+				MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
+				mouseDragLocation.x = e.getX();
+				mouseDragLocation.y = e.getY();
+			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
+				double xDiff = e.getX() - mouseDragLocation.x;
+				double yDiff = e.getY() - mouseDragLocation.y;
+				sideCameraLocation.set(sideCameraLocation.x, sideCameraLocation.y + yDiff/100, sideCameraLocation.z + xDiff/100);
+				MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
+				mouseDragLocation.x = e.getX();
+				mouseDragLocation.y = e.getY();
+			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
+				double xDiff = e.getX() - mouseDragLocation.x;
+				double yDiff = e.getY() - mouseDragLocation.y;
+				frontCameraLocation.set(frontCameraLocation.x + xDiff/-100, frontCameraLocation.y + yDiff/100, frontCameraLocation.z);
+				MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
+				mouseDragLocation.x = e.getX();
+				mouseDragLocation.y = e.getY();
+			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
+				double xDiff = e.getX() - mouseDragLocation.x;
+				double yDiff = e.getY() - mouseDragLocation.y;
+				freeCamRotationDegX = freeCamRotationDegX + xDiff/4;
+				freeCamRotationDegY = freeCamRotationDegY + yDiff/4;
+				MatrixBuilder.euclidean().translate(-freeCameraLocation.x, -freeCameraLocation.y, -freeCameraLocation.z).rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z - 4.5).getMatrix().getArray()).assignTo(freeCameraContainer);				mouseDragLocation.x = e.getX();
+				mouseDragLocation.y = e.getY();
+			}
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		//System.out.println("Mouse Moved: " + e.toString());
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		double amountZoom = e.getWheelRotation();
+		if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
+			topCameraLocation.set(topCameraLocation.x, topCameraLocation.y + amountZoom/20, topCameraLocation.z);
+			MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
+		} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
+			sideCameraLocation.set(sideCameraLocation.x + amountZoom/20, sideCameraLocation.y, sideCameraLocation.z);
+			MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
+		} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
+			frontCameraLocation.set(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z + amountZoom/20);
+			MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
+		} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
+			freeCameraLocation.set(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z + amountZoom/20);
+			MatrixBuilder.euclidean().translate(-freeCameraLocation.x, -freeCameraLocation.y, -freeCameraLocation.z).rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z - 4.5).getMatrix().getArray()).assignTo(freeCameraContainer);
+		}
 		
 	}
 

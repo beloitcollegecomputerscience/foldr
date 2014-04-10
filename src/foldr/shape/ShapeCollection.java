@@ -1,27 +1,26 @@
-/**
- * 
- */
 package foldr.shape;
 
-import java.util.Collection;
-import java.util.List;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
-import de.jreality.scene.SceneGraphComponent;
-import foldr.utility.AnimateMovement;
-
 /**
- * A collection of all shapes object that are on the work panel, visible or not.
+ * Holds all Shape objects currently being manipulated on screen.
  * 
- * @author Hunter, Ben
+ * This class extends the functionality of the LinkedList class and is
+ * implemented as a singleton to guarantee only one in existence.
+ * 
+ * @author Hunter Elbourn, Jared Feldman, & Dan Gonzales
  * 
  */
+
 public class ShapeCollection {
-	
+
 	public Shape currentlySelected;
 	private Vector<Shape> shapes = new Vector<Shape>();
 
-	 /** The one and only instance of AnimateMovement.
+	/**
+	 * The one and only instance of ShapeCollection.
 	 */
 	private static ShapeCollection instance = null;
 
@@ -44,46 +43,58 @@ public class ShapeCollection {
 		}
 		return instance;
 	}
-	
-	
-	
-	//return the collection of shapes
+
+	// return the collection of shapes
 	public Shape getShapeFromCollection(int index) {
 		return shapes.get(index);
 	}
 
-	//add a shape to the end of the Collection
-		public void addShapeToCollection(Shape shapeToAdd) {
-			shapes.add(shapeToAdd);
-		}
+	// add a shape to the end of the Collection
+	public void addShapeToCollection(Shape shapeToAdd) {
+		shapes.add(shapeToAdd);
+	}
 
 	/**
-	 * When given the coordinates of the click, will go through the shapes,
-	 * finding which one was clicked.<br/>
-	 * Will disregard {@link ShapeGroup} and return {@link Shape} only. Returned
-	 * Shape can then be used to access its ShapeGroup.
-	 * 
-	 * @return the clicked shape. (if it works haha)
+	 * Resets the instance of ShapeCollection.
 	 */
-	public Shape findShapeClicked() {
+	public static void resetList() {
+		instance = new ShapeCollection();
+	}
+
+	/**
+	 * Return the Shape corresponding to a key.
+	 * 
+	 * @param key
+	 *            Key corresponding to a Shape
+	 * @return Shape corresponding to a key
+	 */
+	public static Shape getShape(int key) {
 		return null;
 	}
 
 	/**
-	 * When passed a pair of Shape ad a pair of edges for that Shape, will join
-	 * edges together.
+	 * Return the Shape that the user clicked on in one of the four
+	 * perspectives.
+	 * 
+	 * @param e
+	 *            MouseEvent corresponding to where the user clicked
+	 * @return Shape clicked
 	 */
-	public void joinEdges() {
-
+	public static Shape findShapeClicked(MouseEvent e) {
+		return null;
 	}
 
 	/**
-	 * Checks for collision inside the entire collection. Should be used as an
-	 * indicator that further steps need to be taken to correct collision.
+	 * Checks if the Shape (provided by key) is colliding with any other Shape
+	 * at a given Point.
 	 * 
-	 * @return true if there is/will be a collision, false otherwise.
+	 * @param key
+	 *            Key corresponding to a Shape
+	 * @param p
+	 *            Point where checking collision
+	 * @return True if collision detected, else False
 	 */
-	public boolean collisionCheck() {
+	public static boolean isColliding(int key, Point p) {
 		return false;
 	}
 

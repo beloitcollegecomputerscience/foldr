@@ -1,0 +1,6 @@
+# give a String in the following format (ISO639 2-letter code):
+# language (ex: en, fr, de, ...) - 2 or 
+# language_country (ex: en_US, fr_FR, fr_CA, ...)
+# language_country_variant (???)
+en_US
+fr_FR
