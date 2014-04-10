@@ -93,6 +93,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 			windowShowHideTools, windowShowHideInfo, windowChangePerspective,
 			windowSaveLoadPerspective, windowResizePerspective;
 	protected JMenuItem helpManual, helpQuickStartGuide;
+	
+	ActionManager actionManager = new ActionManager();
 
 	// This method creates the menu bar
 	protected void initMenuBarPane() {
