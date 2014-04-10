@@ -7,13 +7,11 @@ import de.jreality.scene.tool.InputSlot;
 import de.jreality.scene.tool.ToolContext;
 
 /**
- * A Jreality tool, which animates a shape an inputed degree of rotation in an
- * inputed plane over a set amount of frames.
+ * A Jreality tool, which animates a shape an inputed degree of rotation along
+ * an axis defined by the two points given.
  * 
  * @author Ellery Addington-White
  * 
- *         Bugs: Is it possibly the rotate methods are using raidians as the
- *         degree to rotate? No Documentation.
  * 
  */
 public class AnimateRotation2 extends AbstractTool {
@@ -46,6 +44,16 @@ public class AnimateRotation2 extends AbstractTool {
 
 	}
 
+	/**
+	 * This method will rotate the shape along an axis defined by the two points
+	 * given.
+	 * 
+	 * @param newShapeToMove
+	 * @param angleToRotate
+	 *            Use Radians!
+	 * @param vertexToMatch1
+	 * @param vertexToMatch2
+	 */
 	public void setEndPoints(Shape newShapeToMove, double angleToRotate,
 			double[] vertexToMatch1, double[] vertexToMatch2) {
 		shapeToMove = newShapeToMove;
@@ -74,7 +82,7 @@ public class AnimateRotation2 extends AbstractTool {
 					.rotate(vertexToMatch1, vertexToMatch2,
 							intervalToRotate * currentFrame)
 					.assignTo(sgcToMove);
-			
+
 			currentFrame++;
 		}
 

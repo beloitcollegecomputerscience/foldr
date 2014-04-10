@@ -412,10 +412,8 @@ public class GUI extends JFrame implements ActionListener {
 		}
 
 		shapeTwo.rotateShapeOtherWay(Math.PI / 2,
-				shapeOne.getCurrentVertexCoordinates(1),
-				shapeOne.getCurrentVertexCoordinates(2));
-
-		shapeTwo.animateShape(shapeOne.getCurrentVertexCoordinates(0));
+				shapeOne.getCurrentVertexCoordinates(0),
+				shapeOne.getCurrentVertexCoordinates(1));
 		
 		System.out.print("made it!");
 		
