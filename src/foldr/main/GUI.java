@@ -281,7 +281,7 @@ public class GUI extends JFrame implements ActionListener {
 			Shape shapeTwo = allShapes.getShapeFromCollection(secondShape);
 
 			System.out.println("Connecting...");
-			
+
 			// animate it
 			connectTwoShapes(shapeOne, firstVertex, shapeTwo, secondVertex);
 
@@ -291,19 +291,25 @@ public class GUI extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * Animates connecting two shapes at a vertex. The entire ShapeGroup is moved as if it is one shape. 
+	 * Animates connecting two shapes at a vertex. The entire ShapeGroup is
+	 * moved as if it is one shape.
+	 * 
 	 * @param shapeOne
 	 * @param vertexOne
 	 * @param shapeTwo
 	 * @param vertexTwo
 	 */
-	public void connectTwoShapes(Shape shapeOne, int vertexOne, Shape shapeTwo, int vertexTwo) {
+	public void connectTwoShapes(Shape shapeOne, int vertexOne, Shape shapeTwo,
+			int vertexTwo) {
 
-		//store original coordinates for error calculation
-		double originalX = shapeOne.getShapeSGC().getTransformation().getMatrix()[3];
-		double originalY = shapeOne.getShapeSGC().getTransformation().getMatrix()[7];
-		double originalZ = shapeOne.getShapeSGC().getTransformation().getMatrix()[11];
-		
+		// store original coordinates for error calculation
+		double originalX = shapeOne.getShapeSGC().getTransformation()
+				.getMatrix()[3];
+		double originalY = shapeOne.getShapeSGC().getTransformation()
+				.getMatrix()[7];
+		double originalZ = shapeOne.getShapeSGC().getTransformation()
+				.getMatrix()[11];
+
 		// figure out how much to move the first shape in each direction
 		double targetX = shapeTwo.getCurrentVertexCoordinates(vertexTwo)[0]
 				- shapeOne.getCurrentVertexCoordinates(vertexOne)[0];
@@ -323,15 +329,19 @@ public class GUI extends JFrame implements ActionListener {
 		shapeGroupToMove.animateGroup(endPoint);
 		// put the newly glued shapes into the same group
 		shapeGroupToMove.resetGroup(shapeTwo.getGroup());
-		
-		//print out error
-		double errorX = shapeOne.getShapeSGC().getTransformation().getMatrix()[3] - (originalX + targetX);
-		double errorY = shapeOne.getShapeSGC().getTransformation().getMatrix()[7] - (originalY + targetY);
-		double errorZ = shapeOne.getShapeSGC().getTransformation().getMatrix()[11] - (originalZ + targetZ);
-		//System.out.println("X error: " + errorX + ", Y error: " + errorY + ", Z error: " + errorZ);
-		
+
+		// print out error
+		double errorX = shapeOne.getShapeSGC().getTransformation().getMatrix()[3]
+				- (originalX + targetX);
+		double errorY = shapeOne.getShapeSGC().getTransformation().getMatrix()[7]
+				- (originalY + targetY);
+		double errorZ = shapeOne.getShapeSGC().getTransformation().getMatrix()[11]
+				- (originalZ + targetZ);
+		// System.out.println("X error: " + errorX + ", Y error: " + errorY +
+		// ", Z error: " + errorZ);
+
 	}
-	
+
 	// Create the jReality canvas
 	public void createJRCanvas() {
 		JRViewer v = JRViewer.createJRViewer(topScene);
@@ -386,15 +396,26 @@ public class GUI extends JFrame implements ActionListener {
 		ap.setAttribute(POINT_SHADER + "." + POINT_RADIUS, .1);
 
 		// put shapes on the canvas
-		Shape shapeOne = new Shape(3, topScene);
+		Shape shapeOne = new Shape(4, topScene);
 		Shape shapeTwo = new Shape(4, topScene);
-		Shape shapeThree = new Shape(5, topScene);
-		Shape shapeFour = new Shape(6, topScene);
 
-		// translate the shapes around so that the animation tests actually are interesting
+		// translate the shapes around so that the animation tests actually are
+		// interesting
 		shapeOne.translate(1, 0, 0);
 		shapeTwo.translate(2, 1, 1);
-		shapeThree.translate(-2, -1, 0);
+
+		shapeOne.rotateShape(Math.PI / 2, 'x');
+		try {
+			Thread.sleep(8000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		shapeTwo.rotateShapeOtherWay(Math.PI / 2,
+				shapeOne.getCurrentVertexCoordinates(0),
+				shapeOne.getCurrentVertexCoordinates(1));
+		
+		System.out.print("made it!");
 		
 	}
 
