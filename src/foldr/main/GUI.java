@@ -455,12 +455,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		mainPanel.add(frontPanel);
 		mainPanel.addMouseListener(this);
 
-		//Adding border
-		freeViewPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		topPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		sidePanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		frontPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		
+		//Adding borders and titles
+		freeViewPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Free Camera"));
+		topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Top Camera"));
+		sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Side Camera"));
+		frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Front Camera"));
 		
 		createJRViewers();
 		initMenuBarPane();
