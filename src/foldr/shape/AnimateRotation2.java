@@ -15,6 +15,7 @@ import de.jreality.scene.tool.ToolContext;
  * 
  */
 public class AnimateRotation2 extends AbstractTool {
+
 	int currentFrame = 0;
 	// this variable determines the number of frames the animation will
 	// occur in
@@ -26,8 +27,8 @@ public class AnimateRotation2 extends AbstractTool {
 
 	// the interval the shape will rotate every frame
 	double intervalToRotate;
-	// Which plane the shape is being rotated in
-	char planeOfRotation;
+
+	// The vertex's that will create the axis to rotate around
 	double[] vertexToMatch1;
 	double[] vertexToMatch2;
 
@@ -61,6 +62,7 @@ public class AnimateRotation2 extends AbstractTool {
 		this.vertexToMatch1 = vertexToMatch1;
 		this.vertexToMatch2 = vertexToMatch2;
 
+		// Calculate the amount the shape should rotate for each frame.
 		intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
 		System.out.println(intervalToRotate);
 		currentFrame = 0;
@@ -83,6 +85,7 @@ public class AnimateRotation2 extends AbstractTool {
 							intervalToRotate * currentFrame)
 					.assignTo(sgcToMove);
 
+			// Increment current Frame
 			currentFrame++;
 		}
 
