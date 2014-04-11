@@ -27,7 +27,7 @@ public class CustomCamera {
 	 * 
 	 **/
 	public CustomCamera(boolean originLock) {
-		
+		this.originLock = originLock;
 	}
 	
 	public void flip() {
@@ -41,14 +41,23 @@ public class CustomCamera {
 		location.set(x, y, z);
 	}
 	
+	/**
+	 * Sets the x location of the camera
+	 **/
 	public void setLocationX(double x) {
 		location.x = x;
 	}
 	
+	/**
+	 * Sets the y location of the camera
+	 **/
 	public void setLocationY(double y) {
 		location.y = y;
 	}
 	
+	/**
+	 * Sets the z location of the camera
+	 **/
 	public void setLocationZ(double z) {
 		location.z = z;
 	}
@@ -61,14 +70,35 @@ public class CustomCamera {
 	}
 	
 	/**
+	 * Sets the x rotation of the camera
+	 **/
+	public void setRotationX(double x) {
+		rotation.x = x;
+	}
+	
+	/**
+	 * Sets the y rotation of the camera
+	 **/
+	public void setRotationY(double y) {
+		rotation.y = y;
+	}
+	
+	/**
+	 * Sets the z rotation of the camera
+	 **/
+	public void setRotationZ(double z) {
+		rotation.z = z;
+	}
+	
+	/**
 	 * Sets the rotation of the camera
 	 **/
-	public void applyChanges(SceneGraphComponent cameraContainer) {
+	public void applyChangesTo(SceneGraphComponent cameraContainer) {
 		if (originLock) {
 			MatrixBuilder.euclidean()
 			.translate(-location.x, -location.y, -location.z)
-			.rotateX(Math.toRadians(-rotation.x))
-			.rotateY(Math.toRadians(-rotation.y))
+			.rotateX(Math.toRadians(-rotation.y))
+			.rotateY(Math.toRadians(-rotation.x))
 			.conjugateBy(
 				MatrixBuilder.euclidean()
 				.translate(location.x, location.y, location.z - 4.5) //4.5 is the x distance to the origin
