@@ -24,7 +24,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
-import javax.vecmath.Vector3d;
 
 import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
@@ -36,6 +35,8 @@ import de.jreality.util.SceneGraphUtility;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
+import foldr.utility.CustomCamera;
+import foldr.utility.Vector3d;
 
 /**
  *
@@ -65,15 +66,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	Viewer freeViewer, topViewer, sideViewer, frontViewer;
 	// the camera containers for the different cameras of the different views
 	SceneGraphComponent freeCameraContainer, topCameraContainer, sideCameraContainer, frontCameraContainer;
+
+	CustomCamera frontCamera = new CustomCamera(false);
+	CustomCamera sideCamera = new CustomCamera(false);
+	CustomCamera topCamera = new CustomCamera(false);
+	CustomCamera freeCamera = new CustomCamera(true);
 	
-	//Hold the different camera locations (hard-coded for now)
-	Vector3d frontCameraLocation = new Vector3d(0, 0, 4.5);
-	Vector3d sideCameraLocation = new Vector3d(7, 0, -4.5);
-	Vector3d topCameraLocation = new Vector3d(0, 7, -4.5);
-	Vector3d freeCameraLocation = new Vector3d(0, 0, 0);
-	
-	double freeCamRotationDegX = 0;
-	double freeCamRotationDegY = 0;
 	
 	//Capture the mouse location during drag events
 	Point mouseDragLocation = null;
@@ -429,10 +427,25 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		
 		
 		//Setting the initial camera positions
-		MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
-		MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
-		MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
+		//MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
+		//MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
+		//MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
 	
+		topCamera.setLocation(0, 7, -4.5);
+		topCamera.setRotationX(-90);
+		topCamera.applyChangesTo(topCameraContainer);
+		
+		sideCamera.setLocation(7, 0, -4.5);
+		sideCamera.setRotationY(90);
+		sideCamera.applyChangesTo(sideCameraContainer);
+		
+		frontCamera.setLocation(0, 0, 4.5);
+		frontCamera.applyChangesTo(frontCameraContainer);
+		
+//		Vector3d frontCameraLocation = new Vector3d(0, 0, 4.5);
+//		Vector3d sideCameraLocation = new Vector3d(7, 0, -4.5);
+//		Vector3d topCameraLocation = new Vector3d(0, 7, -4.5);
+//		Vector3d freeCameraLocation = new Vector3d(0, 0, 0);
 		
 	}
 	
@@ -490,8 +503,20 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		//System.out.println("Mouse Clicked: " + arg0.toString());
+	public void mouseClicked(MouseEvent e) {
+		//Flip camera to other side on double-click
+		if (e.getClickCount() == 2) {
+			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
+				
+			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
+
+			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
+
+			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
+
+			}
+		}
+		
 	}
 
 	@Override
@@ -524,34 +549,23 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		} else {
 			//Handling the event depending on which panel the even originated from.
 			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-				double xDiff = e.getX() - mouseDragLocation.x;
-				double yDiff = e.getY() - mouseDragLocation.y;
-				topCameraLocation.set(topCameraLocation.x + xDiff/-100, topCameraLocation.y, topCameraLocation.z + yDiff/-100);
-				MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
-				mouseDragLocation.x = e.getX();
-				mouseDragLocation.y = e.getY();
+				topCamera.setLocationX(topCamera.location.x + ((double) e.getX() - mouseDragLocation.x)/-100);
+				topCamera.setLocationZ(topCamera.location.z + ((double) e.getY() - mouseDragLocation.y)/-100);
+				topCamera.applyChangesTo(topCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-				double xDiff = e.getX() - mouseDragLocation.x;
-				double yDiff = e.getY() - mouseDragLocation.y;
-				sideCameraLocation.set(sideCameraLocation.x, sideCameraLocation.y + yDiff/100, sideCameraLocation.z + xDiff/100);
-				MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
-				mouseDragLocation.x = e.getX();
-				mouseDragLocation.y = e.getY();
+				sideCamera.setLocationY(sideCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
+				sideCamera.setLocationZ(sideCamera.location.z + ((double) e.getX() - mouseDragLocation.x)/100);
+				sideCamera.applyChangesTo(sideCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-				double xDiff = e.getX() - mouseDragLocation.x;
-				double yDiff = e.getY() - mouseDragLocation.y;
-				frontCameraLocation.set(frontCameraLocation.x + xDiff/-100, frontCameraLocation.y + yDiff/100, frontCameraLocation.z);
-				MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
-				mouseDragLocation.x = e.getX();
-				mouseDragLocation.y = e.getY();
+				frontCamera.setLocationX(frontCamera.location.x + ((double) e.getX() - mouseDragLocation.x)/-100);
+				frontCamera.setLocationY(frontCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
+				frontCamera.applyChangesTo(frontCameraContainer);
 			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
-				double xDiff = e.getX() - mouseDragLocation.x;
-				double yDiff = e.getY() - mouseDragLocation.y;
-				freeCamRotationDegX = freeCamRotationDegX + xDiff/4;
-				freeCamRotationDegY = freeCamRotationDegY + yDiff/4;
-				MatrixBuilder.euclidean().translate(-freeCameraLocation.x, -freeCameraLocation.y, -freeCameraLocation.z).rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z - 4.5).getMatrix().getArray()).assignTo(freeCameraContainer);				mouseDragLocation.x = e.getX();
-				mouseDragLocation.y = e.getY();
+				freeCamera.setRotationX(freeCamera.rotation.x + ((double) e.getX() - mouseDragLocation.x)/4);
+				freeCamera.setRotationY(freeCamera.rotation.y + ((double) e.getY() - mouseDragLocation.y)/4);
+				freeCamera.applyChangesTo(freeCameraContainer);
 			}
+			mouseDragLocation.setLocation(e.getX(), e.getY());
 		}
 	}
 
@@ -564,17 +578,17 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		double amountZoom = e.getWheelRotation();
 		if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-			topCameraLocation.set(topCameraLocation.x, topCameraLocation.y + amountZoom/20, topCameraLocation.z);
-			MatrixBuilder.euclidean().translate(topCameraLocation.x, topCameraLocation.y, topCameraLocation.z).rotateX(Math.toRadians(-90)).assignTo(topCameraContainer);
+			topCamera.setLocationY(topCamera.location.y + amountZoom/20);
+			topCamera.applyChangesTo(topCameraContainer);
 		} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-			sideCameraLocation.set(sideCameraLocation.x + amountZoom/20, sideCameraLocation.y, sideCameraLocation.z);
-			MatrixBuilder.euclidean().translate(sideCameraLocation.x, sideCameraLocation.y, sideCameraLocation.z).rotateY(Math.toRadians(90)).assignTo(sideCameraContainer);
+			sideCamera.setLocationX(sideCamera.location.x + amountZoom/20);
+			sideCamera.applyChangesTo(sideCameraContainer);
 		} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-			frontCameraLocation.set(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z + amountZoom/20);
-			MatrixBuilder.euclidean().translate(frontCameraLocation.x, frontCameraLocation.y, frontCameraLocation.z).assignTo(frontCameraContainer);
+			frontCamera.setLocationZ(frontCamera.location.z + amountZoom/20);
+			frontCamera.applyChangesTo(frontCameraContainer);
 		} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
-			freeCameraLocation.set(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z + amountZoom/20);
-			MatrixBuilder.euclidean().translate(-freeCameraLocation.x, -freeCameraLocation.y, -freeCameraLocation.z).rotateX(Math.toRadians(-freeCamRotationDegY)).rotateY(Math.toRadians(-freeCamRotationDegX)).conjugateBy(MatrixBuilder.euclidean().translate(freeCameraLocation.x, freeCameraLocation.y, freeCameraLocation.z - 4.5).getMatrix().getArray()).assignTo(freeCameraContainer);
+			freeCamera.setLocationZ(freeCamera.location.z + amountZoom/20);
+			freeCamera.applyChangesTo(freeCameraContainer);	
 		}
 		
 	}
