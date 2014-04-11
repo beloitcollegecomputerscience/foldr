@@ -1,6 +1,4 @@
-
 package foldr.shape;
-
 
 import de.jreality.geometry.Primitives;
 import de.jreality.math.MatrixBuilder;
@@ -49,8 +47,8 @@ public class Shape {
 	public AnimateRotation rotateShape = new AnimateRotation();
 	public AnimateRotation2 rotateShapeTheOtherWay = new AnimateRotation2();
 	private DragEventTool shapeClicked = new DragEventTool();
-	public boolean inMotion = false;
 
+	public boolean inMotion = false;
 
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
@@ -121,8 +119,6 @@ public class Shape {
 	public void changeAppearance() {
 
 	}
-
-
 
 	/**
 	 * Set the Shape to be apart of a group.
@@ -197,8 +193,15 @@ public class Shape {
 	}
 
 	/**
+	 * The public method used for Rotation animation. Will only run an animation
+	 * if the shape is not already being animated. If called on a shape in
+	 * animation, this method will simply return false.
 	 * 
-	 * @return
+	 * @param angleToRotate
+	 *            The angle amount to rotate the shape. MUST USE RAIDIANS.
+	 * @param planeOfRotation
+	 *            The axis the shape will be rotated on
+	 * @return false if the shape is already in motion.
 	 */
 	public boolean rotateShape(double angleToRotate, char planeOfRotation) {
 		if (inMotion) {
@@ -213,7 +216,16 @@ public class Shape {
 	}
 
 	/**
+	 * The public method used for Rotation animation. Will only run an animation
+	 * if the shape is not already being animated. If called on a shape in
+	 * animation, this method will simply return false.
 	 * 
+	 * @param angleToRotate
+	 *            The angle amount to rotate the shape. MUST USE RAIDIANS.
+	 * @param vertexToMatch1
+	 *            The first point of the axis the shape will be rotated on.
+	 * @param vertexToMatch2
+	 *            The second point of the axis the shape will be rotated on.
 	 * @return
 	 */
 	public boolean rotateShapeOtherWay(double angleToRotate,
@@ -224,88 +236,86 @@ public class Shape {
 			inMotion = true;
 			// attach rotate shape tool
 			shapeSGC.addTool(rotateShapeTheOtherWay);
-			rotateShapeTheOtherWay.setEndPoints(this, angleToRotate, vertexToMatch1,
-					vertexToMatch2);
+			rotateShapeTheOtherWay.setEndPoints(this, angleToRotate,
+					vertexToMatch1, vertexToMatch2);
 		}
 		return true;
 	}
 
-    /**
-     * <p>
-     * To facilitate the process of finding which ShapeGroup a Shape is apart
-     * of.
-     * </p>
-     */
-   
-    private Boolean        isHighlighted;
-    private IndexedFaceSet set;
+	/**
+	 * <p>
+	 * To facilitate the process of finding which ShapeGroup a Shape is apart
+	 * of.
+	 * </p>
+	 */
 
-    /**
-     * <p>
-     * Default constructor creates a Shape with no points, edges, or faces.
-     * Those are added once the shape is constructed. Should also be given an
-     * origin.
-     * </p>
-     */
-    public Shape() {
+	private Boolean isHighlighted;
+	private IndexedFaceSet set;
 
-        group = new ShapeGroup();
-        set = new IndexedFaceSet();
-        isHighlighted = false;
-    }
-    
-    public Shape(double[][] v, int[][] f) {
-        IndexedFaceSetFactory ifsf = new IndexedFaceSetFactory();
-        ifsf.setVertexCount(v.length);
-        ifsf.setVertexCoordinates(v);
-        ifsf.setFaceCount(f.length);
-        ifsf.setFaceIndices(f);
-        ifsf.update();
-        group = new ShapeGroup();
-        set = ifsf.getIndexedFaceSet();
-        isHighlighted = false;
-    }
+	/**
+	 * <p>
+	 * Default constructor creates a Shape with no points, edges, or faces.
+	 * Those are added once the shape is constructed. Should also be given an
+	 * origin.
+	 * </p>
+	 */
+	public Shape() {
 
-    /**
-     * <p>
-     * Turns the highlight appearance on or off.
-     * </p>
-     */
-    public void setHighlight(Boolean b) {
+		group = new ShapeGroup();
+		set = new IndexedFaceSet();
+		isHighlighted = false;
+	}
 
-        isHighlighted = b;
-    }
-    
-    public boolean isHighlight() {
-        return isHighlighted;
-    }
+	public Shape(double[][] v, int[][] f) {
+		IndexedFaceSetFactory ifsf = new IndexedFaceSetFactory();
+		ifsf.setVertexCount(v.length);
+		ifsf.setVertexCoordinates(v);
+		ifsf.setFaceCount(f.length);
+		ifsf.setFaceIndices(f);
+		ifsf.update();
+		group = new ShapeGroup();
+		set = ifsf.getIndexedFaceSet();
+		isHighlighted = false;
+	}
 
-    public IndexedFaceSet getFaceSet() {
+	/**
+	 * <p>
+	 * Turns the highlight appearance on or off.
+	 * </p>
+	 */
+	public void setHighlight(Boolean b) {
 
-        IndexedFaceSetFactory factory = new IndexedFaceSetFactory();
-        return set;
-    }
+		isHighlighted = b;
+	}
 
-    /**
-     * <p>
-     * Returns the ShapeGroup that the Shape is in.
-     * </p>
-     * 
-     * @return The ShapeGroup the Shape is in.
-     */
-    public ShapeGroup getGroup() {
+	public boolean isHighlight() {
+		return isHighlighted;
+	}
 
-        return group;
-    }
-    
-    /**
-     * 
-     * @return
-     */
-    public int getVertexCount() {
-        return set.getVertexAttributes().getListLength();
-    }
+	public IndexedFaceSet getFaceSet() {
 
-  
+		IndexedFaceSetFactory factory = new IndexedFaceSetFactory();
+		return set;
+	}
+
+	/**
+	 * <p>
+	 * Returns the ShapeGroup that the Shape is in.
+	 * </p>
+	 * 
+	 * @return The ShapeGroup the Shape is in.
+	 */
+	public ShapeGroup getGroup() {
+
+		return group;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getVertexCount() {
+		return set.getVertexAttributes().getListLength();
+	}
 
 }
