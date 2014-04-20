@@ -21,17 +21,16 @@ public class CustomCamera {
 	 * (Front vs. Back, Left vs. Right.)
 	 **/
 	boolean flipped = false;
+	/**
+	 * If the camera is locked on the origin of the scene.
+	 **/
 	boolean originLock = false;
 	
 	/**
-	 * 
+	 * Constructor. If we want the camera to lock on the origin of the scene set to true.
 	 **/
 	public CustomCamera(boolean originLock) {
 		this.originLock = originLock;
-	}
-	
-	public void flip() {
-		flipped = !flipped;
 	}
 	
 	/**

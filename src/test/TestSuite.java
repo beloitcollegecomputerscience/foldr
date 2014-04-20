@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
     ShapeTest.class, 
     ToolTest.class, 
     MessagesUtilsTest.class, 
-    MessagesTest.class 
+    MessagesTest.class,
+    CustomCameraTest.class
 })
 public class TestSuite {
 
