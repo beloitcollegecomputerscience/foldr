@@ -459,18 +459,18 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		// the right path or drop the files into the top-level project folder.
 		// Eclipse won't be able to find them otherwise.
 		// Set up the button images
-		ImageIcon selectImage = new ImageIcon("selectImage.png");
-		ImageIcon moveImage = new ImageIcon("moveImage.png");
-		ImageIcon fillImage = new ImageIcon("fillImage.png");
-		ImageIcon joinEdgeImage = new ImageIcon("joinEdge.png");
-		ImageIcon eraseImage = new ImageIcon("erase.png");
-		ImageIcon pointImage = new ImageIcon("addPoint.png");
-		ImageIcon lineImage = new ImageIcon("addLine.png");
-		ImageIcon shapeImage = new ImageIcon("shape.png");
-		ImageIcon panCameraImage = new ImageIcon("panCamera.png");
-		ImageIcon rotateCameraImage = new ImageIcon("rotateCamera.png");
-		ImageIcon flymodeImage = new ImageIcon("flyMode.png");
-		ImageIcon moveCameraImage = new ImageIcon("moveCamera.png");
+		ImageIcon selectImage = new ImageIcon("Icons/selectImage.png");
+		ImageIcon moveImage = new ImageIcon("Icons/moveImage.png");
+		ImageIcon fillImage = new ImageIcon("Icons/fillImage.png");
+		ImageIcon joinEdgeImage = new ImageIcon("Icons/joinEdge.png");
+		ImageIcon eraseImage = new ImageIcon("Icons/erase.png");
+		ImageIcon pointImage = new ImageIcon("Icons/addPoint.png");
+		ImageIcon lineImage = new ImageIcon("Icons/addLine.png");
+		ImageIcon shapeImage = new ImageIcon("Icons/shape.png");
+		ImageIcon panCameraImage = new ImageIcon("Icons/panCamera.png");
+		ImageIcon rotateCameraImage = new ImageIcon("Icons/rotateCamera.png");
+		ImageIcon flymodeImage = new ImageIcon("Icons/flyMode.png");
+		ImageIcon moveCameraImage = new ImageIcon("Icons/moveCamera.png");
 
 		// create the JButtons, passing in the image
 		paletteSelect = new JButton(selectImage);
