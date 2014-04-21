@@ -38,4 +38,17 @@ public class ActionManager {
 	public void doPanCamera() {
 		System.out.println("pan camera");
 	}
+
+	public void doFlymode() {
+		System.out.println("fly mode");
+	}
+
+	public void doRotateCamera() {
+		System.out.println("rotate camera");
+	}
+
+	public void doMoveCamera() {
+		System.out.println("move camera");
+	}
+
 }
