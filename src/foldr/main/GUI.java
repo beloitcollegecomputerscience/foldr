@@ -507,13 +507,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		//Flip camera to other side on double-click
 		if (e.getClickCount() == 2) {
 			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-				
+				topCamera.flipAlongAxis("x");
+				topCamera.applyChangesTo(topCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-
+				sideCamera.flipAlongAxis("y");
+				sideCamera.applyChangesTo(sideCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-
-			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
-
+				frontCamera.flipAlongAxis("z");
+				frontCamera.applyChangesTo(frontCameraContainer);
 			}
 		}
 		
@@ -544,20 +545,30 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		int flipCoefficient = 1;
 		if (mouseDragLocation == null) {
 			mouseDragLocation = new Point(e.getX(), e.getY());
 		} else {
 			//Handling the event depending on which panel the even originated from.
 			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
+				if (topCamera.flipped) {
+					flipCoefficient = -1;
+				}
 				topCamera.setLocationX(topCamera.location.x + ((double) e.getX() - mouseDragLocation.x)/-100);
-				topCamera.setLocationZ(topCamera.location.z + ((double) e.getY() - mouseDragLocation.y)/-100);
+				topCamera.setLocationZ(topCamera.location.z + (((double) e.getY() - mouseDragLocation.y)*flipCoefficient)/-100);
 				topCamera.applyChangesTo(topCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
+				if (sideCamera.flipped) {
+					flipCoefficient = -1;
+				}
 				sideCamera.setLocationY(sideCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
-				sideCamera.setLocationZ(sideCamera.location.z + ((double) e.getX() - mouseDragLocation.x)/100);
+				sideCamera.setLocationZ(sideCamera.location.z + (((double) e.getX() - mouseDragLocation.x)*flipCoefficient)/100);
 				sideCamera.applyChangesTo(sideCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-				frontCamera.setLocationX(frontCamera.location.x + ((double) e.getX() - mouseDragLocation.x)/-100);
+				if (frontCamera.flipped) {
+					flipCoefficient = -1;
+				}
+				frontCamera.setLocationX(frontCamera.location.x + (((double) e.getX() - mouseDragLocation.x)*flipCoefficient)/-100);
 				frontCamera.setLocationY(frontCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
 				frontCamera.applyChangesTo(frontCameraContainer);
 			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {

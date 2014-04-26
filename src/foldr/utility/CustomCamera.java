@@ -20,7 +20,7 @@ public class CustomCamera {
 	 * If the camera is facing the opposite direction
 	 * (Front vs. Back, Left vs. Right.)
 	 **/
-	boolean flipped = false;
+	public boolean flipped = false;
 	/**
 	 * If the camera is locked on the origin of the scene.
 	 **/
@@ -87,6 +87,26 @@ public class CustomCamera {
 	 **/
 	public void setRotationZ(double z) {
 		rotation.z = z;
+	}
+	
+	public void flipAlongAxis(String axisToFlipAlong) {
+		System.out.println(this.location.toString());
+		if (axisToFlipAlong == "x") {
+			this.location.y = this.location.y * -1;
+			this.rotation.x = this.rotation.x * -1;
+		} else if (axisToFlipAlong == "y") {
+			this.location.x = this.location.x * -1;
+			this.rotation.y = this.rotation.y * -1;
+		} else if (axisToFlipAlong == "z") {
+			this.location.z = this.location.z * -1;
+			if (this.rotation.y == 0) {
+				this.rotation.y = 180;
+			} else {
+				this.rotation.y = 0;
+			}
+			System.out.println(this.location.toString());
+		}
+		flipped = !flipped;
 	}
 	
 	/**
