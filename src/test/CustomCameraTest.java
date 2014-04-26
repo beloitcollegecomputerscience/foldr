@@ -65,5 +65,21 @@ public class CustomCameraTest {
 		assertEquals(12, testCamera.rotation.y);
 		assertEquals(4.4, testCamera.rotation.z);
 	}
+	
+	@Test
+	public void testflipOnAxis() {
+		testCamera.flipOnAxis("x");
+		assertEquals(-12, testCamera.location.y);
+		assertEquals(-4.4, testCamera.rotation.y);
+		testCamera.setLocation(-10.1,  20.9,  33.3);
+		testCamera.setRotation(55.9, 90, -90);
+		testCamera.flipOnAxis("y");
+		assertEquals(10.1, testCamera.location.x);
+		assertEquals(-90, testCamera.rotation.y);
+		testCamera.setRotationY(0);
+		testCamera.flipOnAxis("z");
+		assertEquals(180, testCamera.rotation.y);
+		assertEquals(-33.3, testCamera.location.z);
+	}
 
 }

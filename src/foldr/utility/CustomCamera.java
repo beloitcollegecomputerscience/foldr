@@ -89,8 +89,11 @@ public class CustomCamera {
 		rotation.z = z;
 	}
 	
-	public void flipAlongAxis(String axisToFlipAlong) {
-		System.out.println(this.location.toString());
+	/**
+	 * Flips the camera location, and rotation on axis.
+	 * Intended for cameras that are locked on axis rather than origin.
+	 **/
+	public void flipOnAxis(String axisToFlipAlong) {
 		if (axisToFlipAlong == "x") {
 			this.location.y = this.location.y * -1;
 			this.rotation.x = this.rotation.x * -1;
@@ -99,12 +102,12 @@ public class CustomCamera {
 			this.rotation.y = this.rotation.y * -1;
 		} else if (axisToFlipAlong == "z") {
 			this.location.z = this.location.z * -1;
+			//Camera locked on z axis has no initial rotation
 			if (this.rotation.y == 0) {
 				this.rotation.y = 180;
 			} else {
 				this.rotation.y = 0;
 			}
-			System.out.println(this.location.toString());
 		}
 		flipped = !flipped;
 	}

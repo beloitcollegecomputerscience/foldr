@@ -16,6 +16,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -471,7 +472,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		//Adding borders and titles
 		freeViewPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Free Camera"));
 		topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Top Camera"));
-		sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Side Camera"));
+		sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Right Camera"));
 		frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Front Camera"));
 		
 		createJRViewers();
@@ -507,14 +508,29 @@ public class GUI extends JFrame implements ActionListener, MouseListener, MouseM
 		//Flip camera to other side on double-click
 		if (e.getClickCount() == 2) {
 			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-				topCamera.flipAlongAxis("x");
+				topCamera.flipOnAxis("x");
 				topCamera.applyChangesTo(topCameraContainer);
+				if (topCamera.flipped) {
+					topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Bottom Camera"));
+				} else {
+					topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Top Camera"));
+				}
 			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-				sideCamera.flipAlongAxis("y");
+				sideCamera.flipOnAxis("y");
 				sideCamera.applyChangesTo(sideCameraContainer);
+				if (sideCamera.flipped) {
+					sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Left Camera"));
+				} else {
+					sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Right Camera"));
+				}
 			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-				frontCamera.flipAlongAxis("z");
+				frontCamera.flipOnAxis("z");
 				frontCamera.applyChangesTo(frontCameraContainer);
+				if (frontCamera.flipped) {
+					frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Back Camera"));
+				} else {
+					frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Front Camera"));
+				}
 			}
 		}
 		
