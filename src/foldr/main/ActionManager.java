@@ -1,5 +1,10 @@
 package foldr.main;
 
+/**
+ * 
+ * @author Nick, Hunter, and Tyler
+ *
+ */
 public class ActionManager {
 
 	public void doSelect() {
