@@ -46,6 +46,7 @@ public class Shape {
 	public AnimateMovement animateShape = new AnimateMovement();
 	public AnimateRotation rotateShape = new AnimateRotation();
 	public AnimateRotation2 rotateShapeTheOtherWay = new AnimateRotation2();
+	public AnimateRotationVector rotateWithVector = new AnimateRotationVector();
 	private DragEventTool shapeClicked = new DragEventTool();
 
 	public boolean inMotion = false;
@@ -238,6 +239,18 @@ public class Shape {
 			shapeSGC.addTool(rotateShapeTheOtherWay);
 			rotateShapeTheOtherWay.setEndPoints(this, angleToRotate,
 					vertexToMatch1, vertexToMatch2);
+		}
+		return true;
+	}
+
+	public boolean rotateShapeWithVector(double[] v1, double[] v2) {
+		if (inMotion) {
+			return false;
+		} else {
+			inMotion = true;
+			// attach rotate shape tool
+			shapeSGC.addTool(rotateShapeTheOtherWay);
+			rotateWithVector.setEndPoints(this, v1, v2);
 		}
 		return true;
 	}

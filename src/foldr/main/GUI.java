@@ -333,7 +333,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 				.getMatrix()[7];
 		double originalZ = shapeOne.getShapeSGC().getTransformation()
 				.getMatrix()[11];
-		
+
 		// figure out how much to move the first shape in each direction
 		double targetX = shapeTwo.getCurrentVertexCoordinates(vertexTwo)[0]
 				- shapeOne.getCurrentVertexCoordinates(vertexOne)[0];
@@ -369,15 +369,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
 		// TESTING with a visible shape @TODO: Remove this.
-//		IndexedFaceSet octo = Primitives.regularPolygon(8);
-//		SceneGraphComponent octoOne = SceneGraphUtility
-//				.createFullSceneGraphComponent("octogon1");
-//		octoOne.setGeometry(octo);
-//		scene.addChild(octoOne);
-		
-		Shape testShape = new Shape(4, scene);
-		Shape testShape2 = new Shape(4, scene);
-		
+		// IndexedFaceSet octo = Primitives.regularPolygon(8);
+		// SceneGraphComponent octoOne = SceneGraphUtility
+		// .createFullSceneGraphComponent("octogon1");
+		// octoOne.setGeometry(octo);
+		// scene.addChild(octoOne);
 
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
@@ -512,6 +508,22 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		theProgram = new GUI();
 		theProgram.initPanesAndGui();
 		theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+		Shape testShape = new Shape(4, scene);
+//		Shape testShape2 = new Shape(4, scene);
+//		testShape.animateShape(testShape2.getCurrentVertexCoordinates(1));
+
+//		testShape2.rotateShapeWithVector(new double[]{0,0,-1},new double[]{0,-2,-3} );
+//		de.jreality.math.P3.makeRotationMatrix(new double[16], new double[3], new double[3]);
+//		double [] v1 = mmakeRotationMatrix();
+//	double[][] v1 = {testShape2.getCurrentVertexCoordinates(0), testShape2.getCurrentVertexCoordinates(1)};
+//		double[][] v2 = {testShape.getCurrentVertexCoordinates(0), testShape.getCurrentVertexCoordinates(1)};
+//
+//		testShape2.rotateShapeWithVector(v1,v2);
+
+		//		testShape2.rotateShape(Math.PI/2, 'x');
+		//		testShape.animateShape(testShape2.getCurrentVertexCoordinates(3));
+		//		testShape2.animateShape(testShape.getCurrentVertexCoordinates(2));
 	}
 
 	@Override
