@@ -1,6 +1,5 @@
 package foldr.main;
 
-// Testing GitBash again
 public class ActionManager {
 
 	public void doSelect() {

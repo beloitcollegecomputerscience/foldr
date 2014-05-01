@@ -12,7 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author couretn
  */
 public class Driver {
-// Testing GitBash 2
+
     public static void main(String[] args) {
 
         // TODO Switch to Locale.getDefault() once the software is properly
