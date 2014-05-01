@@ -46,11 +46,14 @@ public class Shape {
 	// TODO leave public or make a getter? The only reason for making it public
 	// is so that the JUnit test can see it
 	public AnimateMovement animateShape = new AnimateMovement();
+	public AnimateEdgeRotation animateEdgeRotation = new AnimateEdgeRotation();
 	public AnimateRotation rotateShape = new AnimateRotation();
 	public AnimateRotation2 rotateShapeTheOtherWay = new AnimateRotation2();
 	private DragEventTool shapeClicked = new DragEventTool();
 	public boolean inMotion = false;
-
+	//array to store translatoin values
+	public double[] translationTransformations = new double[3];
+	public double[] rotationTransformations = new double[3];
 
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
@@ -111,6 +114,9 @@ public class Shape {
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
+		translationTransformations[0] = x;
+		translationTransformations[1] = y;
+		translationTransformations[2] = z;
 	}
 
 	/**
@@ -172,7 +178,8 @@ public class Shape {
 				originalVertexZ + currentTranslationZ };
 		return allCurrentVertexCoor;
 	}
-
+	
+	
 	/**
 	 * The public method used for animation. Will only run an animation if the
 	 * shape is not already being animated. If called on a shape in animation,
@@ -195,6 +202,19 @@ public class Shape {
 			return true;
 		}
 	}
+	
+	public boolean animateEdgeRotation(double[] vertexOne, double[] vertexTwo, double[] goalCoordinates, int vertexToCheck) {
+		if (inMotion) {
+			return false;
+		} else {
+			inMotion = true;
+			// attach the animation tool to this sgc
+			shapeSGC.addTool(animateEdgeRotation);
+			animateEdgeRotation.setInternalVariables(this, vertexOne, vertexTwo, goalCoordinates, vertexToCheck);
+			return true;
+		}
+	}
+	
 
 	/**
 	 * 
