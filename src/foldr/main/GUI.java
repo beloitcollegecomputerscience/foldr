@@ -45,9 +45,6 @@ import foldr.utility.Vector3d;
  */
 public class GUI extends JFrame implements ActionListener, MouseListener,
 		MouseMotionListener, MouseWheelListener {
-    public GUI() {
-    }
-
 	private static final long serialVersionUID = 1L;
 
 	Scanner input = new Scanner(System.in);
@@ -57,10 +54,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// the main scene graph component. All other SGC's will be a child of this.
 	static SceneGraphComponent scene = SceneGraphUtility
 			.createFullSceneGraphComponent("scene");
-
-	// the swing components to create the jreality frame
-	protected JFrame f;
-	protected JDesktopPane desktop = new JDesktopPane();
 
 	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
 
@@ -94,6 +87,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			windowShowHideTools, windowShowHideInfo, windowChangePerspective,
 			windowSaveLoadPerspective, windowResizePerspective;
 	protected JMenuItem helpManual, helpQuickStartGuide;
+	
+	public GUI(String title) {
+	    super(title);
+	}
 
 	// This method creates the menu bar
 	protected void initMenuBarPane() {
@@ -273,8 +270,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		menuBar.add(helpMenu);
 
 		// Add the menu bar to the appropriate pane
-		menuBarPane.setLayout(new GridLayout(1, 1));
-		menuBarPane.add(menuBar);
+//		menuBarPane.setLayout(new GridLayout(1, 1));
+//		menuBarPane.add(menuBar); FIXME
 	}
 
 	// Action listener. For now, this method is just a placeholder.
@@ -479,20 +476,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 
 		createJRViewers();
 		initMenuBarPane();
-
-		// stick them both in a desktop pane
-		desktop.setLayout(new BorderLayout());
-		desktop.add(menuBarPane, "North");
-		desktop.add(mainPanel);
-		pack();
+		setJMenuBar(menuBar);
+		
 
 		// Create the top frame to store desktop
-		f = new JFrame("Polyhedra");
-		f.getContentPane().setLayout(new GridLayout());
-		f.getContentPane().add(desktop);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(1000, 700);
-		f.setVisible(true);
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(mainPanel, "Center");
+		label(); //write the messages
+		pack();
+		setSize(1000, 700);
+		setVisible(true);
 	}
 	
 	private void label() {
@@ -524,6 +517,18 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	    foldingConnectShapes.setText(Messages.getString(Messages.FO+".shape.connect"));
 	    foldingDetachShapes.setText(Messages.getString(Messages.FO+".shape.detach"));
 	    
+	    windowShowTop.setText(Messages.getString(Messages.WI+".view.top"));
+	    windowShowBack.setText(Messages.getString(Messages.WI+".view.back"));
+	    windowShowLeft.setText(Messages.getString(Messages.WI+".view.left"));
+	    windowShowHideInfo.setText(Messages.getString(Messages.WI+".info"));
+	    windowShowHideTools.setText(Messages.getString(Messages.WI+".tools"));
+	    windowChangePerspective.setText(Messages.getString(Messages.WI+".persp.change"));
+	    windowSaveLoadPerspective.setText(Messages.getString(Messages.WI+".persp.save"));
+	    windowResizePerspective.setText(Messages.getString(Messages.WI+".persp.resize"));
+	    
+	    helpMenu.setText(Messages.getString(Messages.HE));
+	    helpManual.setText(Messages.getString(Messages.HE+".manual"));
+	    helpQuickStartGuide.setText(Messages.getString(Messages.HE+".guide"));
 	    
 	}
 
@@ -531,7 +536,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	private static GUI theProgram;
 
 	public static void main(String[] args) {
-		theProgram = new GUI();
+		theProgram = new GUI("Polyhedra");
 		theProgram.initPanesAndGui();
 		theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
