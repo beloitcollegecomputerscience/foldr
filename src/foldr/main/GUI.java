@@ -45,6 +45,8 @@ import foldr.utility.Vector3d;
  */
 public class GUI extends JFrame implements ActionListener, MouseListener,
 		MouseMotionListener, MouseWheelListener {
+    public GUI() {
+    }
 
 	private static final long serialVersionUID = 1L;
 
@@ -486,11 +488,43 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 
 		// Create the top frame to store desktop
 		f = new JFrame("Polyhedra");
-		f.setLayout(new GridLayout());
-		f.add(desktop);
+		f.getContentPane().setLayout(new GridLayout());
+		f.getContentPane().add(desktop);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		f.setSize(1000, 700);
 		f.setVisible(true);
+	}
+	
+	private void label() {
+	    //menu
+	    fileMenu.setText(Messages.getString(Messages.FI));
+	    fileOpen.setText(Messages.getString(Messages.FI+".open"));
+	    fileNew.setText(Messages.getString(Messages.FI+".new"));
+	    fileSave.setText(Messages.getString(Messages.FI+".save"));
+	    fileSaveAs.setText(Messages.getString(Messages.FI+".saveas"));
+	    fileExport.setText(Messages.getString(Messages.FI+".export"));
+	    fileClose.setText(Messages.getString(Messages.FI+".close"));
+	    
+	    editMenu.setText(Messages.getString(Messages.ED));
+	    editCopy.setText(Messages.getString(Messages.ED+".copy"));
+	    editCut.setText(Messages.getString(Messages.ED+".cut"));
+	    editPaste.setText(Messages.getString(Messages.ED+".paste"));
+	    editDelete.setText(Messages.getString(Messages.ED+".delete"));
+	    editSelectAll.setText(Messages.getString(Messages.ED+".selectall"));
+	    editResizeShape.setText(Messages.getString(Messages.FO+".shape.resize")); //TODO change menu structure
+	
+	    foldingMenu.setText(Messages.getString(Messages.FO));
+	    foldingThirty.setText(Messages.getString(Messages.FO+".angle.30"));
+	    foldingFortyFive.setText(Messages.getString(Messages.FO+".angle.45"));
+	    foldingNinety.setText(Messages.getString(Messages.FO+".angle.90"));
+	    foldingCustomAngle.setText(Messages.getString(Messages.FO+".angle.custom"));
+	    foldingEdgeSelect.setText(Messages.getString(Messages.FO+".edgesel"));
+	    foldingPointSelect.setText(Messages.getString(Messages.FO+".pointsel"));
+	    foldingFoldShapes.setText(Messages.getString(Messages.FO+".shape.fold"));
+	    foldingConnectShapes.setText(Messages.getString(Messages.FO+".shape.connect"));
+	    foldingDetachShapes.setText(Messages.getString(Messages.FO+".shape.detach"));
+	    
+	    
 	}
 
 	// So we can run quickly test without having to start from Driver.java
