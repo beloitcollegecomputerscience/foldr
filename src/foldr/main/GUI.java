@@ -333,7 +333,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 				.getMatrix()[7];
 		double originalZ = shapeOne.getShapeSGC().getTransformation()
 				.getMatrix()[11];
-
+		
 		// figure out how much to move the first shape in each direction
 		double targetX = shapeTwo.getCurrentVertexCoordinates(vertexTwo)[0]
 				- shapeOne.getCurrentVertexCoordinates(vertexOne)[0];
@@ -369,11 +369,15 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
 		// TESTING with a visible shape @TODO: Remove this.
-		IndexedFaceSet octo = Primitives.regularPolygon(8);
-		SceneGraphComponent octoOne = SceneGraphUtility
-				.createFullSceneGraphComponent("octogon1");
-		octoOne.setGeometry(octo);
-		scene.addChild(octoOne);
+//		IndexedFaceSet octo = Primitives.regularPolygon(8);
+//		SceneGraphComponent octoOne = SceneGraphUtility
+//				.createFullSceneGraphComponent("octogon1");
+//		octoOne.setGeometry(octo);
+//		scene.addChild(octoOne);
+		
+		Shape testShape = new Shape(4, scene);
+		Shape testShape2 = new Shape(4, scene);
+		
 
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
