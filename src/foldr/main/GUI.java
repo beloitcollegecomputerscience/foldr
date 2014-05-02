@@ -68,9 +68,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// the camera containers for the different cameras of the different views
 	SceneGraphComponent freeCameraContainer, topCameraContainer, sideCameraContainer, frontCameraContainer;
 
-	CustomCamera frontCamera = new CustomCamera(false);
-	CustomCamera sideCamera = new CustomCamera(false);
-	CustomCamera topCamera = new CustomCamera(false);
+	CustomCamera zAxisCamera = new CustomCamera(false);
+	CustomCamera yAxisCamera = new CustomCamera(false);
+	CustomCamera xAxisCamera = new CustomCamera(false);
 	CustomCamera freeCamera = new CustomCamera(true);
 	
 	
@@ -88,7 +88,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	protected JMenuItem foldingThirty, foldingFortyFive, foldingNinety,
 			foldingCustomAngle, foldingEdgeSelect, foldingPointSelect,
 			foldingFoldShapes, foldingConnectShapes, foldingDetachShapes;
-	protected JMenuItem windowShowTop, windowShowBack, windowShowLeft,
+	protected JMenuItem windowToggleYAxisCamera, windowToggleZAxisCamera, windowToggleXAxisCamera,
 			windowShowHideTools, windowShowHideInfo, windowChangePerspective,
 			windowSaveLoadPerspective, windowResizePerspective;
 	protected JMenuItem helpManual, helpQuickStartGuide;
@@ -183,12 +183,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		// foldingDetachShapes.setEnabled(false);
 
 		// Window menu items
-		windowShowTop = new JMenuItem("Show Top");
-		windowShowTop.addActionListener(this);
-		windowShowBack = new JMenuItem("Show Back");
-		windowShowBack.addActionListener(this);
-		windowShowLeft = new JMenuItem("Show Left");
-		windowShowLeft.addActionListener(this);
+		windowToggleYAxisCamera = new JMenuItem("Toggle Y-Axis Camera");
+		windowToggleYAxisCamera.addActionListener(this);
+		windowToggleZAxisCamera = new JMenuItem("Toggle Z-Axis Camera");
+		windowToggleZAxisCamera.addActionListener(this);
+		windowToggleXAxisCamera = new JMenuItem("Toggle X-Axis Camera");
+		windowToggleXAxisCamera.addActionListener(this);
 		windowShowHideTools = new JMenuItem("Show/Hide Tools");
 		windowShowHideTools.addActionListener(this);
 		windowShowHideInfo = new JMenuItem("Show/Hide Information Panel");
@@ -244,9 +244,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 
 		// Set up the window menu
 		windowMenu = new JMenu("Window");
-		windowMenu.add(windowShowTop);
-		windowMenu.add(windowShowBack);
-		windowMenu.add(windowShowLeft);
+		windowMenu.add(windowToggleYAxisCamera);
+		windowMenu.add(windowToggleZAxisCamera);
+		windowMenu.add(windowToggleXAxisCamera);
 		windowMenu.add(new JSeparator());
 		windowMenu.add(windowShowHideTools);
 		windowMenu.add(windowShowHideInfo);
@@ -434,16 +434,16 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		frontPanel.getComponent(0).addMouseWheelListener(this);
 		frontPanel.getComponent(0).setName("frontPanel");
 
-		topCamera.setLocation(0, 7, -4.5);
-		topCamera.setRotationX(-90);
-		topCamera.applyChangesTo(topCameraContainer);
+		xAxisCamera.setLocation(0, 7, -4.5);
+		xAxisCamera.setRotationX(-90);
+		xAxisCamera.applyChangesTo(topCameraContainer);
 		
-		sideCamera.setLocation(7, 0, -4.5);
-		sideCamera.setRotationY(90);
-		sideCamera.applyChangesTo(sideCameraContainer);
+		yAxisCamera.setLocation(7, 0, -4.5);
+		yAxisCamera.setRotationY(90);
+		yAxisCamera.applyChangesTo(sideCameraContainer);
 		
-		frontCamera.setLocation(0, 0, 4.5);
-		frontCamera.applyChangesTo(frontCameraContainer);
+		zAxisCamera.setLocation(0, 0, 4.5);
+		zAxisCamera.applyChangesTo(frontCameraContainer);
 	}
 
 	// Create the panes, panels and other gui elements and pack them up.
@@ -469,11 +469,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		freeViewPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(), "Free Camera"));
 		topPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEmptyBorder(), "Top Camera"));
+				BorderFactory.createEmptyBorder(), "Y-Axis Camera (Top)"));
 		sidePanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEmptyBorder(), "Right Camera"));
+				BorderFactory.createEmptyBorder(), "X-Axis Camera (Right)"));
 		frontPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createEmptyBorder(), "Front Camera"));
+				BorderFactory.createEmptyBorder(), "Z-Axis Camera (Front)"));
 
 		createJRViewers();
 		initMenuBarPane();
@@ -507,28 +507,28 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		//Flip camera to other side on double-click
 		if (e.getClickCount() == 2) {
 			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-				topCamera.flipOnAxis("x");
-				topCamera.applyChangesTo(topCameraContainer);
-				if (topCamera.flipped) {
-					topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Bottom Camera"));
+				xAxisCamera.flipOnAxis("x");
+				xAxisCamera.applyChangesTo(topCameraContainer);
+				if (xAxisCamera.flipped) {
+					topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Y-Axis Camera (Bottom)"));
 				} else {
-					topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Top Camera"));
+					topPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Y-Axis Camera (Top)"));
 				}
 			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-				sideCamera.flipOnAxis("y");
-				sideCamera.applyChangesTo(sideCameraContainer);
-				if (sideCamera.flipped) {
-					sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Left Camera"));
+				yAxisCamera.flipOnAxis("y");
+				yAxisCamera.applyChangesTo(sideCameraContainer);
+				if (yAxisCamera.flipped) {
+					sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "X-Axis Camera (Left)"));
 				} else {
-					sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Right Camera"));
+					sidePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "X-Axis Camera (Right)"));
 				}
 			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-				frontCamera.flipOnAxis("z");
-				frontCamera.applyChangesTo(frontCameraContainer);
-				if (frontCamera.flipped) {
-					frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Back Camera"));
+				zAxisCamera.flipOnAxis("z");
+				zAxisCamera.applyChangesTo(frontCameraContainer);
+				if (zAxisCamera.flipped) {
+					frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Z-Axis Camera (Back)"));
 				} else {
-					frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Front Camera"));
+					frontPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Z-Axis Camera (Front)"));
 				}
 			}
 		}		
@@ -566,26 +566,26 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		} else {
 			//Handling the event depending on which panel the even originated from.
 			if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-				if (topCamera.flipped) {
+				if (xAxisCamera.flipped) {
 					flipCoefficient = -1;
 				}
-				topCamera.setLocationX(topCamera.location.x + ((double) e.getX() - mouseDragLocation.x)/-100);
-				topCamera.setLocationZ(topCamera.location.z + (((double) e.getY() - mouseDragLocation.y)*flipCoefficient)/-100);
-				topCamera.applyChangesTo(topCameraContainer);
+				xAxisCamera.setLocationX(xAxisCamera.location.x + ((double) e.getX() - mouseDragLocation.x)/-100);
+				xAxisCamera.setLocationZ(xAxisCamera.location.z + (((double) e.getY() - mouseDragLocation.y)*flipCoefficient)/-100);
+				xAxisCamera.applyChangesTo(topCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-				if (sideCamera.flipped) {
+				if (yAxisCamera.flipped) {
 					flipCoefficient = -1;
 				}
-				sideCamera.setLocationY(sideCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
-				sideCamera.setLocationZ(sideCamera.location.z + (((double) e.getX() - mouseDragLocation.x)*flipCoefficient)/100);
-				sideCamera.applyChangesTo(sideCameraContainer);
+				yAxisCamera.setLocationY(yAxisCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
+				yAxisCamera.setLocationZ(yAxisCamera.location.z + (((double) e.getX() - mouseDragLocation.x)*flipCoefficient)/100);
+				yAxisCamera.applyChangesTo(sideCameraContainer);
 			} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-				if (frontCamera.flipped) {
+				if (zAxisCamera.flipped) {
 					flipCoefficient = -1;
 				}
-				frontCamera.setLocationX(frontCamera.location.x + (((double) e.getX() - mouseDragLocation.x)*flipCoefficient)/-100);
-				frontCamera.setLocationY(frontCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
-				frontCamera.applyChangesTo(frontCameraContainer);
+				zAxisCamera.setLocationX(zAxisCamera.location.x + (((double) e.getX() - mouseDragLocation.x)*flipCoefficient)/-100);
+				zAxisCamera.setLocationY(zAxisCamera.location.y + ((double) e.getY() - mouseDragLocation.y)/100);
+				zAxisCamera.applyChangesTo(frontCameraContainer);
 			} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
 				freeCamera.setRotationX(freeCamera.rotation.x + ((double) e.getX() - mouseDragLocation.x)/4);
 				freeCamera.setRotationY(freeCamera.rotation.y + ((double) e.getY() - mouseDragLocation.y)/4);
@@ -604,14 +604,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		double amountZoom = e.getWheelRotation();
 		if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-			topCamera.setLocationY(topCamera.location.y + amountZoom/20);
-			topCamera.applyChangesTo(topCameraContainer);
+			xAxisCamera.setLocationY(xAxisCamera.location.y + amountZoom/20);
+			xAxisCamera.applyChangesTo(topCameraContainer);
 		} else if(e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-			sideCamera.setLocationX(sideCamera.location.x + amountZoom/20);
-			sideCamera.applyChangesTo(sideCameraContainer);
+			yAxisCamera.setLocationX(yAxisCamera.location.x + amountZoom/20);
+			yAxisCamera.applyChangesTo(sideCameraContainer);
 		} else if(e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-			frontCamera.setLocationZ(frontCamera.location.z + amountZoom/20);
-			frontCamera.applyChangesTo(frontCameraContainer);
+			zAxisCamera.setLocationZ(zAxisCamera.location.z + amountZoom/20);
+			zAxisCamera.applyChangesTo(frontCameraContainer);
 		} else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
 			freeCamera.setLocationZ(freeCamera.location.z + amountZoom/20);
 			freeCamera.applyChangesTo(freeCameraContainer);	
