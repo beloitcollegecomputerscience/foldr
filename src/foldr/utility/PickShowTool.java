@@ -48,6 +48,7 @@ import de.jreality.math.Pn;
 import de.jreality.math.Rn;
 import de.jreality.scene.Appearance;
 import de.jreality.scene.SceneGraphComponent;
+import de.jreality.scene.SceneGraphPath;
 import de.jreality.scene.pick.PickResult;
 import de.jreality.scene.tool.AbstractTool;
 import de.jreality.scene.tool.InputSlot;
@@ -98,7 +99,6 @@ public class PickShowTool extends AbstractTool {
 			return;
 		}
 		prSave = tc.getCurrentPick();
-		System.out.println(pr.getPickPath().getLastComponent().toString());
 		assureAttached(tc);
 		switch (pr.getPickType()) {
 		case PickResult.PICK_TYPE_FACE:
@@ -153,6 +153,10 @@ public class PickShowTool extends AbstractTool {
 
 	public void setRadius(double radius) {
 		this.radius = radius;
+	}
+	
+	public SceneGraphPath getPick() {
+		return prSave.getPickPath();
 	}
 
 }

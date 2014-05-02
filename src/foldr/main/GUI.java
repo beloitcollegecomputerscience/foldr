@@ -82,6 +82,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	Point mouseDragLocation = null;
 
 	Tool mainTool = new Tool();
+	PickShowTool tool;
 	
 	// the swing components to create the menu bar
 	protected JPanel menuBarPane;
@@ -500,6 +501,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		
 		//Setting tool for testing
 		mainTool.setTool(Tool.ToolType.SELECTION);
+		tool = new PickShowTool();
+		topCameraContainer.addTool(tool);
+		sideCameraContainer.addTool(tool);
+		frontCameraContainer.addTool(tool);
+		freeCameraContainer.addTool(tool);
 	}
 
 	// So we can run quickly test without having to start from Driver.java
@@ -544,11 +550,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 					}
 				}	
 			case SELECTION:
-				PickShowTool tool = new PickShowTool();
-				topCameraContainer.addTool(new MouseOverTool(Color.cyan));
-				sideCameraContainer.addTool(tool);
-				frontCameraContainer.addTool(tool);
-				freeCameraContainer.addTool(tool);
+				System.out.println(tool.getPick());
 		}
 	}
 
