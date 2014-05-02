@@ -322,7 +322,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	 * @param vertexTwo
 	 *            the vertex on the second shape that you want to connect to.
 	 */
-	public static void connectTwoShapes(Shape shapeOne, int vertexOne,
+	public void connectTwoShapes(Shape shapeOne, int vertexOne,
 			Shape shapeTwo, int vertexTwo) {
 
 		// store original coordinates for error calculation

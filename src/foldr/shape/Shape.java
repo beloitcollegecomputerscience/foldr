@@ -136,7 +136,7 @@ public class Shape {
 	 * testing and setting up a scene.
 	 * 
 	 * @param v1 vector to start from
-	 * @param v2 vector to end at
+	 * @param v2 vector to ending at
 	 */
 	public void rotateOnVector(double[] v1, double[] v2) {
 		MatrixBuilder.euclidean().rotateFromTo(v1, v2).assignTo(this.shapeSGC);
