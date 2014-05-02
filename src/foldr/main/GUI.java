@@ -367,6 +367,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
+		// TESTING with a visible shape @TODO: Remove this.
+		IndexedFaceSet octo = Primitives.regularPolygon(8);
+		SceneGraphComponent octoOne = SceneGraphUtility
+				.createFullSceneGraphComponent("octogon1");
+		octoOne.setGeometry(octo);
+		scene.addChild(octoOne);
 
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
@@ -495,7 +501,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		theProgram = new GUI();
 		theProgram.initPanesAndGui();
 		theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 	}
 
 	@Override
