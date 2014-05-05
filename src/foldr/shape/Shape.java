@@ -51,6 +51,9 @@ public class Shape {
 
 	public boolean inMotion = false;
 
+	//array to store translation values
+	public double[] translationTransformation = new double[3];
+	
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
 	}
@@ -110,6 +113,9 @@ public class Shape {
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
+		translationTransformation[0]= x;
+		translationTransformation[1]= y;
+		translationTransformation[2]= z;
 	}
 
 	/**

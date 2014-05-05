@@ -69,16 +69,28 @@ public class AnimateRotation extends AbstractTool {
 
 			// Rotate the shape
 			if (planeOfRotation == 'x') {
-				MatrixBuilder.euclidean()
+				MatrixBuilder
+						.euclidean()
 						.rotateX(intervalToRotate * currentFrame)
+						.translate(shapeToMove.translationTransformation[0],
+								shapeToMove.translationTransformation[1],
+								shapeToMove.translationTransformation[2])
 						.assignTo(sgcToMove);
 			} else if (planeOfRotation == 'y') {
-				MatrixBuilder.euclidean()
+				MatrixBuilder
+						.euclidean()
 						.rotateY(intervalToRotate * currentFrame)
+						.translate(shapeToMove.translationTransformation[0],
+								shapeToMove.translationTransformation[1],
+								shapeToMove.translationTransformation[2])
 						.assignTo(sgcToMove);
 			} else {
-				MatrixBuilder.euclidean()
+				MatrixBuilder
+						.euclidean()
 						.rotateZ(intervalToRotate * currentFrame)
+						.translate(shapeToMove.translationTransformation[0],
+								shapeToMove.translationTransformation[1],
+								shapeToMove.translationTransformation[2])
 						.assignTo(sgcToMove);
 			}
 
