@@ -33,7 +33,6 @@ import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
-import foldr.shape.Converter;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;

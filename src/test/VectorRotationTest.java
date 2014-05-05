@@ -23,10 +23,10 @@ public class VectorRotationTest {
 		testShape1.rotate(Math.toRadians(20), 'z');
 		// testShape1.rotateShape(Math.toRadians(20), 'z');
 
-		double[] vector1 = convert.convertPointsToVector(
+		double[] vector1 = convert.convertPointsToVectorOnOrigin(
 				testShape1.getCurrentVertexCoordinates(2),
 				testShape1.getCurrentVertexCoordinates(1));
-		double[] vector2 = convert.convertPointsToVector(
+		double[] vector2 = convert.convertPointsToVectorOnOrigin(
 				testShape2.getCurrentVertexCoordinates(1),
 				testShape2.getCurrentVertexCoordinates(2));
 
