@@ -55,15 +55,14 @@ public class AnimateRotationVector extends AbstractTool {
 	 * @param vertexToMatch1
 	 * @param vertexToMatch2
 	 */
-	public void setEndPoints(Shape newShapeToMove, double[] v1, double[]v2) {
+	public void setEndPoints(Shape newShapeToMove, double[] v1, double[] v2) {
 		shapeToMove = newShapeToMove;
 		sgcToMove = shapeToMove.getShapeSGC();
 		this.vectorToMatch1 = v1;
 		this.vectorToMatch2 = v2;
-		
 
 		// Calculate the amount the shape should rotate for each frame.
-		//intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
+		// intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
 		System.out.println(intervalToRotate);
 		currentFrame = 0;
 
@@ -80,11 +79,16 @@ public class AnimateRotationVector extends AbstractTool {
 			sgcToMove.removeTool(this);
 		} else {
 			MatrixBuilder
-					.euclidean().rotateFromTo(vectorToMatch1, vectorToMatch2).assignTo(sgcToMove);
-					
-//					rotate(vertexToMatch1, vertexToMatch2,
-//							intervalToRotate * currentFrame)
-//					;
+					.euclidean()
+					.rotateFromTo(vectorToMatch1, vectorToMatch2)
+					.translate(shapeToMove.translationTransformation[0],
+							shapeToMove.translationTransformation[1],
+							shapeToMove.translationTransformation[2])
+					.assignTo(sgcToMove);
+
+			// rotate(vertexToMatch1, vertexToMatch2,
+			// intervalToRotate * currentFrame)
+			// ;
 
 			// Increment current Frame
 			currentFrame++;

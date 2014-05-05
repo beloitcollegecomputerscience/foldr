@@ -83,6 +83,9 @@ public class AnimateRotation2 extends AbstractTool {
 					.euclidean()
 					.rotate(vertexToMatch1, vertexToMatch2,
 							intervalToRotate * currentFrame)
+					.translate(shapeToMove.translationTransformation[0],
+							shapeToMove.translationTransformation[1],
+							shapeToMove.translationTransformation[2])
 					.assignTo(sgcToMove);
 
 			// Increment current Frame
