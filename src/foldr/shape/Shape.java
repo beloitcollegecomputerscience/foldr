@@ -45,7 +45,7 @@ public class Shape {
 	// is so that the JUnit test can see it
 	public AnimateMovement animateShape = new AnimateMovement();
 	public AnimateRotation rotateShape = new AnimateRotation();
-	public AnimateRotation2 rotateShapeTheOtherWay = new AnimateRotation2();
+	public AnimateRotationAroundLine rotateShapeTheOtherWay = new AnimateRotationAroundLine();
 	public AnimateRotationVector rotateWithVector = new AnimateRotationVector();
 	private DragEventTool shapeClicked = new DragEventTool();
 

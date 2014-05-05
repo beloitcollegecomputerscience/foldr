@@ -14,7 +14,7 @@ import de.jreality.scene.tool.ToolContext;
  * 
  * 
  */
-public class AnimateRotation2 extends AbstractTool {
+public class AnimateRotationAroundLine extends AbstractTool {
 
 	int currentFrame = 0;
 	// this variable determines the number of frames the animation will
@@ -40,7 +40,7 @@ public class AnimateRotation2 extends AbstractTool {
 
 	private final InputSlot TIME = InputSlot.SYSTEM_TIME;
 
-	public AnimateRotation2() {
+	public AnimateRotationAroundLine() {
 		addCurrentSlot(TIME);
 
 	}
