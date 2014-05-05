@@ -7,7 +7,7 @@ import org.junit.Test;
 import foldr.shape.Converter;
 
 public class converterTest {
-	Converter foo = new Converter();
+	Converter testConvert = new Converter();
 
 	@Test
 	public void test() {
@@ -15,7 +15,7 @@ public class converterTest {
 		double[] point1 = { 4, 3, 0 };
 		double[] point2 = { 6, 6, 0 };
 
-		double[] returnVector1 = foo.convertPointsToVectorOnOrigin(point1,
+		double[] returnVector1 = testConvert.convertPointsToVectorOnOrigin(point1,
 				point2);
 
 		assert (returnVector1[0] == 2);
@@ -23,7 +23,6 @@ public class converterTest {
 		assert (returnVector1[2] == 0);
 
 		// Test cross product method
-		Converter testConvert = new Converter();
 
 		// create vectors
 		double[] vector1 = { 2, 3, 5 };
@@ -32,9 +31,9 @@ public class converterTest {
 		// Run cross product method
 		double[] results = testConvert.crossProduct(vector1, vector2);
 
-		assert (returnVector1[0] == 8);
-		assert (returnVector1[1] == 13);
-		assert (returnVector1[2] == -11);
+		assert (results[0] == 8);
+		assert (results[1] == 13);
+		assert (results[2] == -11);
 	}
 
 }
