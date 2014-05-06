@@ -19,6 +19,7 @@ import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
@@ -28,6 +29,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import de.jreality.geometry.Primitives;
@@ -83,7 +86,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	Point mouseDragLocation = null;
 
 	// the swing components to create the menu bar
-	protected JPanel menuBarPane;
+	protected JPanel menuBarPane, popUp;
 	protected JMenuBar menuBar;
 	protected JMenu fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
 	protected JMenuItem fileOpen, fileNew, fileSave, fileSaveAs, fileExport,
@@ -97,11 +100,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			windowShowHideTools, windowShowHideInfo, windowChangePerspective,
 			windowSaveLoadPerspective, windowResizePerspective;
 	protected JMenuItem helpManual, helpQuickStartGuide;
-	protected JDialog dialog;
+	protected JDialog dialog, popUpDialog;
 	protected JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
 	paletteJoinPoint, paletteErase, palettePoint, paletteLine,
 	paletteShape, palettePanCamera, paletteFlymode,
 	paletteRotateCamera, paletteMoveCamera;
+	protected JTextField textField; 
 	
 	ActionManager actionManager = new ActionManager();
 
@@ -380,11 +384,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
 		// TESTING with a visible shape @TODO: Remove this.
-		IndexedFaceSet octo = Primitives.regularPolygon(8);
+		/*IndexedFaceSet octo = Primitives.regularPolygon(8);
 		SceneGraphComponent octoOne = SceneGraphUtility
 				.createFullSceneGraphComponent("octogon1");
 		octoOne.setGeometry(octo);
-		scene.addChild(octoOne);
+		scene.addChild(octoOne);*/
 
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
@@ -458,6 +462,32 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		frontCamera.setLocation(0, 0, 4.5);
 		frontCamera.applyChangesTo(frontCameraContainer);
 	}	
+	
+	/**
+	 * Creates a pop up box when 'shape' button is clicked on the tool bar.
+	 * Allows the user to enter the number of sides they want a polygon to have
+	 * which is being added to the scene.
+	 */
+	protected void popUpPanel() {
+		
+		popUp = new JPanel();
+		
+		textField = new JTextField(1);
+		
+		JButton selectNumSides = new JButton("OK");
+		selectNumSides.addActionListener((ActionListener) this);
+		selectNumSides.setName("selectNumSides");
+		
+		popUp.add(textField);
+		popUp.add(selectNumSides);
+		
+		popUpDialog = new JDialog(theProgram, "Tools", false);
+		popUpDialog.add(popUp);
+		popUpDialog.pack();
+		popUpDialog.setLocation(8, 170);
+		popUpDialog.setVisible(true);
+	}
+	
 	protected void initPalettePane() {
 
 		palettePane = new JPanel();
@@ -643,6 +673,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			actionManager.doLine();
 		} else if (buttonName.equals("shape")) {
 			actionManager.doShape();
+			popUpPanel();
 		} else if (buttonName.equals("panCamera")) {
 			actionManager.doPanCamera();
 		} else if (buttonName.equals("rotateCamera")) {
@@ -651,6 +682,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			actionManager.doFlymode();
 		} else if (buttonName.equals("moveCamera")) {
 			actionManager.doMoveCamera();
+		} else if (buttonName.equals("selectNumSides")) {
+			//opens up a popup dialogue which asks the user for number of sides
+			actionManager.doSelectNumSides(textField.getText(), scene);
+			popUpDialog.setVisible(false);
 		}
 	}
 
