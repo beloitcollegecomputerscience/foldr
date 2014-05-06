@@ -32,6 +32,8 @@ public class Tool {
 	 *
 	 */
 	
+	// defines the tools
+	
 	public enum ToolType { SELECTION, ADD_SHAPE, ADD_LINE, PAN_CAMERA, FLY_MODE, ERASE, MOVE, FILL, JOIN_EDGE, ADD_POINT, ROTATE_CAMERA, 
 		 CAMERA_MOVE}
 	
