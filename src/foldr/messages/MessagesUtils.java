@@ -16,6 +16,7 @@ import java.util.Scanner;
  * GUI.
  * 
  * @author couretn
+ * @category i18n
  */
 public final class MessagesUtils {
 
@@ -180,7 +181,9 @@ public final class MessagesUtils {
     }
 
     /**
-     * @return
+     * <p>
+     * Create the <tt>Locale</tt> list based on the list of names contained in the language list files and return all available <tt>Locale</tt>.
+     * @return a <tt>List</tt> of available <tt>locale</tt>.
      */
     private ArrayList<Locale> buildLocaleList() {
 
