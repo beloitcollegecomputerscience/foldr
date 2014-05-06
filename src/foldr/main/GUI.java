@@ -98,7 +98,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	protected JMenuItem helpManual, helpQuickStartGuide;
 
 	
-	ActionManager actionManager = new ActionManager();
+	static ToolBar toolBar = new ToolBar();
 
 	// This method creates the menu bar
 	protected void initMenuBarPane() {
@@ -196,7 +196,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		windowShowBack.addActionListener(this);
 		windowShowLeft = new JMenuItem("Show Left");
 		windowShowLeft.addActionListener(this);
-		windowShowHideTools = new JMenuItem("Show/Hide Tools");
+		windowShowHideTools = new JMenuItem("Show/Hide Toolbar");
 		windowShowHideTools.addActionListener(this);
 		windowShowHideInfo = new JMenuItem("Show/Hide Information Panel");
 		windowShowHideInfo.addActionListener(this);
@@ -502,7 +502,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		f.setVisible(true);
 		
 		// Initializes the palette last so as to have it in the foreground
-		actionManager.initPalettePane(theProgram);
+		toolBar.initPalettePane(theProgram);
 		
 	}
 

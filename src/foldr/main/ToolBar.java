@@ -10,15 +10,18 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import foldr.utility.Tool;
+import foldr.utility.Tool.ToolType;
+
 /**
  * 
  * @author Nick, Hunter, and Tyler
  * 
  */
 
-public class ActionManager implements ActionListener {
+public class ToolBar implements ActionListener {
 	// Testing
-	
+	public static Tool currentTool = new Tool();
 	protected JDialog dialog;
 	protected JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
 	paletteJoinPoint, paletteErase, palettePoint, paletteLine,
@@ -118,18 +121,18 @@ public class ActionManager implements ActionListener {
 		palettePane.add(paletteMoveCamera);
 
 		// Add action listeners
-		paletteSelect.addActionListener((ActionListener) this);
-		paletteMove.addActionListener((ActionListener) this);
-		paletteFill.addActionListener((ActionListener) this);
-		paletteJoinEdge.addActionListener((ActionListener) this);
-		paletteErase.addActionListener((ActionListener) this);
-		palettePoint.addActionListener((ActionListener) this);
-		paletteLine.addActionListener((ActionListener) this);
-		paletteShape.addActionListener((ActionListener) this);
-		palettePanCamera.addActionListener((ActionListener) this);
-		paletteRotateCamera.addActionListener((ActionListener) this);
-		paletteFlymode.addActionListener((ActionListener) this);
-		paletteMoveCamera.addActionListener((ActionListener) this);
+		paletteSelect.addActionListener(this);
+		paletteMove.addActionListener(this);
+		paletteFill.addActionListener(this);
+		paletteJoinEdge.addActionListener(this);
+		paletteErase.addActionListener(this);
+		palettePoint.addActionListener(this);
+		paletteLine.addActionListener(this);
+		paletteShape.addActionListener(this);
+		palettePanCamera.addActionListener(this);
+		paletteRotateCamera.addActionListener(this);
+		paletteFlymode.addActionListener(this);
+		paletteMoveCamera.addActionListener(this);
 
 		dialog = new JDialog(theProgram, "Tools", false);
 		dialog.setPreferredSize(new Dimension(196, 350));
@@ -173,52 +176,76 @@ public class ActionManager implements ActionListener {
 	}
 
 	public void doSelect() {
-		System.out.println("select");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.SELECTION);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 
 	}
 
 	public void doMove() {
-		System.out.println("move");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.MOVE);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doFill() {
-		System.out.println("fill");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.FILL);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doJoinEdge() {
-		System.out.println("join edge");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.MOVE);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doErase() {
-		System.out.println("erase");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.ERASE);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doPoint() {
-		System.out.println("point");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.ADD_POINT);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doLine() {
-		System.out.println("line");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.ADD_LINE);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doShape() {
-		System.out.println("shape");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.ADD_SHAPE);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doPanCamera() {
-		System.out.println("pan camera");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.PAN_CAMERA);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doFlymode() {
-		System.out.println("fly mode");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.FLY_MODE);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doRotateCamera() {
-		System.out.println("rotate camera");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.ROTATE_CAMERA);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doMoveCamera() {
-		System.out.println("move camera");
+		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
+		currentTool.setTool(ToolType.CAMERA_MOVE);
+		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 }
