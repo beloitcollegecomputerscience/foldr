@@ -601,7 +601,7 @@ public class GUI extends JFrame
         helpQuickStartGuide.setText(Messages.getString(Messages.HE + ".guide"));
         helpLanguage.setText(Messages.getString(Messages.HE + ".language"));
 
-        // panels titles
+        // panels titles FIXME make it work.
         ((TitledBorder) freeViewPanel.getBorder()).setTitle(Messages.getString("panels.freeview"));
         ((TitledBorder) frontPanel.getBorder()).setTitle(Messages.getString("panels.frontview"));
         ((TitledBorder) sidePanel.getBorder()).setTitle(Messages.getString("panels.sideview"));
