@@ -68,8 +68,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	protected JDesktopPane desktop = new JDesktopPane();
 
 	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
-	protected JPanel palettePane;
-	
+	protected JPanel palettePane, popUp;
+	protected JTextField textField;
 	//the viewer components that render the difference camera views
 	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
 	Viewer freeViewer, topViewer, sideViewer, frontViewer;
@@ -100,7 +100,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			windowShowHideTools, windowShowHideInfo, windowChangePerspective,
 			windowSaveLoadPerspective, windowResizePerspective;
 	protected JMenuItem helpManual, helpQuickStartGuide;
-	protected JDialog dialog;
+	protected JDialog dialog, popUpDialog;
 	protected JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
 	paletteJoinPoint, paletteErase, palettePoint, paletteLine,
 	paletteShape, palettePanCamera, paletteFlymode,
@@ -577,6 +577,30 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		dialog.setVisible(true);
 	}
 	
+	/* * Creates a pop up box when 'shape' button is clicked on the tool bar.
+	 * Allows the user to enter the number of sides they want a polygon to have
+	 * which is being added to the scene.
+	 */
+	protected void popUpPanel() {
+		
+		popUp = new JPanel();
+		
+		textField = new JTextField(1);
+		
+		JButton selectNumSides = new JButton("OK");
+		selectNumSides.addActionListener((ActionListener) this);
+		selectNumSides.setName("selectNumSides");
+		
+		popUp.add(textField);
+		popUp.add(selectNumSides);
+		
+		popUpDialog = new JDialog(theProgram, "Tools", false);
+		popUpDialog.add(popUp);
+		popUpDialog.pack();
+		popUpDialog.setLocation(8, 170);
+		popUpDialog.setVisible(true);
+	}
+	
 	//Create the panes, panels and other gui elements and pack them up.
 	public void initPanesAndGui() {
 		// Adding the view panels (free, top, side, front)
@@ -649,6 +673,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			actionManager.doLine();
 		} else if (buttonName.equals("shape")) {
 			actionManager.doShape();
+			popUpPanel();
 		} else if (buttonName.equals("panCamera")) {
 			actionManager.doPanCamera();
 		} else if (buttonName.equals("rotateCamera")) {
@@ -657,7 +682,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			actionManager.doFlymode();
 		} else if (buttonName.equals("moveCamera")) {
 			actionManager.doMoveCamera();
-		}
+		} else if (buttonName.equals("selectNumSides")) {
+		//opens up a popup dialogue which asks the user for number of sides
+		actionManager.doSelectNumSides(textField.getText(), scene);
+		popUpDialog.setVisible(false);
+	}
+	
 	}
 
 	private static GUI theProgram;

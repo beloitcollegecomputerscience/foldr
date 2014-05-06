@@ -60,6 +60,21 @@ public class ActionManager {
 		System.out.println("move camera");
 	}
 	
-	
+	public void doSelectNumSides(String num, SceneGraphComponent topScene) {
+		// parse the string to an integer
+		int numSides = Integer.parseInt(num);
+		
+		//check if number is within a certain legal range
+		//TODO catch errors for input that aren't integers
+		if (numSides < 3 || numSides > 10) {
+			System.out.println("Please submit a number of sides between 3 and 10.");
+			System.out.println("Defaulting to 3 sides.");
+			// if not, default to a triangle
+			numSides = 3;
+		}
+		//put the shape onto the screen
+		Shape newShape = new Shape(numSides, topScene);
+		
+	}
 
 }
