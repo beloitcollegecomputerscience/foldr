@@ -33,6 +33,7 @@ import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
+import foldr.shape.AnimateRotationVector;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
@@ -367,12 +368,28 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
 		// TESTING with a visible shape @TODO: Remove this.
-		IndexedFaceSet octo = Primitives.regularPolygon(8);
+	/*	IndexedFaceSet octo = Primitives.regularPolygon(8);
 		SceneGraphComponent octoOne = SceneGraphUtility
 				.createFullSceneGraphComponent("octogon1");
 		octoOne.setGeometry(octo);
-		scene.addChild(octoOne);
+		scene.addChild(octoOne);*/
 
+		Shape shapeOne = new Shape(4, scene);
+		Shape shapeTwo = new Shape(4, scene);
+		
+		double edgeLength = Math.abs(shapeOne.getCurrentVertexCoordinates(0)[0] - shapeOne.getCurrentVertexCoordinates(1)[0]);
+
+		
+		shapeOne.translate(0, edgeLength, 0);
+		shapeTwo.translate(edgeLength, 0, 0);
+		
+		
+
+		
+		AnimateRotationVector testAnimate = new AnimateRotationVector();
+		testAnimate.setEndPoints(shapeOne, shapeOne.getCurrentVertexCoordinates(0), shapeOne.getCurrentVertexCoordinates(1), shapeTwo.getCurrentVertexCoordinates(3), shapeTwo.getCurrentVertexCoordinates(2));
+		shapeOne.shapeSGC.addTool(testAnimate);
+		
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
 		freeJRViewer.setContent(scene);

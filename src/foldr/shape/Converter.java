@@ -41,6 +41,12 @@ public class Converter {
 
 	}
 
+	/**
+	 * This method will take two vectors and calculate their cross-product
+	 * @param vector1 first vector
+	 * @param vector2 second vector
+	 * @return the calculated vector
+	 */
 	public double[] crossProduct(double[] vector1, double[] vector2) {
 		double[] crossProduct = new double[3];
 
@@ -52,5 +58,7 @@ public class Converter {
 		// Return Cross Product
 		return crossProduct;
 	}
+	
+
 
 }

@@ -18,8 +18,10 @@ import de.jreality.tools.PointDragListener;
 import de.jreality.util.SceneGraphUtility;
 
 import java.util.*;
+
 import de.jreality.geometry.IndexedFaceSetFactory;
 import de.jreality.scene.IndexedFaceSet;
+import foldr.utility.Vector3d;
 
 /**
  * <p>
@@ -51,9 +53,13 @@ public class Shape {
 
 	public boolean inMotion = false;
 
-	//array to store translation values
+	// array to store translation values
 	public double[] translationTransformation = new double[3];
-	
+
+	//storing location and rotation.
+	public Vector3d location = new Vector3d(0, 0, 0);
+	public Vector3d rotation = new Vector3d(0, 0, 0);
+
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
 	}
@@ -107,15 +113,47 @@ public class Shape {
 
 	}
 
+	public void setLocation(double x, double y, double z) {
+		location.set(x, y, z);
+	}
+	
+	public void setLocationX(double x) {
+		location.x = x;
+	}
+	
+	public void setLocationY(double y) {
+		location.y = y;
+	}
+	
+	public void setLocationZ(double z) {
+		location.z = z;
+	}
+	
+	public void setRotation(double x, double y, double z) {
+		rotation.set(x, y, z);
+	}
+	
+	public void setRotationX(double x) {
+		rotation.x = x;
+	}
+	
+	public void setRotationY(double y) {
+		rotation.y = y;
+	}
+	
+	public void setRotationZ(double z) {
+		rotation.z = z;
+	}
+	
 	/**
 	 * Method that simplifies translation of shapes. Just using it to test
 	 * animation.
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
-		translationTransformation[0]= x;
-		translationTransformation[1]= y;
-		translationTransformation[2]= z;
+		translationTransformation[0] = x;
+		translationTransformation[1] = y;
+		translationTransformation[2] = z;
 	}
 
 	/**
@@ -141,8 +179,10 @@ public class Shape {
 	 * Method that simplifies rotation of shapes using vectors. Is useful for
 	 * testing and setting up a scene.
 	 * 
-	 * @param v1 vector to start from
-	 * @param v2 vector to ending at
+	 * @param v1
+	 *            vector to start from
+	 * @param v2
+	 *            vector to ending at
 	 */
 	public void rotateOnVector(double[] v1, double[] v2) {
 		MatrixBuilder.euclidean().rotateFromTo(v1, v2).assignTo(this.shapeSGC);
@@ -289,6 +329,16 @@ public class Shape {
 			rotateWithVector.setEndPoints(this, vector1, vector2);
 		}
 		return true;
+	}
+
+	public void rotateShapeFromOL(double[] cordinate1, double[] cordinate2,
+			double[] cordinate3, double[] cordinate4) {
+		if (inMotion) {
+
+		} else {
+
+		}
+
 	}
 
 	/**
