@@ -109,6 +109,15 @@ public class GUI extends JFrame
     private JButton                    paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
                     paletteErase, palettePoint, paletteLine, paletteShape, palettePanCamera,
                     paletteFlymode, paletteRotateCamera, paletteMoveCamera;
+	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
+	protected JPanel palettePane, popUp;
+	protected JTextField textField;
+	//the viewer components that render the difference camera views
+	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
+	Viewer freeViewer, topViewer, sideViewer, frontViewer;
+	// the camera containers for the different cameras of the different views
+	SceneGraphComponent freeCameraContainer, topCameraContainer,
+			sideCameraContainer, frontCameraContainer;
 
     private JDialog                    dialog;
 
@@ -696,7 +705,49 @@ public class GUI extends JFrame
         ((TitledBorder) topPanel.getBorder()).setTitle(Messages.getString("panels.topview"));
     }
 
-    public void actionPerformed(ActionEvent e) {
+   
+	/* * Creates a pop up box when 'shape' button is clicked on the tool bar.
+	 * Allows the user to enter the number of sides they want a polygon to have
+	 * which is being added to the scene.
+	 */
+	protected void popUpPanel() {
+		
+		popUp = new JPanel();
+		
+		textField = new JTextField(1);
+		
+		JButton selectNumSides = new JButton("OK");
+		selectNumSides.addActionListener((ActionListener) this);
+		selectNumSides.setName("selectNumSides");
+		
+		popUp.add(textField);
+		popUp.add(selectNumSides);
+		
+		popUpDialog = new JDialog(theProgram, "Tools", false);
+		popUpDialog.add(popUp);
+		popUpDialog.pack();
+		popUpDialog.setLocation(8, 170);
+		popUpDialog.setVisible(true);
+	}
+	
+	//Create the panes, panels and other gui elements and pack them up.
+	public void initPanesAndGui() {
+		// Adding the view panels (free, top, side, front)
+		GridLayout gl = new GridLayout(2, 2);
+		mainPanel = new JPanel(gl, true);
+		mainPanel.setBackground(new Color(128, 128, 64));
+		freeViewPanel = new JPanel();
+		mainPanel.add(freeViewPanel);
+		topPanel = new JPanel();
+		topPanel.setBackground(Color.WHITE);
+		mainPanel.add(topPanel);
+		sidePanel = new JPanel();
+		sidePanel.setBackground(Color.WHITE);
+		mainPanel.add(sidePanel);
+		frontPanel = new JPanel();
+		frontPanel.setBackground(Color.GRAY);
+		mainPanel.add(frontPanel);
+		mainPanel.addMouseListener(this);
 
         JButton theCommand = (JButton) e.getSource();
         String buttonName = theCommand.getName();
@@ -775,6 +826,38 @@ public class GUI extends JFrame
 
     @Override
     public void mouseDragged(MouseEvent e) {
+		if (buttonName.equals("select")) {
+			actionManager.doSelect();
+		} else if (buttonName.equals("move")) {
+			actionManager.doMove();
+		} else if (buttonName.equals("fill")) {
+			actionManager.doFill();
+		} else if (buttonName.equals("joinEdge")) {
+			actionManager.doJoinEdge();
+		} else if (buttonName.equals("erase")) {
+			actionManager.doErase();
+		} else if (buttonName.equals("point")) {
+			actionManager.doPoint();
+		} else if (buttonName.equals("line")) {
+			actionManager.doLine();
+		} else if (buttonName.equals("shape")) {
+			actionManager.doShape();
+			popUpPanel();
+		} else if (buttonName.equals("panCamera")) {
+			actionManager.doPanCamera();
+		} else if (buttonName.equals("rotateCamera")) {
+			actionManager.doRotateCamera();
+		} else if (buttonName.equals("flymode")) {
+			actionManager.doFlymode();
+		} else if (buttonName.equals("moveCamera")) {
+			actionManager.doMoveCamera();
+		} else if (buttonName.equals("selectNumSides")) {
+		//opens up a popup dialogue which asks the user for number of sides
+		actionManager.doSelectNumSides(textField.getText(), scene);
+		popUpDialog.setVisible(false);
+	}
+	
+	}
 
         int flipCoefficient = 1;
         if (mouseDragLocation == null) {
