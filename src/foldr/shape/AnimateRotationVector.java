@@ -45,25 +45,25 @@ public class AnimateRotationVector extends AbstractTool {
 
 	}
 
-	/**
-	 * This method will rotate the shape along an axis defined by the two points
-	 * given.
-	 * 
-	 * @param newShapeToMove
-	 * @param angleToRotate
-	 *            Use Radians!
-	 * @param vertexToMatch1
-	 * @param vertexToMatch2
-	 */
-	public void setEndPoints(Shape newShapeToMove, double[] v1, double[] v2) {
+	public void setEndPoints(Shape newShapeToMove, double[] cordinate1,
+			double[] cordinate2, double[] cordinate3, double[] cordinate4) {
 		shapeToMove = newShapeToMove;
 		sgcToMove = shapeToMove.getShapeSGC();
-		this.vectorToMatch1 = v1;
-		this.vectorToMatch2 = v2;
 
-		// Calculate the amount the shape should rotate for each frame.
-		// intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
-		System.out.println(intervalToRotate);
+		// Create converter object
+		Converter myConvert = new Converter();
+
+		// Convert given points to usable vectors
+		double[] vector1 = myConvert.convertPointsToVectorOnOrigin(cordinate1,
+				cordinate2);
+		double[] vector2 = myConvert.convertPointsToVectorOnOrigin(cordinate3,
+				cordinate4);
+
+		// Set vectors for this instance
+		this.vectorToMatch1 = vector1;
+		this.vectorToMatch2 = vector2;
+
+		// Set current frame to 0 TODO animation not working
 		currentFrame = 0;
 
 	}
@@ -78,19 +78,21 @@ public class AnimateRotationVector extends AbstractTool {
 			// animation is done, so get remove this tool from the shape
 			sgcToMove.removeTool(this);
 		} else {
+			// Build animation matrix and
 			MatrixBuilder
 					.euclidean()
-					.rotateFromTo(vectorToMatch1, vectorToMatch2)
+					.translate(-shapeToMove.translationTransformation[0],
+							-shapeToMove.translationTransformation[1],
+							-shapeToMove.translationTransformation[2])
+					
+							.rotateFromTo(vectorToMatch1, vectorToMatch2)
+					//Conjugate Shape back
 					.translate(shapeToMove.translationTransformation[0],
 							shapeToMove.translationTransformation[1],
 							shapeToMove.translationTransformation[2])
 					.assignTo(sgcToMove);
 
-			// rotate(vertexToMatch1, vertexToMatch2,
-			// intervalToRotate * currentFrame)
-			// ;
-
-			// Increment current Frame
+			System.out.println("hit this here!");
 			currentFrame++;
 		}
 
