@@ -81,30 +81,40 @@ public class GUI extends JFrame
     Point                              mouseDragLocation = null;
 
     // menu components
-    protected JMenuBar                 menuBar;
-    protected JMenu                    fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
-    protected JMenuItem                fileOpen, fileNew, fileSave, fileSaveAs, fileExport,
+    private JMenuBar                   menuBar;
+    private JMenu                      fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
+    private JMenuItem                  fileOpen, fileNew, fileSave, fileSaveAs, fileExport,
                     fileClose;
-    protected JMenuItem                editCopy, editCut, editPaste, editDelete, editSelectAll;
+    private JMenuItem                  editCopy, editCut, editPaste, editDelete, editSelectAll;
     private JMenu                      foldingAngle, foldingShape;
-    protected JMenuItem                foldingThirty, foldingFortyFive, foldingNinety,
+    private JMenuItem                  foldingThirty, foldingFortyFive, foldingNinety,
                     foldingCustomAngle, foldingEdgeSelect, foldingPointSelect, foldingFoldShapes,
                     foldingConnectShapes, foldingDetachShapes, foldingResizeShape;
     private JMenu                      windowView, windowPerspective;
-    protected JMenuItem                windowShowTop, windowShowBack, windowShowLeft,
+    private JMenuItem                  windowShowTop, windowShowBack, windowShowLeft,
                     windowShowHideTools, windowShowHideInfo, windowChangePerspective,
                     windowSavePerspective, windowLoadPerspective, windowResizePerspective;
     private JMenu                      helpLanguage;
-    protected JMenuItem                helpManual, helpQuickStartGuide;
+    private JMenuItem                  helpManual, helpQuickStartGuide;
     private ButtonGroup                langGroup;
     private List<JRadioButtonMenuItem> liLanguages;
 
+    /**
+     * <p>
+     * Construct a new <tt>GUI</tt> (i.e. <tt>JFrame</tt>) with the given title.
+     * 
+     * @param title
+     *            The window's title.
+     */
     public GUI(String title) {
 
         super(title);
     }
 
     /**
+     * <p>
+     * Initialize the menu components and add them to the frame.
+     * <p>
      * Menu structure :
      * <p>
      * File<br>
@@ -157,7 +167,7 @@ public class GUI extends JFrame
     protected void initMenuBarPane() {
 
         menuBar = new JMenuBar();
-        // File menu items
+        // File submenu
         fileMenu = new JMenu("File");
         menuBar.add(fileMenu);// fileMenu -> menuBar
         fileNew = new JMenuItem("New");
@@ -184,7 +194,7 @@ public class GUI extends JFrame
         fileClose.addActionListener(this);
         fileMenu.add(fileClose);
 
-        // Edit menu items
+        // Edit submenu
         editMenu = new JMenu("Edit");
         menuBar.add(editMenu); // editMenu -> menuBar
         editCopy = new JMenuItem("Copy");
@@ -199,7 +209,7 @@ public class GUI extends JFrame
         editPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.META_MASK));
         editPaste.addActionListener(this);
         editMenu.add(editPaste);
-        editMenu.add(new JSeparator());
+        editMenu.add(new JSeparator()); // separate
         editDelete = new JMenuItem("Delete");
         editDelete.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_BACK_SPACE, ActionEvent.META_MASK));
@@ -210,7 +220,7 @@ public class GUI extends JFrame
         editSelectAll.addActionListener(this);
         editMenu.add(editSelectAll);
 
-        // Folding/Shapes sub-menu
+        // Folding/Shapes submenu
         foldingMenu = new JMenu("Folding");
         menuBar.add(foldingMenu); // folMenu -> menuBar
         foldingAngle = new JMenu("Angle");
@@ -250,7 +260,7 @@ public class GUI extends JFrame
         foldingResizeShape.addActionListener(this);
         foldingShape.add(foldingResizeShape);
 
-        // Window menu items
+        // Window submenu
         windowMenu = new JMenu("Window");
         menuBar.add(windowMenu);// winMenu -> menuBar
         windowView = new JMenu("View");
