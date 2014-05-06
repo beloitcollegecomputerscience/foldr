@@ -14,7 +14,8 @@ import de.jreality.scene.tool.ToolContext;
  * 
  * 
  */
-public class AnimateRotation2 extends AbstractTool {
+public class AnimateRotationVector extends AbstractTool {
+
 	int currentFrame = 0;
 	// this variable determines the number of frames the animation will
 	// occur in
@@ -26,10 +27,10 @@ public class AnimateRotation2 extends AbstractTool {
 
 	// the interval the shape will rotate every frame
 	double intervalToRotate;
-	// Which plane the shape is being rotated in
-	char planeOfRotation;
-	double[] vertexToMatch1;
-	double[] vertexToMatch2;
+
+	// The vertex's that will create the axis to rotate around
+	double[] vectorToMatch1;
+	double[] vectorToMatch2;
 
 	// the new coordinates to translate the shape to. These start as equal
 	// to the current coordinates.
@@ -39,7 +40,7 @@ public class AnimateRotation2 extends AbstractTool {
 
 	private final InputSlot TIME = InputSlot.SYSTEM_TIME;
 
-	public AnimateRotation2() {
+	public AnimateRotationVector() {
 		addCurrentSlot(TIME);
 
 	}
@@ -54,14 +55,14 @@ public class AnimateRotation2 extends AbstractTool {
 	 * @param vertexToMatch1
 	 * @param vertexToMatch2
 	 */
-	public void setEndPoints(Shape newShapeToMove, double angleToRotate,
-			double[] vertexToMatch1, double[] vertexToMatch2) {
+	public void setEndPoints(Shape newShapeToMove, double[] v1, double[] v2) {
 		shapeToMove = newShapeToMove;
 		sgcToMove = shapeToMove.getShapeSGC();
-		this.vertexToMatch1 = vertexToMatch1;
-		this.vertexToMatch2 = vertexToMatch2;
+		this.vectorToMatch1 = v1;
+		this.vectorToMatch2 = v2;
 
-		intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
+		// Calculate the amount the shape should rotate for each frame.
+		// intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
 		System.out.println(intervalToRotate);
 		currentFrame = 0;
 
@@ -72,17 +73,24 @@ public class AnimateRotation2 extends AbstractTool {
 
 		// check if we've looped through the correct number of frames
 		if (currentFrame == totalFramesForAnimation) {
-			System.out.println("goal reached!");
+			System.out.println("goal reached in vector!");
 			shapeToMove.inMotion = false;
 			// animation is done, so get remove this tool from the shape
 			sgcToMove.removeTool(this);
 		} else {
 			MatrixBuilder
 					.euclidean()
-					.rotate(vertexToMatch1, vertexToMatch2,
-							intervalToRotate * currentFrame)
+					.rotateFromTo(vectorToMatch1, vectorToMatch2)
+					.translate(shapeToMove.translationTransformation[0],
+							shapeToMove.translationTransformation[1],
+							shapeToMove.translationTransformation[2])
 					.assignTo(sgcToMove);
 
+			// rotate(vertexToMatch1, vertexToMatch2,
+			// intervalToRotate * currentFrame)
+			// ;
+
+			// Increment current Frame
 			currentFrame++;
 		}
 
