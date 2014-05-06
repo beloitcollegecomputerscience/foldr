@@ -44,6 +44,8 @@ import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
+import foldr.messages.Messages;
+import foldr.messages.MessagesUtils;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
@@ -336,7 +338,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		
 		helpLanguage = new JMenu("Languages"); helpMenu.add(helpLanguage);
 		liLanguages = new ArrayList<>(); langGroup = new ButtonGroup(); for
-		(String s : Messages.Utils.getDisplayedLanguages()) {
+		(String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
 		JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
 		jrbmi.addActionListener(this); if
 		(s.equals(Messages.getLocale().getDisplayLanguage

@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import foldr.main.Messages;
+import foldr.messages.Messages;
 
 public class MessagesTest {
 
