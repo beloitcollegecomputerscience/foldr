@@ -279,17 +279,17 @@ public class Shape {
 		return true;
 	}
 
-	public boolean rotateShapeWithVector(double[] vector1, double[] vector2) {
-		if (inMotion) {
-			return false;
-		} else {
-			inMotion = true;
-			// attach rotate shape tool
-			shapeSGC.addTool(rotateWithVector);
-			rotateWithVector.setEndPoints(this, vector1, vector2);
-		}
-		return true;
-	}
+//	public boolean rotateShapeWithVector(double[] vector1, double[] vector2) {
+////		if (inMotion) {
+////			return false;
+////		} else {
+////			inMotion = true;
+////			// attach rotate shape tool
+////			shapeSGC.addTool(rotateWithVector);
+////			rotateWithVector.setEndPoints(this, vector1, vector2);
+////		}
+//		return true;
+//	}
 
 	/**
 	 * <p>
