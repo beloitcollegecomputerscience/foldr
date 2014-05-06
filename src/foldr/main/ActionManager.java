@@ -15,6 +15,7 @@ import javax.swing.JPanel;
  * @author Nick, Hunter, and Tyler
  * 
  */
+
 public class ActionManager implements ActionListener {
 	// Testing
 	
