@@ -1,5 +1,8 @@
 package foldr.main;
 
+import de.jreality.scene.SceneGraphComponent;
+import foldr.shape.Shape;
+
 /**
  * 
  * @author Nick, Hunter, and Tyler
