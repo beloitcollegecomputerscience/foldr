@@ -173,6 +173,7 @@ public class Shape {
 		} else {
 			MatrixBuilder.euclidean().rotateZ(angle).assignTo(this.shapeSGC);
 		}
+		
 	}
 
 	/**
