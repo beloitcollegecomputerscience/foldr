@@ -19,7 +19,6 @@ import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
@@ -29,8 +28,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import de.jreality.geometry.Primitives;
@@ -383,11 +380,11 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
 		// TESTING with a visible shape @TODO: Remove this.
-		/*IndexedFaceSet octo = Primitives.regularPolygon(8);
+		IndexedFaceSet octo = Primitives.regularPolygon(8);
 		SceneGraphComponent octoOne = SceneGraphUtility
 				.createFullSceneGraphComponent("octogon1");
 		octoOne.setGeometry(octo);
-		scene.addChild(octoOne);*/
+		scene.addChild(octoOne);
 
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
@@ -461,9 +458,6 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		frontCamera.setLocation(0, 0, 4.5);
 		frontCamera.applyChangesTo(frontCameraContainer);
 	}	
-	
-	
-	
 	protected void initPalettePane() {
 
 		palettePane = new JPanel();

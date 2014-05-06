@@ -1,10 +1,5 @@
 package foldr.main;
 
-import javax.swing.JComboBox;
-
-import de.jreality.scene.SceneGraphComponent;
-import foldr.shape.Shape;
-
 /**
  * 
  * @author Nick, Hunter, and Tyler
@@ -14,6 +9,7 @@ public class ActionManager {
 
 	public void doSelect() {
 		System.out.println("select");
+
 	}
 
 	public void doMove() {
@@ -59,7 +55,5 @@ public class ActionManager {
 	public void doMoveCamera() {
 		System.out.println("move camera");
 	}
-	
-	
 
 }
