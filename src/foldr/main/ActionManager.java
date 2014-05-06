@@ -6,7 +6,7 @@ package foldr.main;
  *
  */
 public class ActionManager {
-
+//Testing
 	public void doSelect() {
 		System.out.println("select");
 
