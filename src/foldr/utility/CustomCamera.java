@@ -113,7 +113,7 @@ public class CustomCamera {
 	}
 	
 	/**
-	 * Sets the rotation of the camera
+	 * Applies the changes (translation and rotation) to a given camera container.
 	 **/
 	public void applyChangesTo(SceneGraphComponent cameraContainer) {
 		if (originLock) {

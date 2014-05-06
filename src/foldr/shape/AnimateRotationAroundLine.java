@@ -7,16 +7,15 @@ import de.jreality.scene.tool.InputSlot;
 import de.jreality.scene.tool.ToolContext;
 
 /**
- * A Jreality tool, which animates a shape an inputed degree of rotation in an
- * inputed plane over a set amount of frames.
+ * A Jreality tool, which animates a shape an inputed degree of rotation along
+ * an axis defined by the two points given.
  * 
  * @author Ellery Addington-White
  * 
- *         Bugs: Is it possibly the rotate methods are using raidians as the
- *         degree to rotate? No Documentation.
  * 
  */
-public class AnimateRotation extends AbstractTool {
+public class AnimateRotationAroundLine extends AbstractTool {
+
 	int currentFrame = 0;
 	// this variable determines the number of frames the animation will
 	// occur in
@@ -28,8 +27,10 @@ public class AnimateRotation extends AbstractTool {
 
 	// the interval the shape will rotate every frame
 	double intervalToRotate;
-	// Which plane the shape is being rotated in
-	char planeOfRotation;
+
+	// The vertex's that will create the axis to rotate around
+	double[] vertexToMatch1;
+	double[] vertexToMatch2;
 
 	// the new coordinates to translate the shape to. These start as equal
 	// to the current coordinates.
@@ -39,17 +40,29 @@ public class AnimateRotation extends AbstractTool {
 
 	private final InputSlot TIME = InputSlot.SYSTEM_TIME;
 
-	public AnimateRotation() {
+	public AnimateRotationAroundLine() {
 		addCurrentSlot(TIME);
 
 	}
 
+	/**
+	 * This method will rotate the shape along an axis defined by the two points
+	 * given.
+	 * 
+	 * @param newShapeToMove
+	 * @param angleToRotate
+	 *            Use Radians!
+	 * @param vertexToMatch1
+	 * @param vertexToMatch2
+	 */
 	public void setEndPoints(Shape newShapeToMove, double angleToRotate,
-			char plane) {
+			double[] vertexToMatch1, double[] vertexToMatch2) {
 		shapeToMove = newShapeToMove;
 		sgcToMove = shapeToMove.getShapeSGC();
+		this.vertexToMatch1 = vertexToMatch1;
+		this.vertexToMatch2 = vertexToMatch2;
 
-		planeOfRotation = plane;
+		// Calculate the amount the shape should rotate for each frame.
 		intervalToRotate = angleToRotate / (double) totalFramesForAnimation;
 		System.out.println(intervalToRotate);
 		currentFrame = 0;
@@ -66,34 +79,16 @@ public class AnimateRotation extends AbstractTool {
 			// animation is done, so get remove this tool from the shape
 			sgcToMove.removeTool(this);
 		} else {
+			MatrixBuilder
+					.euclidean()
+					.rotate(vertexToMatch1, vertexToMatch2,
+							intervalToRotate * currentFrame)
+					.translate(shapeToMove.translationTransformation[0],
+							shapeToMove.translationTransformation[1],
+							shapeToMove.translationTransformation[2])
+					.assignTo(sgcToMove);
 
-			// Rotate the shape
-			if (planeOfRotation == 'x') {
-				MatrixBuilder
-						.euclidean()
-						.rotateX(intervalToRotate * currentFrame)
-						.translate(shapeToMove.translationTransformation[0],
-								shapeToMove.translationTransformation[1],
-								shapeToMove.translationTransformation[2])
-						.assignTo(sgcToMove);
-			} else if (planeOfRotation == 'y') {
-				MatrixBuilder
-						.euclidean()
-						.rotateY(intervalToRotate * currentFrame)
-						.translate(shapeToMove.translationTransformation[0],
-								shapeToMove.translationTransformation[1],
-								shapeToMove.translationTransformation[2])
-						.assignTo(sgcToMove);
-			} else {
-				MatrixBuilder
-						.euclidean()
-						.rotateZ(intervalToRotate * currentFrame)
-						.translate(shapeToMove.translationTransformation[0],
-								shapeToMove.translationTransformation[1],
-								shapeToMove.translationTransformation[2])
-						.assignTo(sgcToMove);
-			}
-
+			// Increment current Frame
 			currentFrame++;
 		}
 

@@ -45,11 +45,15 @@ public class Shape {
 	// is so that the JUnit test can see it
 	public AnimateMovement animateShape = new AnimateMovement();
 	public AnimateRotation rotateShape = new AnimateRotation();
-	public AnimateRotation2 rotateShapeTheOtherWay = new AnimateRotation2();
+	public AnimateRotationAroundLine rotateShapeTheOtherWay = new AnimateRotationAroundLine();
+	public AnimateRotationVector rotateWithVector = new AnimateRotationVector();
 	private DragEventTool shapeClicked = new DragEventTool();
 
 	public boolean inMotion = false;
 
+	//array to store translation values
+	public double[] translationTransformation = new double[3];
+	
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
 	}
@@ -109,6 +113,39 @@ public class Shape {
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
+		translationTransformation[0]= x;
+		translationTransformation[1]= y;
+		translationTransformation[2]= z;
+	}
+
+	/**
+	 * Method that simplifies rotation of shapes. Used for testing purposes.
+	 * Useful for setting up a scene beforehand where animation isn't important
+	 * 
+	 * @param angle
+	 *            the angle you want to rotate the shape
+	 * @param planeOfRotation
+	 *            the plane you want to rotate the shape in.
+	 */
+	public void rotate(double angle, char planeOfRotation) {
+		if (planeOfRotation == 'x') {
+			MatrixBuilder.euclidean().rotateX(angle).assignTo(this.shapeSGC);
+		} else if (planeOfRotation == 'y') {
+			MatrixBuilder.euclidean().rotateY(angle).assignTo(this.shapeSGC);
+		} else {
+			MatrixBuilder.euclidean().rotateZ(angle).assignTo(this.shapeSGC);
+		}
+	}
+
+	/**
+	 * Method that simplifies rotation of shapes using vectors. Is useful for
+	 * testing and setting up a scene.
+	 * 
+	 * @param v1 vector to start from
+	 * @param v2 vector to ending at
+	 */
+	public void rotateOnVector(double[] v1, double[] v2) {
+		MatrixBuilder.euclidean().rotateFromTo(v1, v2).assignTo(this.shapeSGC);
 	}
 
 	/**
@@ -238,6 +275,18 @@ public class Shape {
 			shapeSGC.addTool(rotateShapeTheOtherWay);
 			rotateShapeTheOtherWay.setEndPoints(this, angleToRotate,
 					vertexToMatch1, vertexToMatch2);
+		}
+		return true;
+	}
+
+	public boolean rotateShapeWithVector(double[] vector1, double[] vector2) {
+		if (inMotion) {
+			return false;
+		} else {
+			inMotion = true;
+			// attach rotate shape tool
+			shapeSGC.addTool(rotateWithVector);
+			rotateWithVector.setEndPoints(this, vector1, vector2);
 		}
 		return true;
 	}

@@ -4,6 +4,7 @@ package foldr.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -21,8 +22,11 @@ import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -64,6 +68,7 @@ public class GUI extends JFrame
                                                              SceneGraphUtility.createFullSceneGraphComponent("scene");
 
     private JPanel                     mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
+    protected JPanel                   palettePane;
 
     // the viewer components that render the difference camera views
     JRViewer                           freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
@@ -98,6 +103,14 @@ public class GUI extends JFrame
     private JMenuItem                  helpManual, helpQuickStartGuide;
     private ButtonGroup                langGroup;
     private List<JRadioButtonMenuItem> liLanguages;
+
+    ActionManager                      actionManager     = new ActionManager();
+
+    private JButton                    paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
+                    paletteErase, palettePoint, paletteLine, paletteShape, palettePanCamera,
+                    paletteFlymode, paletteRotateCamera, paletteMoveCamera;
+
+    private JDialog                    dialog;
 
     /**
      * <p>
@@ -322,53 +335,6 @@ public class GUI extends JFrame
         }
     }
 
-    // Action listener. For now, this method is just a placeholder.
-    public void actionPerformed(ActionEvent e) {
-
-        String theCommand = e.getActionCommand();
-        System.out.println("You clicked " + theCommand);
-        if (e.getSource().equals(foldingConnectShapes)) {
-
-            // TODO figure out how to do this by clicking on the shapes!
-            // use the console to grab the shapes and vertices to connect
-            // the number of a shape is its index number where it's stored in
-            // ShapeCollection
-            System.out.println("Enter the number of the first shape");
-            int firstShape = input.nextInt();
-            System.out.println("Enter the number of the vertex");
-            int firstVertex = input.nextInt();
-            System.out.println("Enter the number of the second shape");
-            int secondShape = input.nextInt();
-            System.out.println("Enter the number of the vertex");
-            int secondVertex = input.nextInt();
-
-            // grab the 2 shapes the user inputed
-            Shape shapeOne = allShapes.getShapeFromCollection(firstShape);
-            Shape shapeTwo = allShapes.getShapeFromCollection(secondShape);
-
-            System.out.println("Connecting...");
-
-            // animate it
-            connectTwoShapes(shapeOne, firstVertex, shapeTwo, secondVertex);
-
-        } else if (e.getSource().equals(fileClose)) {
-            setVisible(false);
-            dispose();
-            System.exit(0); // default operation should be DISPOSE_ON_CLOSE and
-                            // we should take care that disposing the window
-                            // lead to the application termination.
-        } else {
-            for (JRadioButtonMenuItem jmi : liLanguages) {
-                if (e.getSource().equals(jmi)) {
-                    Messages.setBundle(Messages.Utils.getLocale(jmi.getText()));
-                    label();
-                    return;
-                }
-            }
-            System.out.println("The command is not yet implemented!");
-        }
-    }
-
     /**
      * <p>
      * Animates connecting two shapes at a vertex. The entire ShapeGroup is
@@ -510,8 +476,17 @@ public class GUI extends JFrame
         frontCamera.applyChangesTo(frontCameraContainer);
     }
 
-    // Create the panes, panels and other gui elements and pack them up.
+    /**
+     * <p>
+     * Create the panes, panels and other gui elements and pack them up.
+     */
     public void initPanesAndGui() {
+        
+        initMenuBarPane();
+        setJMenuBar(menuBar);
+        
+        initPalettePane();
+        
 
         // Adding the view panels (free, top, side, front)
         GridLayout gl = new GridLayout(2, 2);
@@ -529,7 +504,8 @@ public class GUI extends JFrame
         frontPanel.setBackground(Color.GRAY);
         mainPanel.add(frontPanel);
         mainPanel.addMouseListener(this);
-
+        createJRViewers();
+        
         // Adding borders and titles
         freeViewPanel.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createEmptyBorder(), "Free Camera"));
@@ -539,10 +515,16 @@ public class GUI extends JFrame
             BorderFactory.createEmptyBorder(), "Right Camera"));
         frontPanel.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createEmptyBorder(), "Front Camera"));
+        topCamera.setLocation(0, 7, -4.5);
+        topCamera.setRotationX(-90);
+        topCamera.applyChangesTo(topCameraContainer);
 
-        createJRViewers();
-        initMenuBarPane();
-        setJMenuBar(menuBar);
+        sideCamera.setLocation(7, 0, -4.5);
+        sideCamera.setRotationY(90);
+        sideCamera.applyChangesTo(sideCameraContainer);
+
+        frontCamera.setLocation(0, 0, 4.5);
+        frontCamera.applyChangesTo(frontCameraContainer);
 
         // Create the top frame to store desktop
         getContentPane().setLayout(new BorderLayout());
@@ -551,6 +533,112 @@ public class GUI extends JFrame
         pack();
         setSize(1000, 700);
         setVisible(true);
+    }
+    
+    /**
+     * 
+     */
+    private void initPalettePane() {
+
+        palettePane = new JPanel();
+        palettePane.setBounds(300, 300, 250, 500);
+        palettePane.setLayout(new GridLayout(4, 3));
+
+        // TODO put in right graphics here-- make sure that you either specify
+        // the right path or drop the files into the top-level project folder.
+        // Eclipse won't be able to find them otherwise.
+        // Set up the button images
+        ImageIcon selectImage = new ImageIcon("Icons/selectImage.png");
+        ImageIcon moveImage = new ImageIcon("Icons/moveImage.png");
+        ImageIcon fillImage = new ImageIcon("Icons/fillImage.png");
+        ImageIcon joinEdgeImage = new ImageIcon("Icons/joinEdge.png");
+        ImageIcon eraseImage = new ImageIcon("Icons/erase.png");
+        ImageIcon pointImage = new ImageIcon("Icons/addPoint.png");
+        ImageIcon lineImage = new ImageIcon("Icons/addLine.png");
+        ImageIcon shapeImage = new ImageIcon("Icons/shape.png");
+        ImageIcon panCameraImage = new ImageIcon("Icons/panCamera.png");
+        ImageIcon rotateCameraImage = new ImageIcon("Icons/rotateCamera.png");
+        ImageIcon flymodeImage = new ImageIcon("Icons/flyMode.png");
+        ImageIcon moveCameraImage = new ImageIcon("Icons/moveCamera.png");
+
+        // create the JButtons, passing in the image
+        paletteSelect = new JButton(selectImage);
+        paletteMove = new JButton(moveImage);
+        paletteFill = new JButton(fillImage);
+        paletteJoinEdge = new JButton(joinEdgeImage);
+        // paletteJoinPoint = new JButton(pointImage);
+        paletteErase = new JButton(eraseImage);
+        palettePoint = new JButton(pointImage);
+        paletteLine = new JButton(lineImage);
+        paletteShape = new JButton(shapeImage);
+        palettePanCamera = new JButton(panCameraImage);
+        paletteFlymode = new JButton(flymodeImage);
+        paletteRotateCamera = new JButton(rotateCameraImage);
+        paletteMoveCamera = new JButton(moveCameraImage);
+
+        // Set names so that the actionListener can reference them
+        paletteSelect.setName("select");
+        paletteMove.setName("move");
+        paletteFill.setName("fill");
+        paletteJoinEdge.setName("joinEdge");
+        paletteErase.setName("erase");
+        palettePoint.setName("point");
+        paletteLine.setName("line");
+        paletteShape.setName("shape");
+        palettePanCamera.setName("panCamera");
+        paletteRotateCamera.setName("rotateCamera");
+        paletteFlymode.setName("flymode");
+        paletteMoveCamera.setName("moveCamera");
+
+        // add tool tips
+        paletteSelect.setToolTipText("Selects a shape or shapes to manipulate or move later. Can select individual points, lines, and shapes. If you click and drag you can select multiple points, lines, and shapes.");
+        paletteMove.setToolTipText("Allows user to move selected object.");
+        paletteFill.setToolTipText("Allows user to fill shapes with a particular color. When selected a color option will appear in the information panel.");
+        paletteJoinEdge.setToolTipText("Allows the user to join together the edge of two shapes, creating a hinge along an edge.");
+        paletteErase.setToolTipText("Destroys selected shape");
+        palettePoint.setToolTipText("When selected allows the user to create a single point on the model by clicking on a particular part of any of the perspectives.");
+        paletteLine.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the views/perspectives.");
+        paletteShape.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the perspectives that is not the freeview perspective. By clicking and holding on this tool you can select more polygons from a drop-down menu, or select a �custom� option which would allow you to specify how many faces your object has.");
+        palettePanCamera.setToolTipText("Will move camera up and down and side to side.");
+        paletteRotateCamera.setToolTipText("Allows you to click-and-drag on the Freeview perspective to rotate, or �point� the camera in the desired direction.");
+        paletteFlymode.setToolTipText(" When selected allows the user to fly the camera in the Freeview perspective.");
+        paletteMoveCamera.setToolTipText(" By using using WASD, and the scroll-wheel the user can move the Freeview camera along the three dimensions.");
+
+        // add them to the pane
+        palettePane.add(paletteSelect);
+        palettePane.add(paletteMove);
+        palettePane.add(paletteFill);
+        palettePane.add(paletteJoinEdge);
+        // palettePane.add(paletteJoinPoint);
+        palettePane.add(paletteErase);
+        palettePane.add(palettePoint);
+        palettePane.add(paletteLine);
+        palettePane.add(paletteShape);
+        palettePane.add(palettePanCamera);
+        palettePane.add(paletteFlymode);
+        palettePane.add(paletteRotateCamera);
+        palettePane.add(paletteMoveCamera);
+
+        // Add action listeners
+        paletteSelect.addActionListener((ActionListener) this);
+        paletteMove.addActionListener((ActionListener) this);
+        paletteFill.addActionListener((ActionListener) this);
+        paletteJoinEdge.addActionListener((ActionListener) this);
+        paletteErase.addActionListener((ActionListener) this);
+        palettePoint.addActionListener((ActionListener) this);
+        paletteLine.addActionListener((ActionListener) this);
+        paletteShape.addActionListener((ActionListener) this);
+        palettePanCamera.addActionListener((ActionListener) this);
+        paletteRotateCamera.addActionListener((ActionListener) this);
+        paletteFlymode.addActionListener((ActionListener) this);
+        paletteMoveCamera.addActionListener((ActionListener) this);
+
+        dialog = new JDialog(this, "Tools", false);
+        dialog.setPreferredSize(new Dimension(196, 350));
+        dialog.add(palettePane);
+        dialog.pack();
+        dialog.setLocation(8, 170);
+        dialog.setVisible(true);
     }
 
     /**
@@ -606,17 +694,37 @@ public class GUI extends JFrame
         ((TitledBorder) frontPanel.getBorder()).setTitle(Messages.getString("panels.frontview"));
         ((TitledBorder) sidePanel.getBorder()).setTitle(Messages.getString("panels.sideview"));
         ((TitledBorder) topPanel.getBorder()).setTitle(Messages.getString("panels.topview"));
-
     }
 
-    // So we can run quickly test without having to start from Driver.java
-    private static GUI theProgram;
+    public void actionPerformed(ActionEvent e) {
 
-    public static void main(String[] args) {
-
-        theProgram = new GUI("Polyhedra");
-        theProgram.initPanesAndGui();
-        theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        JButton theCommand = (JButton) e.getSource();
+        String buttonName = theCommand.getName();
+        if (buttonName.equals("select")) {
+            actionManager.doSelect();
+        } else if (buttonName.equals("move")) {
+            actionManager.doMove();
+        } else if (buttonName.equals("fill")) {
+            actionManager.doFill();
+        } else if (buttonName.equals("joinEdge")) {
+            actionManager.doJoinEdge();
+        } else if (buttonName.equals("erase")) {
+            actionManager.doErase();
+        } else if (buttonName.equals("point")) {
+            actionManager.doPoint();
+        } else if (buttonName.equals("line")) {
+            actionManager.doLine();
+        } else if (buttonName.equals("shape")) {
+            actionManager.doShape();
+        } else if (buttonName.equals("panCamera")) {
+            actionManager.doPanCamera();
+        } else if (buttonName.equals("rotateCamera")) {
+            actionManager.doRotateCamera();
+        } else if (buttonName.equals("flymode")) {
+            actionManager.doFlymode();
+        } else if (buttonName.equals("moveCamera")) {
+            actionManager.doMoveCamera();
+        }
     }
 
     @Override
@@ -663,27 +771,6 @@ public class GUI extends JFrame
 
         // System.out.println("Mouse Entered: " + arg0.toString());
 
-    }
-
-    @Override
-    public void mouseExited(MouseEvent arg0) {
-
-        // System.out.println("Mouse Exited: " + arg0.toString());
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-
-        // System.out.println("Mouse Pressed: " + arg0.toString());
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent arg0) {
-
-        // Reset the previous mouse location between drags, so we're only
-        // recording drag position
-        mouseDragLocation = null;
     }
 
     @Override
@@ -734,6 +821,20 @@ public class GUI extends JFrame
     }
 
     @Override
+    public void mousePressed(MouseEvent arg0) {
+
+        // System.out.println("Mouse Pressed: " + arg0.toString());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+
+        // Reset the previous mouse location between drags, so we're only
+        // recording drag position
+        mouseDragLocation = null;
+    }
+
+    @Override
     public void mouseMoved(MouseEvent e) {
 
         // System.out.println("Mouse Moved: " + e.toString());
@@ -756,6 +857,13 @@ public class GUI extends JFrame
             freeCamera.setLocationZ(freeCamera.location.z + amountZoom / 20);
             freeCamera.applyChangesTo(freeCameraContainer);
         }
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+
+        // TODO Auto-generated method stub
 
     }
 

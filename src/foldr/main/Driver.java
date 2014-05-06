@@ -38,5 +38,4 @@ public class Driver {
         mw.initPanesAndGui();
         mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-
 }
