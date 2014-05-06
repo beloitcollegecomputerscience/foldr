@@ -16,9 +16,7 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        // TODO Switch to Locale.getDefault() once the software is properly
-        // translated.
-        Messages.setBundle(Locale.US);
+        Messages.setBundle(Locale.getDefault());
         Messages.Utils.init("languages");
 
         // set the look & feel to the use the system one since swing look & feel
@@ -38,7 +36,7 @@ public class Driver {
         }
         GUI mw = new GUI("Polyhedra");
         mw.initPanesAndGui();
-        mw.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 }
