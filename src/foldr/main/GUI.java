@@ -330,15 +330,20 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 		helpQuickStartGuide.addActionListener(this);
 		helpMenu.add(helpQuickStartGuide);
 		
-		helpLanguage = new JMenu("Languages"); helpMenu.add(helpLanguage);
-		liLanguages = new ArrayList<>(); langGroup = new ButtonGroup(); for
-		(String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
-		JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
-		jrbmi.addActionListener(this); if
-		(s.equals(Messages.getLocale().getDisplayLanguage
-		(Messages.getLocale()))) { jrbmi.setSelected(true); }
-		liLanguages.add(jrbmi); helpLanguage.add(jrbmi);
-		langGroup.add(jrbmi); }
+		helpLanguage = new JMenu("Languages");
+		helpMenu.add(helpLanguage);
+		liLanguages = new ArrayList<JRadioButtonMenuItem>();
+		langGroup = new ButtonGroup();
+		for(String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
+		    JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
+		    jrbmi.addActionListener(this);
+		    if(s.equals(Messages.getLocale().getDisplayLanguage(Messages.getLocale()))) { 
+		        jrbmi.setSelected(true);
+		    }
+		    liLanguages.add(jrbmi);
+		    helpLanguage.add(jrbmi);
+		    langGroup.add(jrbmi);
+		}
 		 
 	}
 
