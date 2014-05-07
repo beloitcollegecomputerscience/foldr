@@ -166,7 +166,7 @@ public final class GUI extends JFrame
     // Create the jReality viewers for each panel
     public void createJRViewers() {
 
-        // TESTING with a visible shape @TODO: Remove this.
+        // TESTING with a visible shape TODO: Remove this.
         /*
          * IndexedFaceSet octo = Primitives.regularPolygon(8);
          * SceneGraphComponent octoOne = SceneGraphUtility

@@ -275,7 +275,8 @@ final class MenuBar extends JMenuBar {
     }
 
     /**
-     * 
+     * <p>
+     * Update the text of the menu items.
      */
     public void label() {
 
