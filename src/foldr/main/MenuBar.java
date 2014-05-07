@@ -260,7 +260,7 @@ final class MenuBar extends JMenuBar {
 
         helpLanguage = new JMenu("Languages");
         helpMenu.add(helpLanguage);
-        liLanguages = new ArrayList<>();
+        liLanguages = new ArrayList<JRadioButtonMenuItem>();
         langGroup = new ButtonGroup();
         for (String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
             JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
