@@ -45,13 +45,13 @@ public final class MessagesUtils {
      */
     public static final ArrayList<String> DEFAULT_LANGUAGE = new ArrayList<String>(
                                                                Arrays.asList("en_US"));
-
+    
     private static MessagesUtils          INSTANCE         = null;
 
     /**
      * Singleton.
      * 
-     * @return
+     * @return The unique instance of this class.
      */
     public static MessagesUtils getInstance() {
 
@@ -66,7 +66,7 @@ public final class MessagesUtils {
     }
 
     /**
-     * This class should not be instantiated.
+     * Singleton.
      */
     private MessagesUtils() {
 
@@ -106,9 +106,7 @@ public final class MessagesUtils {
             Scanner sc = new Scanner(file);
             while (sc.hasNextLine()) {
                 String s = sc.nextLine();
-                // regexp [a-zA-Z]{2,8}_([a-zA-Z]{2}|[0-9]{3})
-                // (language_country)
-                // TODO make a smarter regex ???
+                // names should be of the form language_country
                 if (!s.startsWith("#")) {
                     names.add(s);
                 }
