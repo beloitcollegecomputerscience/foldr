@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import foldr.messages.Messages;
+import foldr.messages.MessagesUtils;
+
 /**
  * Running class.
  * 
@@ -17,7 +20,7 @@ public class Driver {
     public static void main(String[] args) {
 
         Messages.setBundle(Locale.getDefault());
-        Messages.Utils.init("languages");
+        MessagesUtils.getInstance().init(MessagesUtils.DEFAULT_PATH);
 
         // set the look & feel to the use the system one since swing look & feel
         // is awful. (also swing look & feel is drawn pixel by pixel. Using the

@@ -20,11 +20,9 @@ import java.util.Scanner;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDesktopPane;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -37,24 +35,22 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
 
-import de.jreality.geometry.Primitives;
-import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
-import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
+import foldr.messages.Messages;
+import foldr.messages.MessagesUtils;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
-import foldr.utility.Vector3d;
 
 /**
  *
  * 
  */
-public class GUI extends JFrame implements ActionListener, MouseListener,
+public final class GUI extends JFrame implements ActionListener, MouseListener,
 		MouseMotionListener, MouseWheelListener {
 
 	private static final long serialVersionUID = 1L;
@@ -69,7 +65,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 
 	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel,
 			popUp;
-	protected JPanel palettePane;
+	private JPanel palettePane;
 
 	// the viewer components that render the difference camera views
 	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
@@ -182,7 +178,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	 * |-Language<br>
 	 * | |-<tt>List of languages</tt>
 	 */
-	protected void initMenuBarPane() {
+	private void initMenuBarPane() {
 
 		menuBar = new JMenuBar();
 		// File submenu
@@ -336,7 +332,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		
 		helpLanguage = new JMenu("Languages"); helpMenu.add(helpLanguage);
 		liLanguages = new ArrayList<>(); langGroup = new ButtonGroup(); for
-		(String s : Messages.Utils.getDisplayedLanguages()) {
+		(String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
 		JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
 		jrbmi.addActionListener(this); if
 		(s.equals(Messages.getLocale().getDisplayLanguage
