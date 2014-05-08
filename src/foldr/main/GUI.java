@@ -150,7 +150,6 @@ public final class GUI extends JFrame
         shapeGroupToMove.animateGroup(endPoint);
         // put the newly glued shapes into the same group
         shapeGroupToMove.resetGroup(shapeTwo.getGroup());
-
         // print out error
         double errorX =
             shapeOne.getShapeSGC().getTransformation().getMatrix()[3] - (originalX + targetX);
@@ -160,7 +159,6 @@ public final class GUI extends JFrame
             shapeOne.getShapeSGC().getTransformation().getMatrix()[11] - (originalZ + targetZ);
         // System.out.println("X error: " + errorX + ", Y error: " + errorY +
         // ", Z error: " + errorZ);
-
     }
 
     // Create the jReality viewers for each panel
