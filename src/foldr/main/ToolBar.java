@@ -25,19 +25,15 @@ public class ToolBar implements ActionListener {
 	protected JDialog dialog;
 	protected JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
 	paletteJoinPoint, paletteErase, palettePoint, paletteLine,
-	paletteShape, palettePanCamera, paletteFlymode,
-	paletteRotateCamera, paletteMoveCamera;
+	paletteShape, paletteMoveCamera;
 	protected JPanel palettePane;
 	
 	protected void initPalettePane(GUI theProgram) {
 
 		palettePane = new JPanel();
 		palettePane.setBounds(300, 300, 250, 500);
-		palettePane.setLayout(new GridLayout(4, 3));
+		palettePane.setLayout(new GridLayout(3, 3));
 
-		// TODO put in right graphics here-- make sure that you either specify
-		// the right path or drop the files into the top-level project folder.
-		// Eclipse won't be able to find them otherwise.
 		// Set up the button images
 		ImageIcon selectImage = new ImageIcon("Icons/selectImage.png");
 		ImageIcon moveImage = new ImageIcon("Icons/moveImage.png");
@@ -47,9 +43,6 @@ public class ToolBar implements ActionListener {
 		ImageIcon pointImage = new ImageIcon("Icons/addPoint.png");
 		ImageIcon lineImage = new ImageIcon("Icons/addLine.png");
 		ImageIcon shapeImage = new ImageIcon("Icons/shape.png");
-		ImageIcon panCameraImage = new ImageIcon("Icons/panCamera.png");
-		ImageIcon rotateCameraImage = new ImageIcon("Icons/rotateCamera.png");
-		ImageIcon flymodeImage = new ImageIcon("Icons/flyMode.png");
 		ImageIcon moveCameraImage = new ImageIcon("Icons/moveCamera.png");
 
 		// create the JButtons, passing in the image
@@ -62,9 +55,6 @@ public class ToolBar implements ActionListener {
 		palettePoint = new JButton(pointImage);
 		paletteLine = new JButton(lineImage);
 		paletteShape = new JButton(shapeImage);
-		palettePanCamera = new JButton(panCameraImage);
-		paletteFlymode = new JButton(flymodeImage);
-		paletteRotateCamera = new JButton(rotateCameraImage);
 		paletteMoveCamera = new JButton(moveCameraImage);
 
 		// Set names so that the actionListener can reference them
@@ -76,9 +66,6 @@ public class ToolBar implements ActionListener {
 		palettePoint.setName("point");
 		paletteLine.setName("line");
 		paletteShape.setName("shape");
-		palettePanCamera.setName("panCamera");
-		paletteRotateCamera.setName("rotateCamera");
-		paletteFlymode.setName("flymode");
 		paletteMoveCamera.setName("moveCamera");
 
 		// add tool tips
@@ -95,13 +82,7 @@ public class ToolBar implements ActionListener {
 		paletteLine
 				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the views/perspectives.");
 		paletteShape
-				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the perspectives that is not the freeview perspective. By clicking and holding on this tool you can select more polygons from a drop-down menu, or select a �custom� option which would allow you to specify how many faces your object has.");
-		palettePanCamera
-				.setToolTipText("Will move camera up and down and side to side.");
-		paletteRotateCamera
-				.setToolTipText("Allows you to click-and-drag on the Freeview perspective to rotate, or �point� the camera in the desired direction.");
-		paletteFlymode
-				.setToolTipText(" When selected allows the user to fly the camera in the Freeview perspective.");
+				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the perspectives that is not the freeview perspective. By clicking and holding on this tool you can select more polygons from a drop-down menu, or select a ���custom��� option which would allow you to specify how many faces your object has.");
 		paletteMoveCamera
 				.setToolTipText(" By using using WASD, and the scroll-wheel the user can move the Freeview camera along the three dimensions.");
 
@@ -115,9 +96,6 @@ public class ToolBar implements ActionListener {
 		palettePane.add(palettePoint);
 		palettePane.add(paletteLine);
 		palettePane.add(paletteShape);
-		palettePane.add(palettePanCamera);
-		palettePane.add(paletteFlymode);
-		palettePane.add(paletteRotateCamera);
 		palettePane.add(paletteMoveCamera);
 
 		// Add action listeners
@@ -129,9 +107,6 @@ public class ToolBar implements ActionListener {
 		palettePoint.addActionListener(this);
 		paletteLine.addActionListener(this);
 		paletteShape.addActionListener(this);
-		palettePanCamera.addActionListener(this);
-		paletteRotateCamera.addActionListener(this);
-		paletteFlymode.addActionListener(this);
 		paletteMoveCamera.addActionListener(this);
 
 		dialog = new JDialog(theProgram, "Tools", false);
@@ -163,12 +138,6 @@ public class ToolBar implements ActionListener {
 			doLine();
 		} else if (buttonName.equals("shape")) {
 			doShape();
-		} else if (buttonName.equals("panCamera")) {
-			doPanCamera();
-		} else if (buttonName.equals("rotateCamera")) {
-			doRotateCamera();
-		} else if (buttonName.equals("flymode")) {
-			doFlymode();
 		} else if (buttonName.equals("moveCamera")) {
 			doMoveCamera();
 		}
@@ -221,24 +190,6 @@ public class ToolBar implements ActionListener {
 	public void doShape() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.ADD_SHAPE);
-		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
-	}
-
-	public void doPanCamera() {
-		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
-		currentTool.setTool(ToolType.PAN_CAMERA);
-		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
-	}
-
-	public void doFlymode() {
-		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
-		currentTool.setTool(ToolType.FLY_MODE);
-		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
-	}
-
-	public void doRotateCamera() {
-		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
-		currentTool.setTool(ToolType.ROTATE_CAMERA);
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
