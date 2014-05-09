@@ -12,17 +12,28 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import foldr.main.Messages.Utils;
+import foldr.messages.MessagesUtils;
 
+/**
+ * <p>
+ * Test class for the {@link MessagesUtils} class.
+ * 
+ * @author couretn
+ * @category i18n
+ */
 public class MessagesUtilsTest {
 
-    private static final String PATH = "languages";
+    private static final String  PATH  = "languages";
+
+    // instance
+    private static MessagesUtils utils = null;
 
     @BeforeClass
     public static void setUpBeforeClass()
         throws Exception {
 
-        Utils.init(PATH);
+        utils = MessagesUtils.getInstance();
+        utils.init(PATH);
     }
 
     @Before
@@ -41,22 +52,26 @@ public class MessagesUtilsTest {
     public void testGetAvailableLocales() {
 
         // TODO more
-        assertTrue(Utils.getAvailableLocales().contains(Locale.US));
-        assertFalse(Utils.getAvailableLocales().contains(Locale.CHINESE));
+        assertTrue(utils.getAvailableLocales().contains(Locale.US));
+        assertFalse(utils.getAvailableLocales().contains(Locale.CHINESE));
     }
 
     @Test
     public void testGetDisplayedLanguages() {
 
         // TODO more
-        assertTrue(Utils.getDisplayedLanguages().contains(Locale.US.getDisplayLanguage(Locale.US)));
-        assertTrue(Utils.getDisplayedLanguages().contains("français"));
+        assertTrue(utils.getDisplayedLanguages().contains(Locale.US.getDisplayLanguage(Locale.US)));
+        assertTrue(utils.getDisplayedLanguages().contains(
+            Locale.FRANCE.getDisplayLanguage(Locale.FRANCE)));
     }
-    
+
     @Test
     public void testGetLocale() {
-        assertEquals(Locale.US, Utils.getLocale("English"));
-        assertEquals(Locale.FRANCE, Utils.getLocale("français"));
+
+        assertEquals(Locale.US, utils.getLocale("English"));
+        // charset issue with french display.
+        assertEquals(
+            Locale.FRANCE, utils.getLocale(Locale.FRANCE.getDisplayLanguage(Locale.FRANCE)));
     }
 
 }

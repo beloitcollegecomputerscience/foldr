@@ -14,12 +14,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -27,27 +30,28 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.border.TitledBorder;
 
-import de.jreality.geometry.Primitives;
-import de.jreality.math.MatrixBuilder;
 import de.jreality.plugin.JRViewer;
-import de.jreality.scene.IndexedFaceSet;
 import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
+import foldr.messages.Messages;
+import foldr.messages.MessagesUtils;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
-import foldr.utility.Vector3d;
 
 /**
  *
  * 
  */
-public class GUI extends JFrame implements ActionListener, MouseListener,
+public final class GUI extends JFrame implements ActionListener, MouseListener,
 		MouseMotionListener, MouseWheelListener {
 
 	private static final long serialVersionUID = 1L;
@@ -60,11 +64,12 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	static SceneGraphComponent scene = SceneGraphUtility
 			.createFullSceneGraphComponent("scene");
 
-	// the swing components to create the jreality frame
+	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel,
+			popUp;
+	private JPanel palettePane;
+	
 	protected JFrame f;
 	protected JDesktopPane desktop = new JDesktopPane();
-
-	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
 	
 	//the viewer components that render the difference camera views
 	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
@@ -81,242 +86,273 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	// Capture the mouse location during drag events
 	Point mouseDragLocation = null;
 
-	// the swing components to create the menu bar
-	protected JPanel menuBarPane;
-	protected JMenuBar menuBar;
-	protected JMenu fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
-	protected JMenuItem fileOpen, fileNew, fileSave, fileSaveAs, fileExport,
+	// menu components
+	private JMenuBar menuBar;
+	private JMenu fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
+	private JMenuItem fileOpen, fileNew, fileSave, fileSaveAs, fileExport,
 			fileClose;
-	protected JMenuItem editCopy, editCut, editPaste, editDelete,
-			editSelectAll, editResizeShape;
-	protected JMenuItem foldingThirty, foldingFortyFive, foldingNinety,
+	private JMenuItem editCopy, editCut, editPaste, editDelete, editSelectAll;
+	private JMenu foldingAngle, foldingShape;
+	private JMenuItem foldingThirty, foldingFortyFive, foldingNinety,
 			foldingCustomAngle, foldingEdgeSelect, foldingPointSelect,
-			foldingFoldShapes, foldingConnectShapes, foldingDetachShapes;
-	protected JMenuItem windowShowTop, windowShowBack, windowShowLeft,
+			foldingFoldShapes, foldingConnectShapes, foldingDetachShapes,
+			foldingResizeShape;
+	private JMenu windowView, windowPerspective;
+	private JMenuItem windowShowTop, windowShowBack, windowShowLeft,
 			windowShowHideTools, windowShowHideInfo, windowChangePerspective,
-			windowSaveLoadPerspective, windowResizePerspective;
-	protected JMenuItem helpManual, helpQuickStartGuide;
+			windowSavePerspective, windowLoadPerspective,
+			windowResizePerspective;
+	private JMenu helpLanguage;
+	private JMenuItem helpManual, helpQuickStartGuide;
+	private ButtonGroup langGroup;
+	private List<JRadioButtonMenuItem> liLanguages;
 
-	
 	static ToolBar toolBar = new ToolBar();
 
-	// This method creates the menu bar
-	protected void initMenuBarPane() {
-		menuBarPane = new JPanel();
+	private JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
+			paletteErase, palettePoint, paletteLine, paletteShape,
+			palettePanCamera, paletteFlymode, paletteRotateCamera,
+			paletteMoveCamera;
 
-		// File menu items
+	private JDialog dialog, popUpDialog;
+	private JTextField textField;
+
+	/**
+	 * <p>
+	 * Construct a new <tt>GUI</tt> (i.e. <tt>JFrame</tt>) with the given title.
+	 * 
+	 * @param title
+	 *            The window's title.
+	 */
+	public GUI(String title) {
+
+		super(title);
+	}
+
+	/**
+	 * <p>
+	 * Initialize the menu components and add them to the frame.
+	 * <p>
+	 * Menu structure :
+	 * <p>
+	 * File<br>
+	 * |-Open<br>
+	 * |-New<br>
+	 * |-Save<br>
+	 * |-Save As<br>
+	 * |-Export<br>
+	 * |-Close
+	 * <p>
+	 * Edit<br>
+	 * |-Copy<br>
+	 * |-Cut<br>
+	 * |-Paste<br>
+	 * |-Delete<br>
+	 * |-Select All
+	 * <p>
+	 * Fold<br>
+	 * |-Angle<br>
+	 * | |-30<br>
+	 * | |-45<br>
+	 * | |-90<br>
+	 * | |-Custom<br>
+	 * |-Edge Select<br>
+	 * |-Point Select<br>
+	 * |-Shape<br>
+	 * | |-Fold<br>
+	 * | |-Connect<br>
+	 * | |-Detach<br>
+	 * | |-Resize
+	 * <p>
+	 * Window<br>
+	 * |-View<br>
+	 * | |-Top<br>
+	 * | |-Back<br>
+	 * | |-Left<br>
+	 * |-Show/Hide Tool<br>
+	 * |-Show/Hide Info<br>
+	 * |-Perspective<br>
+	 * | |-Change Perspective<br>
+	 * | |-Save<br>
+	 * | |-Load<br>
+	 * | |-Resize
+	 * <p>
+	 * Help |-Manual<br>
+	 * |-Quick Start Guide<br>
+	 * |-Language<br>
+	 * | |-<tt>List of languages</tt>
+	 */
+	private void initMenuBarPane() {
+
+		menuBar = new JMenuBar();
+		// File submenu
+		fileMenu = new JMenu("File");
+		menuBar.add(fileMenu);// fileMenu -> menuBar
 		fileNew = new JMenuItem("New");
 		fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N,
 				ActionEvent.META_MASK));
 		fileNew.addActionListener(this);
+		fileMenu.add(fileNew);
 		fileOpen = new JMenuItem("Open");
 		fileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
 				ActionEvent.META_MASK));
 		fileOpen.addActionListener(this);
+		fileMenu.add(fileOpen);
 		fileSave = new JMenuItem("Save");
 		fileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				ActionEvent.META_MASK));
 		fileSave.addActionListener(this);
+		fileMenu.add(fileSave);
 		fileSaveAs = new JMenuItem("Save As");
 		fileSaveAs.addActionListener(this);
+		fileMenu.add(fileSaveAs);
 		fileExport = new JMenuItem("Export");
 		fileExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,
 				ActionEvent.META_MASK));
 		fileExport.addActionListener(this);
+		fileMenu.add(fileExport);
 		fileClose = new JMenuItem("Close");
 		fileClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,
 				ActionEvent.META_MASK));
 		fileClose.addActionListener(this);
+		fileMenu.add(fileClose);
 
-		// Edit menu items
+		// Edit submenu
+		editMenu = new JMenu("Edit");
+		menuBar.add(editMenu); // editMenu -> menuBar
 		editCopy = new JMenuItem("Copy");
 		editCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
 				ActionEvent.META_MASK));
 		editCopy.addActionListener(this);
+		editMenu.add(editCopy);
 		editCut = new JMenuItem("Cut");
 		editCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,
 				ActionEvent.META_MASK));
 		editCut.addActionListener(this);
+		editMenu.add(editCut);
 		editPaste = new JMenuItem("Paste");
 		editPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,
 				ActionEvent.META_MASK));
 		editPaste.addActionListener(this);
+		editMenu.add(editPaste);
+		editMenu.add(new JSeparator()); // separate
 		editDelete = new JMenuItem("Delete");
 		editDelete.setAccelerator(KeyStroke.getKeyStroke(
 				KeyEvent.VK_BACK_SPACE, ActionEvent.META_MASK));
 		editDelete.addActionListener(this);
+		editMenu.add(editDelete);
 		editSelectAll = new JMenuItem("Select All");
 		editSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				ActionEvent.META_MASK));
 		editSelectAll.addActionListener(this);
-		editResizeShape = new JMenuItem("Resize Shape");
-		editResizeShape.addActionListener(this);
-		//
-		// editCopy.setEnabled(false);
-		// editCut.setEnabled(false);
-		// editPaste.setEnabled(false);
-		// editDelete.setEnabled(false);
-		// editSelectAll.setEnabled(false);
-		// editResizeShape.setEnabled(false);
+		editMenu.add(editSelectAll);
 
-		// Folding/Shapes menu items
+		// Folding/Shapes submenu
+		foldingMenu = new JMenu("Folding");
+		menuBar.add(foldingMenu); // folMenu -> menuBar
+		foldingAngle = new JMenu("Angle");
+		foldingMenu.add(foldingAngle);
 		foldingThirty = new JMenuItem("Rotate 30 Degrees");
 		foldingThirty.addActionListener(this);
+		foldingAngle.add(foldingThirty);
 		foldingFortyFive = new JMenuItem("Rotate 45 Degrees");
 		foldingFortyFive.addActionListener(this);
+		foldingAngle.add(foldingFortyFive);
 		foldingNinety = new JMenuItem("Rotate 90 Degrees");
 		foldingNinety.addActionListener(this);
+		foldingAngle.add(foldingNinety);
 		foldingCustomAngle = new JMenuItem("Custom Angle");
 		foldingCustomAngle.addActionListener(this);
+		foldingAngle.add(foldingCustomAngle);
+		foldingMenu.add(new JSeparator()); // separate
 		foldingEdgeSelect = new JMenuItem("Edge Select");
 		foldingEdgeSelect.addActionListener(this);
+		foldingMenu.add(foldingEdgeSelect);
 		foldingPointSelect = new JMenuItem("Point Select");
 		foldingPointSelect.addActionListener(this);
+		foldingMenu.add(foldingPointSelect);
+		foldingMenu.add(new JSeparator()); // separate
+		foldingShape = new JMenu("Shape");
+		foldingMenu.add(foldingShape); // foldShape -> foldMenu
 		foldingFoldShapes = new JMenuItem("Fold Shapes");
 		foldingFoldShapes.addActionListener(this);
+		foldingShape.add(foldingFoldShapes);
 		foldingConnectShapes = new JMenuItem("Connect Shapes");
 		foldingConnectShapes.addActionListener(this);
+		foldingShape.add(foldingConnectShapes);
 		foldingDetachShapes = new JMenuItem("Detach Shapes");
 		foldingDetachShapes.addActionListener(this);
+		foldingShape.add(foldingDetachShapes);
+		foldingResizeShape = new JMenuItem("Resize shape");
+		foldingResizeShape.addActionListener(this);
+		foldingShape.add(foldingResizeShape);
 
-		// foldingThirty.setEnabled(false);
-		// foldingFortyFive.setEnabled(false);
-		// foldingNinety.setEnabled(false);
-		// foldingCustomAngle.setEnabled(false);
-		// foldingEdgeSelect.setEnabled(false);
-		// foldingPointSelect.setEnabled(false);
-		// foldingFoldShapes.setEnabled(false);
-		// foldingConnectShapes.setEnabled(false);
-		// foldingDetachShapes.setEnabled(false);
-
-		// Window menu items
-		windowShowTop = new JMenuItem("Show Top");
+		// Window submenu
+		windowMenu = new JMenu("Window");
+		menuBar.add(windowMenu);// winMenu -> menuBar
+		windowView = new JMenu("View");
+		windowMenu.add(windowView); // winView -> winMenu
+		windowShowTop = new JCheckBoxMenuItem("Show top", true);
 		windowShowTop.addActionListener(this);
-		windowShowBack = new JMenuItem("Show Back");
+		windowView.add(windowShowTop);
+		windowShowBack = new JCheckBoxMenuItem("Show Back", true);
 		windowShowBack.addActionListener(this);
-		windowShowLeft = new JMenuItem("Show Left");
+		windowView.add(windowShowBack);
+		windowShowLeft = new JCheckBoxMenuItem("Show Left", true);
 		windowShowLeft.addActionListener(this);
-		windowShowHideTools = new JMenuItem("Show/Hide Toolbar");
+		windowView.add(windowShowLeft);
+		windowMenu.add(new JSeparator()); // separate
+		windowShowHideTools = new JMenuItem("Show/Hide Tools");
 		windowShowHideTools.addActionListener(this);
+		windowMenu.add(windowShowHideTools);
 		windowShowHideInfo = new JMenuItem("Show/Hide Information Panel");
 		windowShowHideInfo.addActionListener(this);
+		windowMenu.add(windowShowHideInfo);
+		windowMenu.add(new JSeparator()); // separate
+		windowPerspective = new JMenu("Perspective");
+		windowMenu.add(windowPerspective); // winPersp -> winMenu
 		windowChangePerspective = new JMenuItem("Change Perspective Layout");
 		windowChangePerspective.addActionListener(this);
-		windowSaveLoadPerspective = new JMenuItem(
-				"Save/Load Perspective Layout");
-		windowSaveLoadPerspective.addActionListener(this);
+		windowPerspective.add(windowChangePerspective);
+		windowSavePerspective = new JMenuItem("Save Perspective Layout");
+		windowSavePerspective.addActionListener(this);
+		windowPerspective.add(windowSavePerspective);
+		windowLoadPerspective = new JMenuItem("Load Perspective Layout");
+		windowLoadPerspective.addActionListener(this);
+		windowPerspective.add(windowLoadPerspective);
 		windowResizePerspective = new JMenuItem("Resize Perspective");
 		windowResizePerspective.addActionListener(this);
+		windowPerspective.add(windowResizePerspective);
 
 		// Help menu items
+		helpMenu = new JMenu("Help");
+		menuBar.add(helpMenu); // helpMenu -> menuBar
 		helpManual = new JMenuItem("Manual");
 		helpManual.addActionListener(this);
+		helpMenu.add(helpManual);
 		helpQuickStartGuide = new JMenuItem("Quick Start Guide");
 		helpQuickStartGuide.addActionListener(this);
-
-		// Set up the file menu
-		fileMenu = new JMenu("File");
-		fileMenu.add(fileNew);
-		fileMenu.add(fileOpen);
-		fileMenu.add(new JSeparator());
-		fileMenu.add(fileSave);
-		fileMenu.add(fileSaveAs);
-		fileMenu.add(new JSeparator());
-		fileMenu.add(fileExport);
-		fileMenu.add(fileClose);
-
-		// Set up the edit menu
-		editMenu = new JMenu("Edit");
-		editMenu.add(editCopy);
-		editMenu.add(editCut);
-		editMenu.add(editPaste);
-		editMenu.add(editDelete);
-		editMenu.add(new JSeparator());
-		editMenu.add(editSelectAll);
-		editMenu.add(editResizeShape);
-
-		// Set up the folding/shapes menu
-		foldingMenu = new JMenu("Folding/Shapes");
-		foldingMenu.add(foldingThirty);
-		foldingMenu.add(foldingFortyFive);
-		foldingMenu.add(foldingNinety);
-		foldingMenu.add(foldingCustomAngle);
-		foldingMenu.add(new JSeparator());
-		foldingMenu.add(foldingEdgeSelect);
-		foldingMenu.add(foldingPointSelect);
-		foldingMenu.add(new JSeparator());
-		foldingMenu.add(foldingFoldShapes);
-		foldingMenu.add(foldingConnectShapes);
-		foldingMenu.add(foldingDetachShapes);
-
-		// Set up the window menu
-		windowMenu = new JMenu("Window");
-		windowMenu.add(windowShowTop);
-		windowMenu.add(windowShowBack);
-		windowMenu.add(windowShowLeft);
-		windowMenu.add(new JSeparator());
-		windowMenu.add(windowShowHideTools);
-		windowMenu.add(windowShowHideInfo);
-		windowMenu.add(new JSeparator());
-		windowMenu.add(windowChangePerspective);
-		windowMenu.add(windowSaveLoadPerspective);
-		windowMenu.add(windowResizePerspective);
-
-		// Set up the help menu
-		helpMenu = new JMenu("Help");
-		helpMenu.add(helpManual);
 		helpMenu.add(helpQuickStartGuide);
-
-		// Create the menuBar to contain the menus
-		menuBar = new JMenuBar();
-
-		// Add the menus to the bar
-		menuBar.add(fileMenu);
-		menuBar.add(editMenu);
-		menuBar.add(foldingMenu);
-		menuBar.add(windowMenu);
-		menuBar.add(helpMenu);
-
-		// Add the menu bar to the appropriate pane
-		menuBarPane.setLayout(new GridLayout(1, 1));
-		menuBarPane.add(menuBar);
+		
+		helpLanguage = new JMenu("Languages");
+		helpMenu.add(helpLanguage);
+		liLanguages = new ArrayList<JRadioButtonMenuItem>();
+		langGroup = new ButtonGroup();
+		for(String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
+		    JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
+		    jrbmi.addActionListener(this);
+		    if(s.equals(Messages.getLocale().getDisplayLanguage(Messages.getLocale()))) { 
+		        jrbmi.setSelected(true);
+		    }
+		    liLanguages.add(jrbmi);
+		    helpLanguage.add(jrbmi);
+		    langGroup.add(jrbmi);
+		}
+		 
 	}
 
-	// Action listener. For now, this method is just a placeholder.
-//	public void actionPerformed(ActionEvent e) {
-//		String theCommand = e.getActionCommand();
-//		System.out.println("You clicked " + theCommand);
-//		if (theCommand.equals("Connect Shapes")) {
-//
-//			// TODO figure out how to do this by clicking on the shapes!
-//			// use the console to grab the shapes and vertices to connect
-//			// the number of a shape is its index number where it's stored in
-//			// ShapeCollection
-//			System.out.println("Enter the number of the first shape");
-//			int firstShape = input.nextInt();
-//			System.out.println("Enter the number of the vertex");
-//			int firstVertex = input.nextInt();
-//			System.out.println("Enter the number of the second shape");
-//			int secondShape = input.nextInt();
-//			System.out.println("Enter the number of the vertex");
-//			int secondVertex = input.nextInt();
-//
-//			// grab the 2 shapes the user inputed
-//			Shape shapeOne = allShapes.getShapeFromCollection(firstShape);
-//			Shape shapeTwo = allShapes.getShapeFromCollection(secondShape);
-//
-//			System.out.println("Connecting...");
-//
-//			// animate it
-//			connectTwoShapes(shapeOne, firstVertex, shapeTwo, secondVertex);
-//
-//		} else {
-//			System.out.println("The command is not yet implemented!");
-//		}
-//	}
-
-	
 	/**
+	 * <p>
 	 * Animates connecting two shapes at a vertex. The entire ShapeGroup is
 	 * moved as if it is one shape.
 	 * 
@@ -329,8 +365,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	 * @param vertexTwo
 	 *            the vertex on the second shape that you want to connect to.
 	 */
-	public void connectTwoShapes(Shape shapeOne, int vertexOne,
-			Shape shapeTwo, int vertexTwo) {
+	public void connectTwoShapes(Shape shapeOne, int vertexOne, Shape shapeTwo,
+			int vertexTwo) {
 
 		// store original coordinates for error calculation
 		double originalX = shapeOne.getShapeSGC().getTransformation()
@@ -374,12 +410,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
+
 		// TESTING with a visible shape @TODO: Remove this.
-		IndexedFaceSet octo = Primitives.regularPolygon(8);
+		/*IndexedFaceSet octo = Primitives.regularPolygon(8);
 		SceneGraphComponent octoOne = SceneGraphUtility
 				.createFullSceneGraphComponent("octogon1");
 		octoOne.setGeometry(octo);
-		scene.addChild(octoOne);
+		scene.addChild(octoOne);*/
 
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
@@ -455,8 +492,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	}	
 	
 	
-	//Create the panes, panels and other gui elements and pack them up.
+	/**
+	 * <p>
+	 * Create the panes, panels and other gui elements and pack them up.
+	 */
 	public void initPanesAndGui() {
+		initMenuBarPane();
+		setJMenuBar(menuBar);
+
 		// Adding the view panels (free, top, side, front)
 		GridLayout gl = new GridLayout(2, 2);
 		mainPanel = new JPanel(gl, true);
@@ -473,6 +516,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		frontPanel.setBackground(Color.GRAY);
 		mainPanel.add(frontPanel);
 		mainPanel.addMouseListener(this);
+		
+		createJRViewers();
 
 		// Adding borders and titles
 		freeViewPanel.setBorder(BorderFactory.createTitledBorder(
@@ -483,15 +528,43 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 				BorderFactory.createEmptyBorder(), "Right Camera"));
 		frontPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(), "Front Camera"));
+		freeViewPanel.setBackground(Color.gray);
+		topPanel.setBackground(Color.gray);
+		sidePanel.setBackground(Color.gray);
+		frontPanel.setBackground(Color.gray);
+		
+		topCamera.setLocation(0, 7, -4.5);
+		topCamera.setRotationX(-90);
+		topCamera.applyChangesTo(topCameraContainer);
 
-		createJRViewers();
-		initMenuBarPane();
+		sideCamera.setLocation(7, 0, -4.5);
+		sideCamera.setRotationY(90);
+		sideCamera.applyChangesTo(sideCameraContainer);
 
-		// stick them both in a desktop pane
-		desktop.setLayout(new BorderLayout());
-		desktop.add(menuBarPane, "North");
-		desktop.add(mainPanel);
+		frontCamera.setLocation(0, 0, 4.5);
+		frontCamera.applyChangesTo(frontCameraContainer);
+
+		// Create the top frame to store desktop
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(mainPanel, "Center");
+		label(); // write the messages
 		pack();
+		setSize(1000, 700);
+		setVisible(true);
+		
+		toolBar.initPalettePane(this);
+	}
+
+	/*
+	 *  * Creates a pop up box when 'shape' button is clicked on the tool bar.
+	 * Allows the user to enter the number of sides they want a polygon to have
+	 * which is being added to the scene.
+	 */
+	protected void popUpPanel() {
+
+		popUp = new JPanel();
+
+		textField = new JTextField(1);
 
 		// Create the top frame to store desktop
 		f = new JFrame("Polyhedra");
@@ -502,23 +575,95 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 		f.setVisible(true);
 		
 		// Initializes the palette last so as to have it in the foreground
-		toolBar.initPalettePane(theProgram);
+		toolBar.initPalettePane(this);
 		
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		JButton selectNumSides = new JButton("OK");
+		selectNumSides.addActionListener((ActionListener) this);
+		selectNumSides.setName("selectNumSides");
+
+		popUp.add(textField);
+		popUp.add(selectNumSides);
+
+		popUpDialog = new JDialog(this, "Polygon Creator", false);
+		popUpDialog.add(popUp);
+		popUpDialog.pack();
+		popUpDialog.setLocation(8, 170);
+		popUpDialog.setVisible(true);
 	}
 
-	private static GUI theProgram;
+	/**
+	 * <p>
+	 * Change the GUI text according to the current <tt>Locale</tt> used.
+	 */
+	private void label() {
 
-	public static void main(String[] args) {
-		theProgram = new GUI();
-		theProgram.initPanesAndGui();
-		theProgram.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		// menu bar
+		// file submenu
+		fileMenu.setText(Messages.getString(Messages.FI));
+		fileOpen.setText(Messages.getString(Messages.FI + ".open"));
+		fileNew.setText(Messages.getString(Messages.FI + ".new"));
+		fileSave.setText(Messages.getString(Messages.FI + ".save"));
+		fileSaveAs.setText(Messages.getString(Messages.FI + ".saveas"));
+		fileExport.setText(Messages.getString(Messages.FI + ".export"));
+		fileClose.setText(Messages.getString(Messages.FI + ".close"));
+		// edit submenu
+		editMenu.setText(Messages.getString(Messages.ED));
+		editCopy.setText(Messages.getString(Messages.ED + ".copy"));
+		editCut.setText(Messages.getString(Messages.ED + ".cut"));
+		editPaste.setText(Messages.getString(Messages.ED + ".paste"));
+		editDelete.setText(Messages.getString(Messages.ED + ".delete"));
+		// folding submenu
+		foldingMenu.setText(Messages.getString(Messages.FO));
+		foldingThirty.setText(Messages.getString(Messages.FO + ".angle.30"));
+		foldingFortyFive.setText(Messages.getString(Messages.FO + ".angle.45"));
+		foldingNinety.setText(Messages.getString(Messages.FO + ".angle.90"));
+		foldingCustomAngle.setText(Messages.getString(Messages.FO
+				+ ".angle.custom"));
+		foldingEdgeSelect.setText(Messages.getString(Messages.FO + ".edgesel"));
+		foldingPointSelect.setText(Messages
+				.getString(Messages.FO + ".pointsel"));
+		foldingFoldShapes.setText(Messages.getString(Messages.FO
+				+ ".shape.fold"));
+		foldingConnectShapes.setText(Messages.getString(Messages.FO
+				+ ".shape.connect"));
+		foldingDetachShapes.setText(Messages.getString(Messages.FO
+				+ ".shape.detach"));
+		// window submenu
+		windowMenu.setText(Messages.getString(Messages.WI));
+		windowShowTop.setText(Messages.getString(Messages.WI + ".view.top"));
+		windowShowBack.setText(Messages.getString(Messages.WI + ".view.back"));
+		windowShowLeft.setText(Messages.getString(Messages.WI + ".view.left"));
+		windowShowHideInfo.setText(Messages.getString(Messages.WI + ".info"));
+		windowShowHideTools.setText(Messages.getString(Messages.WI + ".tools"));
+		windowChangePerspective.setText(Messages.getString(Messages.WI
+				+ ".persp.change"));
+		windowSavePerspective.setText(Messages.getString(Messages.WI
+				+ ".persp.save"));
+		windowResizePerspective.setText(Messages.getString(Messages.WI
+				+ ".persp.resize"));
+		// help submenu
+		helpMenu.setText(Messages.getString(Messages.HE));
+		helpManual.setText(Messages.getString(Messages.HE + ".manual"));
+		helpQuickStartGuide.setText(Messages.getString(Messages.HE + ".guide"));
+		helpLanguage.setText(Messages.getString(Messages.HE + ".language"));
+
+		// panels titles FIXME make it work.
+		((TitledBorder) freeViewPanel.getBorder()).setTitle(Messages
+				.getString("panels.freeview"));
+		((TitledBorder) frontPanel.getBorder()).setTitle(Messages
+				.getString("panels.frontview"));
+		((TitledBorder) sidePanel.getBorder()).setTitle(Messages
+				.getString("panels.sideview"));
+		((TitledBorder) topPanel.getBorder()).setTitle(Messages
+				.getString("panels.topview"));
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+
 		// Flip camera to other side on double-click
 		if (e.getClickCount() == 2) {
 			if (e.getComponent().getParent().getParent().getName()
@@ -560,30 +705,14 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
+
 		// System.out.println("Mouse Entered: " + arg0.toString());
 
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// System.out.println("Mouse Exited: " + arg0.toString());
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// System.out.println("Mouse Pressed: " + arg0.toString());
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// Reset the previous mouse location between drags, so we're only
-		// recording drag position
-		mouseDragLocation = null;
-	}
-
-	@Override
 	public void mouseDragged(MouseEvent e) {
+
 		int flipCoefficient = 1;
 		if (mouseDragLocation == null) {
 			mouseDragLocation = new Point(e.getX(), e.getY());
@@ -639,12 +768,28 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 	}
 
 	@Override
+	public void mousePressed(MouseEvent arg0) {
+
+		// System.out.println("Mouse Pressed: " + arg0.toString());
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+
+		// Reset the previous mouse location between drags, so we're only
+		// recording drag position
+		mouseDragLocation = null;
+	}
+
+	@Override
 	public void mouseMoved(MouseEvent e) {
+
 		// System.out.println("Mouse Moved: " + e.toString());
 	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
+
 		double amountZoom = e.getWheelRotation();
 		if (e.getComponent().getParent().getParent().getName()
 				.equals("topPanel")) {
@@ -663,6 +808,13 @@ public class GUI extends JFrame implements ActionListener, MouseListener,
 			freeCamera.setLocationZ(freeCamera.location.z + amountZoom / 20);
 			freeCamera.applyChangesTo(freeCameraContainer);
 		}
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+
+		// TODO Auto-generated method stub
 
 	}
 
