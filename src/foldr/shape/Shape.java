@@ -93,8 +93,8 @@ public class Shape {
 
 			@Override
 			public void faceDragEnd(FaceDragEvent e) {
-				System.out.println("This shape group has "
-						+ group.shapesInGroup.size() + " shapes in it");
+				//System.out.println("This shape group has "
+				//		+ group.shapesInGroup.size() + " shapes in it");
 			}
 
 			@Override

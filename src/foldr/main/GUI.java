@@ -45,6 +45,7 @@ import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
+import foldr.utility.SelectTool;
 
 /**
  *
@@ -82,6 +83,8 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	// Capture the mouse location during drag events
 	Point mouseDragLocation = null;
 
+	SelectTool tool;
+	
 	// menu components
 	private JMenuBar menuBar;
 	private JMenu fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
@@ -406,13 +409,8 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
-
-		// TESTING with a visible shape @TODO: Remove this.
-		/*IndexedFaceSet octo = Primitives.regularPolygon(8);
-		SceneGraphComponent octoOne = SceneGraphUtility
-				.createFullSceneGraphComponent("octogon1");
-		octoOne.setGeometry(octo);
-		scene.addChild(octoOne);*/
+		// Testing with a visible shape
+		Shape octogon = new Shape(8, scene);
 
 		// Setting up the free view
 		freeJRViewer = new JRViewer();
@@ -492,7 +490,6 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	 * Create the panes, panels and other gui elements and pack them up.
 	 */
 	public void initPanesAndGui() {
-
 		initMenuBarPane();
 		setJMenuBar(menuBar);
 
@@ -540,6 +537,15 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 
 		frontCamera.setLocation(0, 0, 4.5);
 		frontCamera.applyChangesTo(frontCameraContainer);
+		
+		
+		//Adding the select tool
+		tool = new SelectTool();
+		topCameraContainer.addTool(tool);
+		sideCameraContainer.addTool(tool);
+		frontCameraContainer.addTool(tool);
+		freeCameraContainer.addTool(tool);
+		
 
 		// Create the top frame to store desktop
 		getContentPane().setLayout(new BorderLayout());
@@ -796,6 +802,9 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
+		System.out.println(tool.getPick());
+		System.out.println(tool.getPick().get(tool.getPick().getLength()-2).toString() + "  " + tool.getPick().get(tool.getPick().getLength()-2).hashCode());
+		
 		// Flip camera to other side on double-click
 		if (e.getClickCount() == 2) {
 			if (e.getComponent().getParent().getParent().getName()
