@@ -34,24 +34,21 @@ public class ToolTest {
 	@Test
 	/** Basic test on both setTool( ) and getTool( ).       	 */
 	public void testSet_And_GetTool() {
-		testing.setTool( ToolType.HINGE );
-		assertEquals( ToolType.HINGE, testing.getCurrentTool() );
-		testing.setTool( ToolType.POLYGON );
-		// Check two gets in a row:
-		assertEquals( ToolType.POLYGON, testing.getCurrentTool() );
-		assertEquals( ToolType.POLYGON, testing.getCurrentTool() );
-		// And check two sets in a row:
-		testing.setTool( ToolType.ROTATE );
-		testing.setTool( ToolType.EDGE_ALIGN );
-		assertEquals( ToolType.EDGE_ALIGN, testing.getCurrentTool() );
+		testing.setTool( ToolType.JOIN_EDGE );
+		assertEquals( ToolType.JOIN_EDGE, testing.getCurrentTool() );
+		testing.setTool( ToolType.ADD_SHAPE );
+		assertEquals( ToolType.ADD_SHAPE, testing.getCurrentTool() );
+		testing.setTool( ToolType.CAMERA_MOVE );
+		testing.setTool( ToolType.SELECTION );
+		assertEquals( ToolType.SELECTION, testing.getCurrentTool() );
 	}
 
 	@Test
 	public void testUndo() {
-		testing.setTool( ToolType.ROTATE );
-		testing.setTool( ToolType.EDGE_ALIGN );
+		testing.setTool( ToolType.SELECTION );
+		testing.setTool( ToolType.ADD_SHAPE );
 		testing.undo();
-		assertEquals( ToolType.ROTATE, testing.getCurrentTool() );
+		assertEquals( ToolType.SELECTION, testing.getCurrentTool() );
 	}
 
 	// @Test    Not yet implemented.

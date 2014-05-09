@@ -19,7 +19,7 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        Messages.setBundle(Locale.getDefault());
+        Messages.setBundle(Locale.CHINA);
         MessagesUtils.getInstance().init(MessagesUtils.DEFAULT_PATH);
 
         // set the look & feel to the use the system one since swing look & feel

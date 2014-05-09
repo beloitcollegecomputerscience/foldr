@@ -32,8 +32,10 @@ public class Tool {
 	 *
 	 */
 	
-	public enum ToolType { SELECTION, POLYGON, EDGE_ALIGN, JOIN, SERIES_JOIN, HINGE, ROTATE, 
-		COLOR, CAMERA_MOVE,  }
+	// defines the tools
+	
+	public enum ToolType { SELECTION, ADD_SHAPE, ADD_LINE, PAN_CAMERA, FLY_MODE, ERASE, MOVE, FILL, JOIN_EDGE, ADD_POINT, ROTATE_CAMERA, 
+		 CAMERA_MOVE}
 	
 	private ToolType previousTool, selectedTool;
 	
