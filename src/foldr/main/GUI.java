@@ -525,6 +525,11 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 				BorderFactory.createEmptyBorder(), "Right Camera"));
 		frontPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createEmptyBorder(), "Front Camera"));
+		freeViewPanel.setBackground(Color.gray);
+		topPanel.setBackground(Color.gray);
+		sidePanel.setBackground(Color.gray);
+		frontPanel.setBackground(Color.gray);
+		
 		topCamera.setLocation(0, 7, -4.5);
 		topCamera.setRotationX(-90);
 		topCamera.applyChangesTo(topCameraContainer);
