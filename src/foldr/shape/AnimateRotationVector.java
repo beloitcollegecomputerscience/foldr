@@ -92,18 +92,23 @@ public class AnimateRotationVector extends AbstractTool {
 						shapeToMove.rotationList.elementAt(i),
 						shapeToMove.rotationList.elementAt(i + 1));
 			}
+
+			myMatrix = MatrixBuilder.euclidean().rotateFromTo(
+					shapeToMove.rotationList.elementAt(shapeToMove.rotationList
+							.size()), vectorToMatch2);
 			// move Shape back to location
 			myMatrix = MatrixBuilder.euclidean().translate(
 					shapeToMove.translationTransformation[0],
 					shapeToMove.translationTransformation[1],
 					shapeToMove.translationTransformation[2]);
-			
+
 			myMatrix.assignTo(sgcToMove);
+
+			shapeToMove.rotationList.add(vectorToMatch2);
 
 			System.out.println("hit this here!");
 			currentFrame++;
 		}
 
 	}
-
 }

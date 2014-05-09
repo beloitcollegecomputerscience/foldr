@@ -40,6 +40,7 @@ public class Shape {
 	private ShapeCollection allShapes = ShapeCollection.getInstance();
 	private ShapeGroup group;
 	public SceneGraphComponent shapeSGC;
+	private int numberOfVertices;
 	// make a new instance of the animation tool
 	// TODO leave public or make a getter? The only reason for making it public
 	// is so that the JUnit test can see it
@@ -55,7 +56,7 @@ public class Shape {
 	public double[] translationTransformation = new double[3];
 	
 	// List to store rotations
-	Vector<double[]> rotationList = new Vector<double[]>();
+	public Vector<double[]> rotationList = new Vector<double[]>();
 	
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
@@ -69,13 +70,14 @@ public class Shape {
 	 * @param parentScene
 	 *            The SceneGraphComponent that this shape will be a child of.
 	 */
-	public Shape(int numSides, SceneGraphComponent parentScene) {
+	public Shape(int numVertices, SceneGraphComponent parentScene) {
 
 		// create the polygon
-		IndexedFaceSet shapeGeometry = Primitives.regularPolygon(numSides);
+		IndexedFaceSet shapeGeometry = Primitives.regularPolygon(numVertices);
 		shapeSGC = SceneGraphUtility.createFullSceneGraphComponent();
 		shapeSGC.setGeometry(shapeGeometry);
 		parentScene.addChild(shapeSGC);
+		numberOfVertices = numVertices;
 		// add it to the collection of all shapes on screen
 		allShapes.addShapeToCollection(this);
 		// make a new shape group and add this shape into it
@@ -367,7 +369,7 @@ public class Shape {
 	 * @return
 	 */
 	public int getVertexCount() {
-		return set.getVertexAttributes().getListLength();
+		return numberOfVertices;
 	}
 
 }

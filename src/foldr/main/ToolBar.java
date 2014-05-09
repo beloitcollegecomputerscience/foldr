@@ -9,7 +9,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import de.jreality.scene.SceneGraphComponent;
+import foldr.shape.Shape;
 import foldr.utility.Tool;
 import foldr.utility.Tool.ToolType;
 
@@ -21,12 +24,14 @@ import foldr.utility.Tool.ToolType;
 
 public class ToolBar implements ActionListener {
 	// Testing
-	public Tool currentTool = new Tool();
-	protected JDialog dialog;
+	public static Tool currentTool = new Tool();
+	protected JDialog dialog, popUpDialog;
 	protected JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
 	paletteJoinPoint, paletteErase, palettePoint, paletteLine,
 	paletteShape, paletteMoveCamera;
-	protected JPanel palettePane;
+	protected JPanel palettePane, popUp;
+	JTextField textField;
+	SceneGraphComponent scene;
 	
 	protected void initPalettePane(GUI theProgram) {
 
@@ -82,7 +87,7 @@ public class ToolBar implements ActionListener {
 		paletteLine
 				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the views/perspectives.");
 		paletteShape
-				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the perspectives that is not the freeview perspective. By clicking and holding on this tool you can select more polygons from a drop-down menu, or select a ���custom��� option which would allow you to specify how many faces your object has.");
+				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the perspectives that is not the freeview perspective. By clicking and holding on this tool you can select more polygons from a drop-down menu, or select a ���������������������������custom��������������������������� option which would allow you to specify how many faces your object has.");
 		paletteMoveCamera
 				.setToolTipText(" By using using WASD, and the scroll-wheel the user can move the Freeview camera along the three dimensions.");
 
@@ -116,6 +121,40 @@ public class ToolBar implements ActionListener {
 		dialog.setLocation(8, 170);
 		dialog.setVisible(true);
 	}
+	
+	/*
+	 *  * Creates a pop up box when 'shape' button is clicked on the tool bar.
+	 * Allows the user to enter the number of sides they want a polygon to have
+	 * which is being added to the scene.
+	 */
+	protected void popUpPanel() {
+		JPanel popUp = new JPanel();
+
+		textField = new JTextField(1);
+
+		JButton selectNumSides = new JButton("OK");
+		selectNumSides.addActionListener((ActionListener) this);
+		selectNumSides.setName("selectNumSides");
+
+		popUp.add(textField);
+		popUp.add(selectNumSides);
+
+		popUpDialog = new JDialog(dialog, "Polygon Creator");
+		popUpDialog.add(popUp);
+		popUpDialog.pack();
+		popUpDialog.setLocation(8, 170);
+		popUpDialog.setVisible(true);
+	}
+	
+	
+	/**
+	 * Register the scene being used in the GUI so we can add shapes to it.
+	 * @param topScene
+	 */
+	public void registerTopScene(SceneGraphComponent topScene) {
+		scene = topScene;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -138,10 +177,11 @@ public class ToolBar implements ActionListener {
 			doLine();
 		} else if (buttonName.equals("shape")) {
 			doShape();
+		} else if (buttonName.equals("selectNumSides")) {
+			doSelectNumSides(textField.getText(), scene);
 		} else if (buttonName.equals("moveCamera")) {
 			doMoveCamera();
-		}
-
+		}	
 	}
 
 	public void doSelect() {
@@ -188,10 +228,29 @@ public class ToolBar implements ActionListener {
 	}
 
 	public void doShape() {
-		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
-		currentTool.setTool(ToolType.ADD_SHAPE);
-		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
+		popUpPanel();
 	}
+	
+	public void doSelectNumSides(String num, SceneGraphComponent topScene) {
+		
+		// parse the string to an integer
+		int numSides = Integer.parseInt(num);
+		
+		//check if number is within a certain legal range
+		//TODO catch errors for input that aren't integers
+		if (numSides < 3 || numSides > 10) {
+			System.out.println("Please submit a number of sides between 3 and 10.");
+			System.out.println("Defaulting to 3 sides.");
+			// if not, default to a triangle
+			numSides = 3;
+		}
+		//put the shape onto the screen
+		Shape newShape = new Shape(numSides, topScene);
+		
+		//close the window
+		popUpDialog.setVisible(false);
+	}
+
 
 	public void doMoveCamera() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());

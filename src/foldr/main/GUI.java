@@ -163,6 +163,9 @@ public final class GUI extends JFrame
         // TESTING with a visible shape
     	Shape octogon = new Shape(8, scene);
 
+    	//register the top scene with the tool bar
+    	toolBar.registerTopScene(scene);
+
         // Setting up the free view
         freeJRViewer = new JRViewer();
         freeJRViewer.setContent(scene);
@@ -303,31 +306,7 @@ public final class GUI extends JFrame
 		toolBar.initPalettePane(this);
 	}
 
-    /*
-     * * Creates a pop up box when 'shape' button is clicked on the tool bar.
-     * Allows the user to enter the number of sides they want a polygon to have
-     * which is being added to the scene.
-     */
-    protected void popUpPanel() {
 
-        popUp = new JPanel();
-
-        textField = new JTextField(1);
-
-        JButton selectNumSides = new JButton("OK");
-        selectNumSides.addActionListener((ActionListener) this);
-        selectNumSides.setName("selectNumSides");
-
-
-        popUp.add(textField);
-        popUp.add(selectNumSides);
-
-        popUpDialog = new JDialog(this, "Polygon Creator", false);
-        popUpDialog.add(popUp);
-        popUpDialog.pack();
-        popUpDialog.setLocation(8, 170);
-        popUpDialog.setVisible(true);
-    }
 
     /**
      * <p>
