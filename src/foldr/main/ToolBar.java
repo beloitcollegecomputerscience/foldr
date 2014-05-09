@@ -31,7 +31,8 @@ public class ToolBar implements ActionListener {
 	paletteShape, paletteMoveCamera;
 	protected JPanel palettePane, popUp;
 	JTextField textField;
-
+	SceneGraphComponent scene;
+	
 	protected void initPalettePane(GUI theProgram) {
 
 		palettePane = new JPanel();
@@ -145,36 +146,14 @@ public class ToolBar implements ActionListener {
 		popUpDialog.setVisible(true);
 	}
 	
-	public void doSelectNumSides(String num, SceneGraphComponent topScene) {
-		JButton selectNumSides = new JButton("OK");
-		selectNumSides.addActionListener((ActionListener) this);
-		selectNumSides.setName("selectNumSides");
-
-		popUp.add(textField);
-		popUp.add(selectNumSides);
-
-		popUpDialog = new JDialog();
-		popUpDialog.add(popUp);
-		popUpDialog.pack();
-		popUpDialog.setLocation(8, 170);
-		popUpDialog.setVisible(true);
-		
-		// parse the string to an integer
-		int numSides = Integer.parseInt(num);
-		
-		//check if number is within a certain legal range
-		//TODO catch errors for input that aren't integers
-		if (numSides < 3 || numSides > 10) {
-			System.out.println("Please submit a number of sides between 3 and 10.");
-			System.out.println("Defaulting to 3 sides.");
-			// if not, default to a triangle
-			numSides = 3;
-		}
-		//put the shape onto the screen
-		Shape newShape = new Shape(numSides, topScene);
-		
+	
+	/**
+	 * Register the scene being used in the GUI so we can add shapes to it.
+	 * @param topScene
+	 */
+	public void registerTopScene(SceneGraphComponent topScene) {
+		scene = topScene;
 	}
-
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -198,10 +177,11 @@ public class ToolBar implements ActionListener {
 			doLine();
 		} else if (buttonName.equals("shape")) {
 			doShape();
+		} else if (buttonName.equals("selectNumSides")) {
+			doSelectNumSides(textField.getText(), scene);
 		} else if (buttonName.equals("moveCamera")) {
 			doMoveCamera();
-		}
-
+		}	
 	}
 
 	public void doSelect() {
@@ -248,11 +228,29 @@ public class ToolBar implements ActionListener {
 	}
 
 	public void doShape() {
-		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
-		currentTool.setTool(ToolType.ADD_SHAPE);
 		popUpPanel();
-		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
+	
+	public void doSelectNumSides(String num, SceneGraphComponent topScene) {
+		
+		// parse the string to an integer
+		int numSides = Integer.parseInt(num);
+		
+		//check if number is within a certain legal range
+		//TODO catch errors for input that aren't integers
+		if (numSides < 3 || numSides > 10) {
+			System.out.println("Please submit a number of sides between 3 and 10.");
+			System.out.println("Defaulting to 3 sides.");
+			// if not, default to a triangle
+			numSides = 3;
+		}
+		//put the shape onto the screen
+		Shape newShape = new Shape(numSides, topScene);
+		
+		//close the window
+		popUpDialog.setVisible(false);
+	}
+
 
 	public void doMoveCamera() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());

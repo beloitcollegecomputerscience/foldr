@@ -411,6 +411,9 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	// Create the jReality viewers for each panel
 	public void createJRViewers() {
 
+		//register the top scene with the tool bar
+		toolBar.registerTopScene(scene);
+
 		// TESTING with a visible shape @TODO: Remove this.
 		/*IndexedFaceSet octo = Primitives.regularPolygon(8);
 		SceneGraphComponent octoOne = SceneGraphUtility
