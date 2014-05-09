@@ -21,7 +21,7 @@ import foldr.utility.Tool.ToolType;
 
 public class ToolBar implements ActionListener {
 	// Testing
-	public static Tool currentTool = new Tool();
+	public Tool currentTool = new Tool();
 	protected JDialog dialog;
 	protected JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
 	paletteJoinPoint, paletteErase, palettePoint, paletteLine,
