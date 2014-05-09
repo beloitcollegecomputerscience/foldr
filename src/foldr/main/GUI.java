@@ -555,43 +555,8 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 		toolBar.initPalettePane(this);
 	}
 
-	/*
-	 *  * Creates a pop up box when 'shape' button is clicked on the tool bar.
-	 * Allows the user to enter the number of sides they want a polygon to have
-	 * which is being added to the scene.
-	 */
-	protected void popUpPanel() {
-
-		popUp = new JPanel();
-
-		textField = new JTextField(1);
-
-		// Create the top frame to store desktop
-		f = new JFrame("Polyhedra");
-		f.setLayout(new GridLayout());
-		f.add(desktop);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(1000, 700);
-		f.setVisible(true);
-		
-		// Initializes the palette last so as to have it in the foreground
-		toolBar.initPalettePane(this);
-		
-	}
-
 	public void actionPerformed(ActionEvent e) {
-		JButton selectNumSides = new JButton("OK");
-		selectNumSides.addActionListener((ActionListener) this);
-		selectNumSides.setName("selectNumSides");
-
-		popUp.add(textField);
-		popUp.add(selectNumSides);
-
-		popUpDialog = new JDialog(this, "Polygon Creator", false);
-		popUpDialog.add(popUp);
-		popUpDialog.pack();
-		popUpDialog.setLocation(8, 170);
-		popUpDialog.setVisible(true);
+		
 	}
 
 	/**
