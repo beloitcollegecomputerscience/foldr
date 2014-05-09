@@ -54,6 +54,9 @@ public class Shape {
 	//array to store translation values
 	public double[] translationTransformation = new double[3];
 	
+	// List to store rotations
+	Vector<double[]> rotationList = new Vector<double[]>();
+	
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
 	}

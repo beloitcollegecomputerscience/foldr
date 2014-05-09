@@ -79,18 +79,26 @@ public class AnimateRotationVector extends AbstractTool {
 			sgcToMove.removeTool(this);
 		} else {
 			// Build animation matrix and
-			MatrixBuilder
-					.euclidean()
-					.translate(-shapeToMove.translationTransformation[0],
-							-shapeToMove.translationTransformation[1],
-							-shapeToMove.translationTransformation[2])
-					
-							.rotateFromTo(vectorToMatch1, vectorToMatch2)
-					//Conjugate Shape back
-					.translate(shapeToMove.translationTransformation[0],
-							shapeToMove.translationTransformation[1],
-							shapeToMove.translationTransformation[2])
-					.assignTo(sgcToMove);
+			MatrixBuilder myMatrix;
+			// First Translate object to origin
+			myMatrix = MatrixBuilder.euclidean().translate(
+					-shapeToMove.translationTransformation[0],
+					-shapeToMove.translationTransformation[1],
+					-shapeToMove.translationTransformation[2]);
+
+			// Loop through and apply vector rotations
+			for (int i = 0; i < shapeToMove.rotationList.size(); i++) {
+				myMatrix = MatrixBuilder.euclidean().rotateFromTo(
+						shapeToMove.rotationList.elementAt(i),
+						shapeToMove.rotationList.elementAt(i + 1));
+			}
+			// move Shape back to location
+			myMatrix = MatrixBuilder.euclidean().translate(
+					shapeToMove.translationTransformation[0],
+					shapeToMove.translationTransformation[1],
+					shapeToMove.translationTransformation[2]);
+			
+			myMatrix.assignTo(sgcToMove);
 
 			System.out.println("hit this here!");
 			currentFrame++;
