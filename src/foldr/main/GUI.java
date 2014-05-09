@@ -46,6 +46,7 @@ import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
 import foldr.utility.SelectTool;
+import foldr.utility.SelectTool.SelectionType;
 
 /**
  *
@@ -83,7 +84,7 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	// Capture the mouse location during drag events
 	Point mouseDragLocation = null;
 
-	SelectTool tool;
+	SelectTool selectTool;
 	
 	// menu components
 	private JMenuBar menuBar;
@@ -540,11 +541,11 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 		
 		
 		//Adding the select tool
-		tool = new SelectTool();
-		topCameraContainer.addTool(tool);
-		sideCameraContainer.addTool(tool);
-		frontCameraContainer.addTool(tool);
-		freeCameraContainer.addTool(tool);
+		selectTool = new SelectTool();
+		topCameraContainer.addTool(selectTool);
+		sideCameraContainer.addTool(selectTool);
+		frontCameraContainer.addTool(selectTool);
+		freeCameraContainer.addTool(selectTool);
 		
 
 		// Create the top frame to store desktop
@@ -802,8 +803,9 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	@Override
 	public void mouseClicked(MouseEvent e) {
 
-		System.out.println(tool.getPick());
-		System.out.println(tool.getPick().get(tool.getPick().getLength()-2).toString() + "  " + tool.getPick().get(tool.getPick().getLength()-2).hashCode());
+		Shape selectedShape = selectTool.getSelectedShape(allShapes);
+		
+		System.out.println(selectTool.getPointSelection());
 		
 		// Flip camera to other side on double-click
 		if (e.getClickCount() == 2) {

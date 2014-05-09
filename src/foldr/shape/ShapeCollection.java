@@ -71,6 +71,23 @@ public class ShapeCollection {
 	public static Shape getShape(int key) {
 		return null;
 	}
+	
+	/**
+	 * Return the Shape corresponding to a hashcode.
+	 * 
+	 * @param hashcode
+	 *            hashcode corresponding to a Shape's SceneGraphComponent
+	 * @return Shape corresponding to a hashcode
+	 */
+	public Shape getShapeByHashcode(int hashcode) {
+		for (Shape currentShape : shapes) {
+		    if (currentShape.getShapeHashcode() == hashcode) {
+		    	return currentShape;
+		    }
+		}
+		//If there is no shape of that hashcode in this collection
+		return null;
+	}
 
 	/**
 	 * Return the Shape that the user clicked on in one of the four

@@ -358,6 +358,10 @@ public class Shape {
 
 		return group;
 	}
+	
+	public int getShapeHashcode() {
+		return shapeSGC.hashCode();
+	}
 
 	/**
 	 * 
