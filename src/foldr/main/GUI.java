@@ -539,14 +539,6 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 		frontCamera.setLocation(0, 0, 4.5);
 		frontCamera.applyChangesTo(frontCameraContainer);
 		
-		
-		//Adding the select tool
-		selectTool = new SelectTool();
-		topCameraContainer.addTool(selectTool);
-		sideCameraContainer.addTool(selectTool);
-		frontCameraContainer.addTool(selectTool);
-		freeCameraContainer.addTool(selectTool);
-		
 
 		// Create the top frame to store desktop
 		getContentPane().setLayout(new BorderLayout());
@@ -848,8 +840,15 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-
-		// System.out.println("Mouse Entered: " + arg0.toString());
+		//Ensuring that the SelectTool gets added properly
+		if (selectTool == null) {
+			//Adding the SelectTool
+			selectTool = new SelectTool();
+			topCameraContainer.addTool(selectTool);
+			sideCameraContainer.addTool(selectTool);
+			frontCameraContainer.addTool(selectTool);
+			freeCameraContainer.addTool(selectTool);
+		}
 
 	}
 
