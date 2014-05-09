@@ -23,6 +23,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -66,8 +67,11 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel,
 			popUp;
 	private JPanel palettePane;
-
-	// the viewer components that render the difference camera views
+	
+	protected JFrame f;
+	protected JDesktopPane desktop = new JDesktopPane();
+	
+	//the viewer components that render the difference camera views
 	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
 	Viewer freeViewer, topViewer, sideViewer, frontViewer;
 	// the camera containers for the different cameras of the different views
@@ -103,7 +107,7 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 	private ButtonGroup langGroup;
 	private List<JRadioButtonMenuItem> liLanguages;
 
-	ActionManager actionManager = new ActionManager();
+	static ToolBar toolBar = new ToolBar();
 
 	private JButton paletteSelect, paletteMove, paletteFill, paletteJoinEdge,
 			paletteErase, palettePoint, paletteLine, paletteShape,
@@ -485,18 +489,16 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 
 		frontCamera.setLocation(0, 0, 4.5);
 		frontCamera.applyChangesTo(frontCameraContainer);
-	}
-
+	}	
+	
+	
 	/**
 	 * <p>
 	 * Create the panes, panels and other gui elements and pack them up.
 	 */
 	public void initPanesAndGui() {
-
 		initMenuBarPane();
 		setJMenuBar(menuBar);
-
-		initPalettePane();
 
 		// Adding the view panels (free, top, side, front)
 		GridLayout gl = new GridLayout(2, 2);
@@ -514,6 +516,7 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 		frontPanel.setBackground(Color.GRAY);
 		mainPanel.add(frontPanel);
 		mainPanel.addMouseListener(this);
+		
 		createJRViewers();
 
 		// Adding borders and titles
@@ -548,122 +551,8 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 		pack();
 		setSize(1000, 700);
 		setVisible(true);
-	}
-
-	/**
-     * 
-     */
-	private void initPalettePane() {
-
-		palettePane = new JPanel();
-		palettePane.setBounds(300, 300, 250, 500);
-		palettePane.setLayout(new GridLayout(4, 3));
-
-		// TODO put in right graphics here-- make sure that you either specify
-		// the right path or drop the files into the top-level project folder.
-		// Eclipse won't be able to find them otherwise.
-		// Set up the button images
-		ImageIcon selectImage = new ImageIcon("Icons/selectImage.png");
-		ImageIcon moveImage = new ImageIcon("Icons/moveImage.png");
-		ImageIcon fillImage = new ImageIcon("Icons/fillImage.png");
-		ImageIcon joinEdgeImage = new ImageIcon("Icons/joinEdge.png");
-		ImageIcon eraseImage = new ImageIcon("Icons/erase.png");
-		ImageIcon pointImage = new ImageIcon("Icons/addPoint.png");
-		ImageIcon lineImage = new ImageIcon("Icons/addLine.png");
-		ImageIcon shapeImage = new ImageIcon("Icons/shape.png");
-		ImageIcon panCameraImage = new ImageIcon("Icons/panCamera.png");
-		ImageIcon rotateCameraImage = new ImageIcon("Icons/rotateCamera.png");
-		ImageIcon flymodeImage = new ImageIcon("Icons/flyMode.png");
-		ImageIcon moveCameraImage = new ImageIcon("Icons/moveCamera.png");
-
-		// create the JButtons, passing in the image
-		paletteSelect = new JButton(selectImage);
-		paletteMove = new JButton(moveImage);
-		paletteFill = new JButton(fillImage);
-		paletteJoinEdge = new JButton(joinEdgeImage);
-		// paletteJoinPoint = new JButton(pointImage);
-		paletteErase = new JButton(eraseImage);
-		palettePoint = new JButton(pointImage);
-		paletteLine = new JButton(lineImage);
-		paletteShape = new JButton(shapeImage);
-		palettePanCamera = new JButton(panCameraImage);
-		paletteFlymode = new JButton(flymodeImage);
-		paletteRotateCamera = new JButton(rotateCameraImage);
-		paletteMoveCamera = new JButton(moveCameraImage);
-
-		// Set names so that the actionListener can reference them
-		paletteSelect.setName("select");
-		paletteMove.setName("move");
-		paletteFill.setName("fill");
-		paletteJoinEdge.setName("joinEdge");
-		paletteErase.setName("erase");
-		palettePoint.setName("point");
-		paletteLine.setName("line");
-		paletteShape.setName("shape");
-		palettePanCamera.setName("panCamera");
-		paletteRotateCamera.setName("rotateCamera");
-		paletteFlymode.setName("flymode");
-		paletteMoveCamera.setName("moveCamera");
-
-		// add tool tips
-		paletteSelect
-				.setToolTipText("Selects a shape or shapes to manipulate or move later. Can select individual points, lines, and shapes. If you click and drag you can select multiple points, lines, and shapes.");
-		paletteMove.setToolTipText("Allows user to move selected object.");
-		paletteFill
-				.setToolTipText("Allows user to fill shapes with a particular color. When selected a color option will appear in the information panel.");
-		paletteJoinEdge
-				.setToolTipText("Allows the user to join together the edge of two shapes, creating a hinge along an edge.");
-		paletteErase.setToolTipText("Destroys selected shape");
-		palettePoint
-				.setToolTipText("When selected allows the user to create a single point on the model by clicking on a particular part of any of the perspectives.");
-		paletteLine
-				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the views/perspectives.");
-		paletteShape
-				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the perspectives that is not the freeview perspective. By clicking and holding on this tool you can select more polygons from a drop-down menu, or select a �custom� option which would allow you to specify how many faces your object has.");
-		palettePanCamera
-				.setToolTipText("Will move camera up and down and side to side.");
-		paletteRotateCamera
-				.setToolTipText("Allows you to click-and-drag on the Freeview perspective to rotate, or �point� the camera in the desired direction.");
-		paletteFlymode
-				.setToolTipText(" When selected allows the user to fly the camera in the Freeview perspective.");
-		paletteMoveCamera
-				.setToolTipText(" By using using WASD, and the scroll-wheel the user can move the Freeview camera along the three dimensions.");
-
-		// add them to the pane
-		palettePane.add(paletteSelect);
-		palettePane.add(paletteMove);
-		palettePane.add(paletteFill);
-		palettePane.add(paletteJoinEdge);
-		// palettePane.add(paletteJoinPoint);
-		palettePane.add(paletteErase);
-		palettePane.add(palettePoint);
-		palettePane.add(paletteLine);
-		palettePane.add(paletteShape);
-		palettePane.add(palettePanCamera);
-		palettePane.add(paletteFlymode);
-		palettePane.add(paletteRotateCamera);
-		palettePane.add(paletteMoveCamera);
-
-		// Add action listeners
-		paletteSelect.addActionListener((ActionListener) this);
-		paletteMove.addActionListener((ActionListener) this);
-		paletteFill.addActionListener((ActionListener) this);
-		paletteJoinEdge.addActionListener((ActionListener) this);
-		paletteErase.addActionListener((ActionListener) this);
-		palettePoint.addActionListener((ActionListener) this);
-		paletteLine.addActionListener((ActionListener) this);
-		paletteShape.addActionListener((ActionListener) this);
-		palettePanCamera.addActionListener((ActionListener) this);
-		paletteRotateCamera.addActionListener((ActionListener) this);
-		paletteFlymode.addActionListener((ActionListener) this);
-		paletteMoveCamera.addActionListener((ActionListener) this);
-
-		dialog = new JDialog(this, "Tools", false);
-		dialog.setPreferredSize(new Dimension(196, 350));
-		dialog.add(palettePane);
-		dialog.pack();
-		dialog.setLocation(8, 170);
-		dialog.setVisible(true);
+		
+		toolBar.initPalettePane(this);
 	}
 
 	/*
@@ -677,6 +566,20 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 
 		textField = new JTextField(1);
 
+		// Create the top frame to store desktop
+		f = new JFrame("Polyhedra");
+		f.setLayout(new GridLayout());
+		f.add(desktop);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(1000, 700);
+		f.setVisible(true);
+		
+		// Initializes the palette last so as to have it in the foreground
+		toolBar.initPalettePane(this);
+		
+	}
+
+	public void actionPerformed(ActionEvent e) {
 		JButton selectNumSides = new JButton("OK");
 		selectNumSides.addActionListener((ActionListener) this);
 		selectNumSides.setName("selectNumSides");
@@ -756,41 +659,6 @@ public final class GUI extends JFrame implements ActionListener, MouseListener,
 				.getString("panels.sideview"));
 		((TitledBorder) topPanel.getBorder()).setTitle(Messages
 				.getString("panels.topview"));
-	}
-
-	public void actionPerformed(ActionEvent e) {
-
-		JButton theCommand = (JButton) e.getSource();
-		String buttonName = theCommand.getName();
-		if (buttonName.equals("select")) {
-			actionManager.doSelect();
-		} else if (buttonName.equals("move")) {
-			actionManager.doMove();
-		} else if (buttonName.equals("fill")) {
-			actionManager.doFill();
-		} else if (buttonName.equals("joinEdge")) {
-			actionManager.doJoinEdge();
-		} else if (buttonName.equals("erase")) {
-			actionManager.doErase();
-		} else if (buttonName.equals("point")) {
-			actionManager.doPoint();
-		} else if (buttonName.equals("line")) {
-			actionManager.doLine();
-		} else if (buttonName.equals("shape")) {
-			actionManager.doShape();
-			popUpPanel();
-		} else if (buttonName.equals("panCamera")) {
-			actionManager.doPanCamera();
-		} else if (buttonName.equals("rotateCamera")) {
-			actionManager.doRotateCamera();
-		} else if (buttonName.equals("flymode")) {
-			actionManager.doFlymode();
-		} else if (buttonName.equals("moveCamera")) {
-			actionManager.doMoveCamera();
-		} else if (buttonName.equals("selectNumSides")) {
-			actionManager.doSelectNumSides(textField.getText(), scene);
-			popUpDialog.setVisible(false);
-		}
 	}
 
 	@Override
