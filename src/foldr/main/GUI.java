@@ -156,92 +156,92 @@ public final class GUI extends JFrame
         // ", Z error: " + errorZ);
     }
 
-    // Create the jReality viewers for each panel
-    public void createJRViewers() {
+ 
+	// Create the jReality viewers for each panel
+	public void createJRViewers() {
 
-        // TESTING with a visible shape TODO: Remove this.
-        /*
-         * IndexedFaceSet octo = Primitives.regularPolygon(8);
-         * SceneGraphComponent octoOne = SceneGraphUtility
-         * .createFullSceneGraphComponent("octogon1");
-         * octoOne.setGeometry(octo); scene.addChild(octoOne);
-         */
+		//register the top scene with the tool bar
+		toolBar.registerTopScene(scene);
 
-        // Setting up the free view
-        freeJRViewer = new JRViewer();
-        freeJRViewer.setContent(scene);
-        freeJRViewer.startupLocal();
-        freeViewer = freeJRViewer.getViewer();
-        freeCameraContainer =
-            (SceneGraphComponent) freeViewer.getCameraPath().get(
-                freeViewer.getCameraPath().getLength() - 2);
-        freeViewPanel.setLayout(new GridLayout());
-        freeViewPanel.add((Component) freeViewer.getViewingComponent());
-        freeViewPanel.setVisible(true);
-        freeViewPanel.getComponent(0).addMouseMotionListener(this);
-        freeViewPanel.getComponent(0).addMouseListener(this);
-        freeViewPanel.getComponent(0).addMouseWheelListener(this);
-        freeViewPanel.getComponent(0).setName("freeViewPanel");
+		// TESTING with a visible shape @TODO: Remove this.
+		/*IndexedFaceSet octo = Primitives.regularPolygon(8);
+		SceneGraphComponent octoOne = SceneGraphUtility
+				.createFullSceneGraphComponent("octogon1");
+		octoOne.setGeometry(octo);
+		scene.addChild(octoOne);*/
 
-        // Setting up the top view
-        topJRViewer = new JRViewer();
-        topJRViewer.setContent(scene);
-        topJRViewer.startupLocal();
-        topViewer = topJRViewer.getViewer();
-        topCameraContainer =
-            (SceneGraphComponent) topViewer.getCameraPath().get(
-                topViewer.getCameraPath().getLength() - 2);
-        topPanel.setLayout(new GridLayout());
-        topPanel.add((Component) topViewer.getViewingComponent());
-        topPanel.setVisible(true);
-        topPanel.getComponent(0).addMouseMotionListener(this);
-        topPanel.getComponent(0).addMouseListener(this);
-        topPanel.getComponent(0).addMouseWheelListener(this);
-        topPanel.getComponent(0).setName("topPanel");
+		// Setting up the free view
+		freeJRViewer = new JRViewer();
+		freeJRViewer.setContent(scene);
+		freeJRViewer.startupLocal();
+		freeViewer = freeJRViewer.getViewer();
+		freeCameraContainer = (SceneGraphComponent) freeViewer.getCameraPath()
+				.get(freeViewer.getCameraPath().getLength() - 2);
+		freeViewPanel.setLayout(new GridLayout());
+		freeViewPanel.add((Component) freeViewer.getViewingComponent());
+		freeViewPanel.setVisible(true);
+		freeViewPanel.getComponent(0).addMouseMotionListener(this);
+		freeViewPanel.getComponent(0).addMouseListener(this);
+		freeViewPanel.getComponent(0).addMouseWheelListener(this);
+		freeViewPanel.getComponent(0).setName("freeViewPanel");
 
-        // Setting up the side view
-        sideJRViewer = new JRViewer();
-        sideJRViewer.setContent(scene);
-        sideJRViewer.startupLocal();
-        sideViewer = sideJRViewer.getViewer();
-        sideCameraContainer =
-            (SceneGraphComponent) sideViewer.getCameraPath().get(
-                sideViewer.getCameraPath().getLength() - 2);
-        sidePanel.setLayout(new GridLayout());
-        sidePanel.add((Component) sideViewer.getViewingComponent());
-        sidePanel.setVisible(true);
-        sidePanel.getComponent(0).addMouseMotionListener(this);
-        sidePanel.getComponent(0).addMouseListener(this);
-        sidePanel.getComponent(0).addMouseWheelListener(this);
-        sidePanel.getComponent(0).setName("sidePanel");
+		// Setting up the top view
+		topJRViewer = new JRViewer();
+		topJRViewer.setContent(scene);
+		topJRViewer.startupLocal();
+		topViewer = topJRViewer.getViewer();
+		topCameraContainer = (SceneGraphComponent) topViewer.getCameraPath()
+				.get(topViewer.getCameraPath().getLength() - 2);
+		topPanel.setLayout(new GridLayout());
+		topPanel.add((Component) topViewer.getViewingComponent());
+		topPanel.setVisible(true);
+		topPanel.getComponent(0).addMouseMotionListener(this);
+		topPanel.getComponent(0).addMouseListener(this);
+		topPanel.getComponent(0).addMouseWheelListener(this);
+		topPanel.getComponent(0).setName("topPanel");
 
-        // Setting up the front view
-        frontJRViewer = new JRViewer();
-        frontJRViewer.setContent(scene);
-        frontJRViewer.startupLocal();
-        frontViewer = frontJRViewer.getViewer();
-        frontCameraContainer =
-            (SceneGraphComponent) frontViewer.getCameraPath().get(
-                frontViewer.getCameraPath().getLength() - 2);
-        frontPanel.setLayout(new GridLayout());
-        frontPanel.add((Component) frontViewer.getViewingComponent());
-        frontPanel.setVisible(true);
-        frontPanel.getComponent(0).addMouseMotionListener(this);
-        frontPanel.getComponent(0).addMouseListener(this);
-        frontPanel.getComponent(0).addMouseWheelListener(this);
-        frontPanel.getComponent(0).setName("frontPanel");
+		// Setting up the side view
+		sideJRViewer = new JRViewer();
+		sideJRViewer.setContent(scene);
+		sideJRViewer.startupLocal();
+		sideViewer = sideJRViewer.getViewer();
+		sideCameraContainer = (SceneGraphComponent) sideViewer.getCameraPath()
+				.get(sideViewer.getCameraPath().getLength() - 2);
+		sidePanel.setLayout(new GridLayout());
+		sidePanel.add((Component) sideViewer.getViewingComponent());
+		sidePanel.setVisible(true);
+		sidePanel.getComponent(0).addMouseMotionListener(this);
+		sidePanel.getComponent(0).addMouseListener(this);
+		sidePanel.getComponent(0).addMouseWheelListener(this);
+		sidePanel.getComponent(0).setName("sidePanel");
 
-        topCamera.setLocation(0, 7, -4.5);
-        topCamera.setRotationX(-90);
-        topCamera.applyChangesTo(topCameraContainer);
+		// Setting up the front view
+		frontJRViewer = new JRViewer();
+		frontJRViewer.setContent(scene);
+		frontJRViewer.startupLocal();
+		frontViewer = frontJRViewer.getViewer();
+		frontCameraContainer = (SceneGraphComponent) frontViewer
+				.getCameraPath().get(
+						frontViewer.getCameraPath().getLength() - 2);
+		frontPanel.setLayout(new GridLayout());
+		frontPanel.add((Component) frontViewer.getViewingComponent());
+		frontPanel.setVisible(true);
+		frontPanel.getComponent(0).addMouseMotionListener(this);
+		frontPanel.getComponent(0).addMouseListener(this);
+		frontPanel.getComponent(0).addMouseWheelListener(this);
+		frontPanel.getComponent(0).setName("frontPanel");
 
-        sideCamera.setLocation(7, 0, -4.5);
-        sideCamera.setRotationY(90);
-        sideCamera.applyChangesTo(sideCameraContainer);
+		topCamera.setLocation(0, 7, -4.5);
+		topCamera.setRotationX(-90);
+		topCamera.applyChangesTo(topCameraContainer);
 
-        frontCamera.setLocation(0, 0, 4.5);
-        frontCamera.applyChangesTo(frontCameraContainer);
-    }
+		sideCamera.setLocation(7, 0, -4.5);
+		sideCamera.setRotationY(90);
+		sideCamera.applyChangesTo(sideCameraContainer);
+
+		frontCamera.setLocation(0, 0, 4.5);
+		frontCamera.applyChangesTo(frontCameraContainer);
+	}	
 	
 	
 	/**
@@ -307,31 +307,7 @@ public final class GUI extends JFrame
 		toolBar.initPalettePane(this);
 	}
 
-    /*
-     * * Creates a pop up box when 'shape' button is clicked on the tool bar.
-     * Allows the user to enter the number of sides they want a polygon to have
-     * which is being added to the scene.
-     */
-    protected void popUpPanel() {
 
-        popUp = new JPanel();
-
-        textField = new JTextField(1);
-
-        JButton selectNumSides = new JButton("OK");
-        selectNumSides.addActionListener((ActionListener) this);
-        selectNumSides.setName("selectNumSides");
-
-
-        popUp.add(textField);
-        popUp.add(selectNumSides);
-
-        popUpDialog = new JDialog(this, "Polygon Creator", false);
-        popUpDialog.add(popUp);
-        popUpDialog.pack();
-        popUpDialog.setLocation(8, 170);
-        popUpDialog.setVisible(true);
-    }
 
     /**
      * <p>
