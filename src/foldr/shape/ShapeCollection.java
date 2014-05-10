@@ -49,6 +49,23 @@ public class ShapeCollection {
 		return shapes.get(index);
 	}
 
+	/**
+	 * Return the Shape corresponding to a hashcode.
+	 * 
+	 * @param hashcode
+	 *            hashcode corresponding to a Shape's SceneGraphComponent
+	 * @return Shape corresponding to a hashcode
+	 */
+	public Shape getShapeByHashcode(int hashcode) {
+		for (Shape currentShape : shapes) {
+		    if (currentShape.getShapeHashcode() == hashcode) {
+		    	return currentShape;
+		    }
+		}
+		//If there is no shape of that hashcode in this collection
+		return null;
+	}
+
 	// add a shape to the end of the Collection
 	public void addShapeToCollection(Shape shapeToAdd) {
 		shapes.add(shapeToAdd);

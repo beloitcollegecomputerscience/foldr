@@ -47,6 +47,7 @@ import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
+import foldr.utility.SelectTool;
 import foldr.utility.Tool;
 import foldr.utility.Tool.ToolType;
 
@@ -88,6 +89,10 @@ public final class GUI extends JFrame
     // menu component
     private MenuBar menuBar;
 	static ToolBar toolBar = new ToolBar();
+	
+	//Tool for selection, and the Shape selected.
+	SelectTool selectTool;
+	Shape selectedShape;
 
     private JDialog                    dialog, popUpDialog;
     private JTextField                 textField;
@@ -156,6 +161,23 @@ public final class GUI extends JFrame
             shapeOne.getShapeSGC().getTransformation().getMatrix()[11] - (originalZ + targetZ);
         // System.out.println("X error: " + errorX + ", Y error: " + errorY +
         // ", Z error: " + errorZ);
+    }
+    
+    public void enableSelectTool() {
+		//Adding the SelectTool
+		 selectTool = new SelectTool();
+		 topCameraContainer.addTool(selectTool);
+		 sideCameraContainer.addTool(selectTool);
+		 frontCameraContainer.addTool(selectTool);
+		 freeCameraContainer.addTool(selectTool);
+    }
+    
+    public void disableSelectTool() {
+		//Adding the SelectTool
+		 topCameraContainer.removeTool(selectTool);
+		 sideCameraContainer.removeTool(selectTool);
+		 frontCameraContainer.removeTool(selectTool);
+		 freeCameraContainer.removeTool(selectTool);
     }
 
     // Create the jReality viewers for each panel
@@ -331,6 +353,8 @@ public final class GUI extends JFrame
     	switch (toolBar.currentTool.getCurrentTool()) {
 			case CAMERA_MOVE:
 				handleMouseDoubleClickForCameraMove(e);
+			case SELECTION:
+				selectedShape = selectTool.getSelectedShape(allShapes);
     	}
     }
 
