@@ -81,6 +81,12 @@ public class AnimateRotationAroundLine extends AbstractTool {
 		if (currentFrame == totalFramesForAnimation) {
 			System.out.println("goal reached!");
 			shapeToMove.inMotion = false;
+
+			shapeToMove.rotationList[0] = vertexToMatch1;
+			shapeToMove.rotationList[1] = vertexToMatch2;
+			double temp[] = new double[1];
+			temp[0] = intervalToRotate * currentFrame;
+			shapeToMove.rotationList[2] = temp;
 			// animation is done, so get remove this tool from the shape
 			sgcToMove.removeTool(this);
 		} else {

@@ -52,12 +52,12 @@ public class Shape {
 
 	public boolean inMotion = false;
 
-	//array to store translation values
+	// array to store translation values
 	public double[] translationTransformation = new double[3];
-	
+
 	// List to store rotations
-	public Vector<double[]> rotationList = new Vector<double[]>();
-	
+	public double[][] rotationList = new double[3][];
+
 	public SceneGraphComponent getShapeSGC() {
 		return shapeSGC;
 	}
@@ -84,6 +84,23 @@ public class Shape {
 		group = new ShapeGroup();
 		group.shapesInGroup.add(this);
 
+		// initiate rotation values
+		double[] initOne = new double[3];
+		initOne[0] = 0.0;
+		initOne[1] = 0.0;
+		initOne[2] = 0.0;
+		double[] initTwo = new double[3];
+		initTwo[0] = 0.0;
+		initTwo[1] = 0.0;
+		initTwo[2] = 0.0;
+		double[] initThree = new double[3];
+		initThree[0] = 0.0;
+		initThree[1] = 0.0;
+		initThree[2] = 0.0;
+		rotationList[0] = initOne;
+		rotationList[1] = initTwo;
+		rotationList[2] = initThree;
+
 	}
 
 	/**
@@ -92,9 +109,9 @@ public class Shape {
 	 */
 	public void translate(double x, double y, double z) {
 		MatrixBuilder.euclidean().translate(x, y, z).assignTo(this.shapeSGC);
-		translationTransformation[0]= x;
-		translationTransformation[1]= y;
-		translationTransformation[2]= z;
+		translationTransformation[0] = x;
+		translationTransformation[1] = y;
+		translationTransformation[2] = z;
 	}
 
 	/**
@@ -120,8 +137,10 @@ public class Shape {
 	 * Method that simplifies rotation of shapes using vectors. Is useful for
 	 * testing and setting up a scene.
 	 * 
-	 * @param v1 vector to start from
-	 * @param v2 vector to ending at
+	 * @param v1
+	 *            vector to start from
+	 * @param v2
+	 *            vector to ending at
 	 */
 	public void rotateOnVector(double[] v1, double[] v2) {
 		MatrixBuilder.euclidean().rotateFromTo(v1, v2).assignTo(this.shapeSGC);
@@ -197,15 +216,13 @@ public class Shape {
 	 * @return false if the shape is already being animated, true if it is not
 	 */
 	public boolean animateShape(double[] endPoints) {
-		if (inMotion) {
-			return false;
-		} else {
+		
 			inMotion = true;
 			// attach the animation tool to this sgc
 			shapeSGC.addTool(animateShape);
 			animateShape.setEndPoints(this, endPoints);
 			return true;
-		}
+		
 	}
 
 	/**
@@ -258,17 +275,18 @@ public class Shape {
 		return true;
 	}
 
-//	public boolean rotateShapeWithVector(double[] vector1, double[] vector2) {
-////		if (inMotion) {
-////			return false;
-////		} else {
-////			inMotion = true;
-////			// attach rotate shape tool
-////			shapeSGC.addTool(rotateWithVector);
-////			rotateWithVector.setEndPoints(this, vector1, vector2);
-////		}
-//		return true;
-//	}
+	// public boolean rotateShapeWithVector(double[] vector1, double[] vector2)
+	// {
+	// // if (inMotion) {
+	// // return false;
+	// // } else {
+	// // inMotion = true;
+	// // // attach rotate shape tool
+	// // shapeSGC.addTool(rotateWithVector);
+	// // rotateWithVector.setEndPoints(this, vector1, vector2);
+	// // }
+	// return true;
+	// }
 
 	/**
 	 * <p>
@@ -327,9 +345,9 @@ public class Shape {
 	}
 
 	public int getShapeHashcode() {
-		 return shapeSGC.hashCode();
+		return shapeSGC.hashCode();
 	}
-	
+
 	/**
 	 * <p>
 	 * Returns the ShapeGroup that the Shape is in.

@@ -228,6 +228,10 @@ public final class GUI extends JFrame implements MouseListener,
 		// Move top of cube in to place
 		double[] top = { 0, 0, -1.4 };
 		testShape6.animateShape(top);
+		
+		// test to show movement will now preserve rotation
+		double[] tst = { 1, 1, 1 };
+		testShape2.animateShape(tst);
 
 		/*
 		 * Demo for pyramid
