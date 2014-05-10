@@ -54,7 +54,7 @@ public class AnimateRotation extends AbstractTool {
 	 * @param plane
 	 *            the plane in which to rotate the shape.
 	 */
-	public void setEndPoints(Shape newShapeToMove, double angleToRotate,
+	public void setRotationAmount(Shape newShapeToMove, double angleToRotate,
 			char plane) {
 		shapeToMove = newShapeToMove;
 		sgcToMove = shapeToMove.getShapeSGC();

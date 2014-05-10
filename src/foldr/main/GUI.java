@@ -235,38 +235,38 @@ public final class GUI extends JFrame implements MouseListener,
 		 * Bugs: looks horrible. Shows good example of rotation stored locally
 		 * for each shape.
 		 */
-		// Shape testShape7 = new Shape(4, scene);
-		// Shape testShape8 = new Shape(3, scene);
-		// Shape testShape9 = new Shape(3, scene);
-		// Shape testShape10 = new Shape(3, scene);
-		// Shape testShape11 = new Shape(3, scene);
+//		 Shape testShape7 = new Shape(4, scene);
+//		 Shape testShape8 = new Shape(3, scene);
+//		 Shape testShape9 = new Shape(3, scene);
+//		 Shape testShape10 = new Shape(3, scene);
+//		 Shape testShape11 = new Shape(3, scene);
 
 		/*
 		 * Move base of pyramid up a little to account for non even edge length
 		 * of squares and triangles makes demo look nicer
 		 */
-		// double[] pyramidBase = { 0, 0, .2 };
-		// testShape7.animateShape(pyramidBase);
-		//
-		// testShape8.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
-		// testShape7, testShape8)), testShape7
-		// .getCurrentVertexCoordinates(0), testShape7
-		// .getCurrentVertexCoordinates(3));
-		//
-		// testShape9.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
-		// testShape7, testShape9)), testShape7
-		// .getCurrentVertexCoordinates(3), testShape7
-		// .getCurrentVertexCoordinates(2));
-		//
-		// testShape10.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
-		// testShape7, testShape10)), testShape7
-		// .getCurrentVertexCoordinates(2), testShape7
-		// .getCurrentVertexCoordinates(1));
-		//
-		// testShape11.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
-		// testShape7, testShape11)), testShape7
-		// .getCurrentVertexCoordinates(1), testShape7
-		// .getCurrentVertexCoordinates(0));
+//		 double[] pyramidBase = { 0, 0, .2 };
+//		 testShape7.animateShape(pyramidBase);
+//		
+//		 testShape8.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
+//		 testShape7, testShape8)), testShape7
+//		 .getCurrentVertexCoordinates(0), testShape7
+//		 .getCurrentVertexCoordinates(3));
+//		
+//		 testShape9.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
+//		 testShape7, testShape9)), testShape7
+//		 .getCurrentVertexCoordinates(3), testShape7
+//		 .getCurrentVertexCoordinates(2));
+//		
+//		 testShape10.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
+//		 testShape7, testShape10)), testShape7
+//		 .getCurrentVertexCoordinates(2), testShape7
+//		 .getCurrentVertexCoordinates(1));
+//		
+//		 testShape11.rotateShapeOnLine(-Math.toRadians(myConvert.angleToRotateBy(
+//		 testShape7, testShape11)), testShape7
+//		 .getCurrentVertexCoordinates(1), testShape7
+//		 .getCurrentVertexCoordinates(0));
 
 		// register the top scene with the tool bar
 		toolBar.registerTopScene(scene);

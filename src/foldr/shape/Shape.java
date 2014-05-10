@@ -214,7 +214,7 @@ public class Shape {
 	 * animation, this method will simply return false.
 	 * 
 	 * @param angleToRotate
-	 *            The angle amount to rotate the shape. MUST USE RAIDIANS.
+	 *            The angle amount to rotate the shape. MUST USE RADIANS.
 	 * @param planeOfRotation
 	 *            The axis the shape will be rotated on
 	 * @return false if the shape is already in motion.
@@ -226,7 +226,7 @@ public class Shape {
 			inMotion = true;
 			// attach rotate shape tool
 			shapeSGC.addTool(rotateShape);
-			rotateShape.setEndPoints(this, angleToRotate, planeOfRotation);
+			rotateShape.setRotationAmount(this, angleToRotate, planeOfRotation);
 		}
 		return true;
 	}
