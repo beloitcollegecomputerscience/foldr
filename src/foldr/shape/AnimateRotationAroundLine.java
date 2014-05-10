@@ -69,6 +69,9 @@ public class AnimateRotationAroundLine extends AbstractTool {
 
 	}
 
+	/**
+	 * Performs the action on the shape this tool was applied to.
+	 */
 	@Override
 	public void perform(ToolContext tc) {
 
