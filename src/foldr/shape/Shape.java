@@ -237,7 +237,7 @@ public class Shape {
 	 * animation, this method will simply return false.
 	 * 
 	 * @param angleToRotate
-	 *            The angle amount to rotate the shape. MUST USE RAIDIANS.
+	 *            The angle amount to rotate the shape. MUST USE RADIANS.
 	 * @param vertexToMatch1
 	 *            The first point of the axis the shape will be rotated on.
 	 * @param vertexToMatch2
