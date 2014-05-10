@@ -2,12 +2,23 @@ package test;
 
 import org.junit.Test;
 
+import de.jreality.scene.SceneGraphComponent;
+import de.jreality.util.SceneGraphUtility;
 import foldr.shape.Converter;
+import foldr.shape.Shape;
 /**
  * Tests for testing conversion methods
+ * 
+ * @author Ellery Addington-White
  */
 public class converterTest {
 	Converter testConvert = new Converter();
+	
+	static SceneGraphComponent topScene = SceneGraphUtility
+			.createFullSceneGraphComponent("topScene");
+
+	Shape shapeOne = new Shape(4, topScene);
+	Shape shapeTwo = new Shape(4, topScene);
 
 	/**
 	 * Tests for testing conversion methods
@@ -37,6 +48,10 @@ public class converterTest {
 		assert (results[0] == 8);
 		assert (results[1] == 13);
 		assert (results[2] == -11);
+		
+		//Test angle to rotate by for two squares
+		double amountToRotate = testConvert.angleToRotateBy(shapeOne, shapeOne);
+		assert(amountToRotate == 90);
 	}
 
 }

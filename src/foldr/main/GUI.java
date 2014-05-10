@@ -186,7 +186,10 @@ public final class GUI extends JFrame implements MouseListener,
 		/*
 		 * DEMOS
 		 * 
-		 * CUBE - Working Pyramid - Fail
+		 * CUBE - Working
+		 * Pyramid - Fail
+		 * 
+		 * @author Ellery Addington-White
 		 */
 
 		// Create shapes

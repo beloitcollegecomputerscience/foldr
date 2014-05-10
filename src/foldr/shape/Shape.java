@@ -230,6 +230,8 @@ public class Shape {
 	 * if the shape is not already being animated. If called on a shape in
 	 * animation, this method will simply return false.
 	 * 
+	 * @author Ellery Addington-white
+	 * 
 	 * @param angleToRotate
 	 *            The angle amount to rotate the shape. MUST USE RADIANS.
 	 * @param planeOfRotation
@@ -252,6 +254,8 @@ public class Shape {
 	 * The public method used for Rotation animation. Will only run an animation
 	 * if the shape is not already being animated. If called on a shape in
 	 * animation, this method will simply return false.
+	 * 
+	 * @author Ellery Addington-White
 	 * 
 	 * @param angleToRotate
 	 *            The angle amount to rotate the shape. MUST USE RADIANS.

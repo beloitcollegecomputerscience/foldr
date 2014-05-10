@@ -10,6 +10,9 @@ import de.jreality.scene.tool.ToolContext;
  * A Jreality tool, which animates a shape an inputed degree of rotation along
  * an axis defined by the two points given.
  * 
+ * Note: Attempt to have rotation working with vectors and animate. Did not end
+ * up working as well as I had hoped.
+ * 
  * @author Ellery Addington-White
  * 
  * 
@@ -79,32 +82,32 @@ public class AnimateRotationVector extends AbstractTool {
 			sgcToMove.removeTool(this);
 		} else {
 			// Build animation matrix and
-			MatrixBuilder myMatrix;
-			// First Translate object to origin
-			myMatrix = MatrixBuilder.euclidean().translate(
-					-shapeToMove.translationTransformation[0],
-					-shapeToMove.translationTransformation[1],
-					-shapeToMove.translationTransformation[2]);
-
-			// Loop through and apply vector rotations
-			for (int i = 0; i < shapeToMove.rotationList.size(); i++) {
-				myMatrix = MatrixBuilder.euclidean().rotateFromTo(
-						shapeToMove.rotationList.elementAt(i),
-						shapeToMove.rotationList.elementAt(i + 1));
-			}
-
-			myMatrix = MatrixBuilder.euclidean().rotateFromTo(
-					shapeToMove.rotationList.elementAt(shapeToMove.rotationList
-							.size()), vectorToMatch2);
-			// move Shape back to location
-			myMatrix = MatrixBuilder.euclidean().translate(
-					shapeToMove.translationTransformation[0],
-					shapeToMove.translationTransformation[1],
-					shapeToMove.translationTransformation[2]);
-
-			myMatrix.assignTo(sgcToMove);
-
-			shapeToMove.rotationList.add(vectorToMatch2);
+			// MatrixBuilder myMatrix;
+			// // First Translate object to origin
+			// myMatrix = MatrixBuilder.euclidean().translate(
+			// -shapeToMove.translationTransformation[0],
+			// -shapeToMove.translationTransformation[1],
+			// -shapeToMove.translationTransformation[2]);
+			//
+			// // Loop through and apply vector rotations
+			// for (int i = 0; i < shapeToMove.rotationList.size(); i++) {
+			// myMatrix = MatrixBuilder.euclidean().rotateFromTo(
+			// shapeToMove.rotationList.elementAt(i),
+			// shapeToMove.rotationList.elementAt(i + 1));
+			// }
+			//
+			// myMatrix = MatrixBuilder.euclidean().rotateFromTo(
+			// shapeToMove.rotationList.elementAt(shapeToMove.rotationList
+			// .size()), vectorToMatch2);
+			// // move Shape back to location
+			// myMatrix = MatrixBuilder.euclidean().translate(
+			// shapeToMove.translationTransformation[0],
+			// shapeToMove.translationTransformation[1],
+			// shapeToMove.translationTransformation[2]);
+			//
+			// myMatrix.assignTo(sgcToMove);
+			//
+			// shapeToMove.rotationList.add(vectorToMatch2);
 
 			System.out.println("hit this here!");
 			currentFrame++;
