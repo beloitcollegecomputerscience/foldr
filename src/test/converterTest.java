@@ -1,14 +1,17 @@
 package test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import foldr.shape.Converter;
-
+/**
+ * Tests for testing conversion methods
+ */
 public class converterTest {
 	Converter testConvert = new Converter();
 
+	/**
+	 * Tests for testing conversion methods
+	 */
 	@Test
 	public void test() {
 		// Test converting points to vector on origin
