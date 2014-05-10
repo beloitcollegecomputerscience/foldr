@@ -4,9 +4,11 @@
 
 package foldr.main;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +91,6 @@ final class MenuBar extends JMenuBar implements ActionListener {
      */
     private static final long  serialVersionUID = -8724966099923583862L;
 
-
     JMenu                      fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
     JMenuItem                  fileOpen, fileNew, fileSave, fileSaveAs, fileExport, fileClose;
     JMenuItem                  editCopy, editCut, editPaste, editDelete, editSelectAll;
@@ -105,9 +106,9 @@ final class MenuBar extends JMenuBar implements ActionListener {
     JMenuItem                  helpManual, helpQuickStartGuide;
     ButtonGroup                langGroup;
     List<JRadioButtonMenuItem> liLanguages;
-    
-    SceneGraphComponent scene;
-    
+
+    SceneGraphComponent        scene;
+
     /**
      * @param this
      */
@@ -371,53 +372,94 @@ final class MenuBar extends JMenuBar implements ActionListener {
     }
 
     /**
-	 * Register the scene being used in the GUI so we can add shapes to it.
-	 * @param topScene
-	 */
-	public void registerTopScene(SceneGraphComponent topScene) {
-		scene = topScene;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Create New")) {
-			doCreateNew(scene);
-		} else if (e.getActionCommand().equals("Save As")) {
-			doSaveAs(true);
-		} else if (e.getActionCommand().equals("Save")) {
-			doSave(false);
-		} else if (e.getActionCommand().equals("Open")) {
-			doOpen(scene);
-		} else {
-			System.out.println(e.getActionCommand() + " is not yet implemented");
-		}
-		
-	}
-	
-	public void doCreateNew(SceneGraphComponent topScene) {
-		//TODO ask user if they want to save first
-		ShapeCollection allShapes = ShapeCollection.getInstance();
-		allShapes.removeAllShapes();
-		topScene.removeAllChildren();
-	}
-	
-	public void doSaveAs(boolean makeNewFile) {
-		FileParser fp = new FileParser();
-		fp.doSave(makeNewFile);
-	}
-	
-	public void doSave(boolean makeNewFile) {
-		FileParser fp = new FileParser();
-		fp.doSave(makeNewFile);
-	}
-	
-	public void doOpen(SceneGraphComponent topScene) {
-		FileParser fp = new FileParser();
-		try {
-			fp.loadInput(topScene);
-		} catch (Exception inputException) {
-			new ErrorHandler("Unknown input error." );
-		}
-	}
+     * Register the scene being used in the GUI so we can add shapes to it.
+     * 
+     * @param topScene
+     */
+    public void registerTopScene(SceneGraphComponent topScene) {
+
+        scene = topScene;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        String src = ((Component) e.getSource()).getName();
+        src = (src == null) ? "" : src;
+        if (src.equals(fileNew.getName())) {
+            doCreateNew(scene);
+        } else if (src.equals(fileSaveAs.getName())) {
+            doSaveAs(true);
+        } else if (src.equals(fileSave.getName())) {
+            doSave(false);
+        } else if (src.equals(fileOpen.getName())) {
+            doOpen(scene);
+        } else if (src.equals(fileClose.getName())) {
+            doClose(GUI.getInstance());
+        } else {
+            for (JMenuItem jmi : liLanguages) {
+                if (jmi.getText().equals(e.getActionCommand())) {
+                    Messages.setBundle(MessagesUtils.getInstance().getLocale(e.getActionCommand()));
+                    GUI.getInstance().label();
+                    return;
+                }
+            }
+            System.out.println(e.getActionCommand() + " is not yet implemented");
+        }
+
+    }
+
+    /**
+     * @param topScene
+     */
+    public void doCreateNew(SceneGraphComponent topScene) {
+
+        // TODO ask user if they want to save first
+        ShapeCollection allShapes = ShapeCollection.getInstance();
+        allShapes.removeAllShapes();
+        topScene.removeAllChildren();
+    }
+
+    /**
+     * @param makeNewFile
+     */
+    public void doSaveAs(boolean makeNewFile) {
+
+        FileParser fp = new FileParser();
+        fp.doSave(makeNewFile);
+    }
+
+    /**
+     * @param makeNewFile
+     */
+    public void doSave(boolean makeNewFile) {
+
+        FileParser fp = new FileParser();
+        fp.doSave(makeNewFile);
+    }
+
+    /**
+     * @param topScene
+     */
+    public void doOpen(SceneGraphComponent topScene) {
+
+        FileParser fp = new FileParser();
+        try {
+            fp.loadInput(topScene);
+        } catch (Exception inputException) {
+            new ErrorHandler("Unknown input error.");
+        }
+    }
+
+    /**
+     * @param gui
+     */
+    public void doClose(GUI gui) {
+
+        gui.setVisible(false);
+        gui.dispose();
+        System.exit(0); // FIXME can't figure out how to stop JReality threads
+                        // so I have to call System.exit
+    }
 
 }

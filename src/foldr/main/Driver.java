@@ -37,8 +37,9 @@ public class Driver {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        GUI mw = new GUI("Polyhedra");
-        mw.initPanesAndGui();
-        mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        GUI gui = GUI.getInstance();
+        gui.setName("Polyhedra");
+        gui.initPanesAndGui();
+        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
