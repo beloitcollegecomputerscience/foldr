@@ -51,9 +51,9 @@ public class MessagesTest {
     @Test
     public void testGetString() {
 
-        assertEquals("File", Messages.getString(Messages.FI));
+        assertEquals("File", Messages.getString(Messages.FILE_KEY));
         Messages.setBundle(Locale.FRANCE);
-        assertEquals("Fichier", Messages.getString(Messages.FI));
+        assertEquals("Fichier", Messages.getString(Messages.FILE_KEY));
     }
 
     @Test

@@ -20,31 +20,31 @@ public class Messages {
      * <p>
      * Key for the File menu.
      */
-    public static final String FI = "menu.file";
+    public static final String FILE_KEY = "menu.file";
     
     /**
      * <p>
      * Key for the Edit menu.
      */
-    public static final String ED = "menu.edit";
+    public static final String EDIT_KEY = "menu.edit";
     
     /**
      * <p>
      * Key for the Folding/Shape menu.
      */
-    public static final String FO = "menu.fold";
+    public static final String FOLD_KEY = "menu.fold";
     
     /**
      * <p>
      * Key for the Window menu.
      */
-    public static final String WI = "menu.wind";
+    public static final String WINDOW_KEY = "menu.wind";
     
     /**
      * <p>
      * Key for the Help menu.
      */
-    public static final String HE = "menu.help";
+    public static final String HELP_KEY = "menu.help";
 
     // //////////////////////////////////////////////////////////////////////////
     //

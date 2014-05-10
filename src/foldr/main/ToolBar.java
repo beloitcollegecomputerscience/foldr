@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import de.jreality.scene.SceneGraphComponent;
+import foldr.messages.Messages;
 import foldr.shape.Shape;
 import foldr.utility.Tool;
 import foldr.utility.Tool.ToolType;
@@ -269,6 +270,12 @@ public class ToolBar implements ActionListener {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.CAMERA_MOVE);
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
+	}
+	
+	public void label() {
+	    if(dialog != null) {
+	        dialog.setTitle(Messages.getString("toolbar.title"));
+	    }
 	}
 
 }

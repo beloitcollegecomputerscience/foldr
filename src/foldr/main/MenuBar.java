@@ -4,9 +4,11 @@
 
 package foldr.main;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +91,6 @@ final class MenuBar extends JMenuBar implements ActionListener {
      */
     private static final long  serialVersionUID = -8724966099923583862L;
 
-
     JMenu                      fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
     JMenuItem                  fileOpen, fileNew, fileSave, fileSaveAs, fileExport, fileClose;
     JMenuItem                  editCopy, editCut, editPaste, editDelete, editSelectAll;
@@ -105,9 +106,9 @@ final class MenuBar extends JMenuBar implements ActionListener {
     JMenuItem                  helpManual, helpQuickStartGuide;
     ButtonGroup                langGroup;
     List<JRadioButtonMenuItem> liLanguages;
-    
-    SceneGraphComponent scene;
-    
+
+    SceneGraphComponent        scene;
+
     /**
      * @param this
      */
@@ -124,187 +125,187 @@ final class MenuBar extends JMenuBar implements ActionListener {
 
         // File submenu
         fileMenu = new JMenu("File");
-        fileMenu.setName(Messages.FI);
+        fileMenu.setName(Messages.FILE_KEY);
         this.add(fileMenu);// fileMenu -> this
         fileNew = new JMenuItem("New");
         fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.META_MASK));
         fileNew.addActionListener(this);
-        fileNew.setName(Messages.FI + ".new");
+        fileNew.setName(Messages.FILE_KEY + ".new");
         fileMenu.add(fileNew);
         fileOpen = new JMenuItem("Open");
         fileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
         fileOpen.addActionListener(this);
-        fileOpen.setName(Messages.FI + ".open");
+        fileOpen.setName(Messages.FILE_KEY + ".open");
         fileMenu.add(fileOpen);
         fileSave = new JMenuItem("Save");
         fileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.META_MASK));
         fileSave.addActionListener(this);
-        fileSave.setName(Messages.FI + ".save");
+        fileSave.setName(Messages.FILE_KEY + ".save");
         fileMenu.add(fileSave);
         fileSaveAs = new JMenuItem("Save As");
         fileSaveAs.addActionListener(this);
-        fileSaveAs.setName(Messages.FI + ".saveas");
+        fileSaveAs.setName(Messages.FILE_KEY + ".saveas");
         fileMenu.add(fileSaveAs);
         fileExport = new JMenuItem("Export");
         fileExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.META_MASK));
         fileExport.addActionListener(this);
-        fileExport.setName(Messages.FI + ".export");
+        fileExport.setName(Messages.FILE_KEY + ".export");
         fileMenu.add(fileExport);
         fileClose = new JMenuItem("Close");
         fileClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.META_MASK));
         fileClose.addActionListener(this);
-        fileClose.setName(Messages.FI + ".close");
+        fileClose.setName(Messages.FILE_KEY + ".close");
         fileMenu.add(fileClose);
 
         // Edit submenu
         editMenu = new JMenu("Edit");
-        editMenu.setName(Messages.ED);
+        editMenu.setName(Messages.EDIT_KEY);
         this.add(editMenu); // editMenu -> this
         editCopy = new JMenuItem("Copy");
         editCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.META_MASK));
         editCopy.addActionListener(this);
-        editCopy.setName(Messages.ED + ".copy");
+        editCopy.setName(Messages.EDIT_KEY + ".copy");
         editMenu.add(editCopy);
         editCut = new JMenuItem("Cut");
         editCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.META_MASK));
         editCut.addActionListener(this);
-        editCut.setName(Messages.ED + ".cut");
+        editCut.setName(Messages.EDIT_KEY + ".cut");
         editMenu.add(editCut);
         editPaste = new JMenuItem("Paste");
         editPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.META_MASK));
         editPaste.addActionListener(this);
-        editPaste.setName(Messages.ED + ".paste");
+        editPaste.setName(Messages.EDIT_KEY + ".paste");
         editMenu.add(editPaste);
         editMenu.add(new JSeparator()); // separate
         editDelete = new JMenuItem("Delete");
         editDelete.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_BACK_SPACE, ActionEvent.META_MASK));
         editDelete.addActionListener(this);
-        editDelete.setName(Messages.ED + ".delete");
+        editDelete.setName(Messages.EDIT_KEY + ".delete");
         editMenu.add(editDelete);
         editSelectAll = new JMenuItem("Select All");
         editSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.META_MASK));
         editSelectAll.addActionListener(this);
-        editSelectAll.setName(Messages.ED + ".selectall");
+        editSelectAll.setName(Messages.EDIT_KEY + ".selectall");
         editMenu.add(editSelectAll);
 
         // Folding/Shapes submenu
         foldingMenu = new JMenu("Folding");
-        foldingMenu.setName(Messages.FO);
+        foldingMenu.setName(Messages.FOLD_KEY);
         this.add(foldingMenu); // folMenu -> this
         foldingAngle = new JMenu("Angle");
-        foldingAngle.setName(Messages.FO + ".angle");
+        foldingAngle.setName(Messages.FOLD_KEY + ".angle");
         foldingMenu.add(foldingAngle);
         foldingThirty = new JMenuItem("Rotate 30 Degrees");
         foldingThirty.addActionListener(this);
-        foldingThirty.setName(Messages.FO + ".angle.30");
+        foldingThirty.setName(Messages.FOLD_KEY + ".angle.30");
         foldingAngle.add(foldingThirty);
         foldingFortyFive = new JMenuItem("Rotate 45 Degrees");
         foldingFortyFive.addActionListener(this);
-        foldingFortyFive.setName(Messages.FO + ".angle.45");
+        foldingFortyFive.setName(Messages.FOLD_KEY + ".angle.45");
         foldingAngle.add(foldingFortyFive);
         foldingNinety = new JMenuItem("Rotate 90 Degrees");
         foldingNinety.addActionListener(this);
-        foldingNinety.setName(Messages.FO + ".angle.90");
+        foldingNinety.setName(Messages.FOLD_KEY + ".angle.90");
         foldingAngle.add(foldingNinety);
         foldingCustomAngle = new JMenuItem("Custom Angle");
         foldingCustomAngle.addActionListener(this);
-        foldingCustomAngle.setName(Messages.FO + ".angle.custom");
+        foldingCustomAngle.setName(Messages.FOLD_KEY + ".angle.custom");
         foldingAngle.add(foldingCustomAngle);
         foldingMenu.add(new JSeparator()); // separate
         foldingEdgeSelect = new JMenuItem("Edge Select");
         foldingEdgeSelect.addActionListener(this);
-        foldingEdgeSelect.setName(Messages.FO + ".edgesel");
+        foldingEdgeSelect.setName(Messages.FOLD_KEY + ".edgesel");
         foldingMenu.add(foldingEdgeSelect);
         foldingPointSelect = new JMenuItem("Point Select");
         foldingPointSelect.addActionListener(this);
-        foldingPointSelect.setName(Messages.FO + ".pointsel");
+        foldingPointSelect.setName(Messages.FOLD_KEY + ".pointsel");
         foldingMenu.add(foldingPointSelect);
         foldingMenu.add(new JSeparator()); // separate
         foldingShape = new JMenu("Shape");
-        foldingShape.setName(Messages.FO + ".shape");
+        foldingShape.setName(Messages.FOLD_KEY + ".shape");
         foldingMenu.add(foldingShape); // foldShape -> foldMenu
         foldingFoldShapes = new JMenuItem("Fold Shapes");
         foldingFoldShapes.addActionListener(this);
-        foldingFoldShapes.setName(Messages.FO + ".shape.fold");
+        foldingFoldShapes.setName(Messages.FOLD_KEY + ".shape.fold");
         foldingShape.add(foldingFoldShapes);
         foldingConnectShapes = new JMenuItem("Connect Shapes");
         foldingConnectShapes.addActionListener(this);
-        foldingConnectShapes.setName(Messages.FO + ".shape.connect");
+        foldingConnectShapes.setName(Messages.FOLD_KEY + ".shape.connect");
         foldingShape.add(foldingConnectShapes);
         foldingDetachShapes = new JMenuItem("Detach Shapes");
         foldingDetachShapes.addActionListener(this);
-        foldingDetachShapes.setName(Messages.FO + ".shape.detach");
+        foldingDetachShapes.setName(Messages.FOLD_KEY + ".shape.detach");
         foldingShape.add(foldingDetachShapes);
         foldingResizeShape = new JMenuItem("Resize shape");
         foldingResizeShape.addActionListener(this);
-        foldingResizeShape.setName(Messages.FO + ".shape.resize");
+        foldingResizeShape.setName(Messages.FOLD_KEY + ".shape.resize");
         foldingShape.add(foldingResizeShape);
 
         // Window submenu
         windowMenu = new JMenu("Window");
-        windowMenu.setName(Messages.WI);
+        windowMenu.setName(Messages.WINDOW_KEY);
         this.add(windowMenu);// winMenu -> this
         windowView = new JMenu("View");
-        windowView.setName(Messages.WI + ".view");
+        windowView.setName(Messages.WINDOW_KEY + ".view");
         windowMenu.add(windowView); // winView -> winMenu
         windowShowTop = new JCheckBoxMenuItem("Show top", true);
         windowShowTop.addActionListener(this);
-        windowShowTop.setName(Messages.WI + ".view.top");
+        windowShowTop.setName(Messages.WINDOW_KEY + ".view.top");
         windowView.add(windowShowTop);
         windowShowBack = new JCheckBoxMenuItem("Show Back", true);
         windowShowBack.addActionListener(this);
-        windowShowBack.setName(Messages.WI + ".view.back");
+        windowShowBack.setName(Messages.WINDOW_KEY + ".view.back");
         windowView.add(windowShowBack);
         windowShowLeft = new JCheckBoxMenuItem("Show Left", true);
         windowShowLeft.addActionListener(this);
-        windowShowLeft.setName(Messages.WI + ".view.left");
+        windowShowLeft.setName(Messages.WINDOW_KEY + ".view.left");
         windowView.add(windowShowLeft);
         windowMenu.add(new JSeparator()); // separate
         windowShowHideTools = new JMenuItem("Show/Hide Tools");
         windowShowHideTools.addActionListener(this);
-        windowShowHideTools.setName(Messages.WI + ".tools");
+        windowShowHideTools.setName(Messages.WINDOW_KEY + ".tools");
         windowMenu.add(windowShowHideTools);
         windowShowHideInfo = new JMenuItem("Show/Hide Information Panel");
         windowShowHideInfo.addActionListener(this);
-        windowShowHideInfo.setName(Messages.WI + ".info");
+        windowShowHideInfo.setName(Messages.WINDOW_KEY + ".info");
         windowMenu.add(windowShowHideInfo);
         windowMenu.add(new JSeparator()); // separate
         windowPerspective = new JMenu("Perspective");
-        windowPerspective.setName(Messages.WI + ".persp");
+        windowPerspective.setName(Messages.WINDOW_KEY + ".persp");
         windowMenu.add(windowPerspective); // winPersp -> winMenu
         windowChangePerspective = new JMenuItem("Change Perspective Layout");
         windowChangePerspective.addActionListener(this);
-        windowChangePerspective.setName(Messages.WI + ".persp.change");
+        windowChangePerspective.setName(Messages.WINDOW_KEY + ".persp.change");
         windowPerspective.add(windowChangePerspective);
         windowSavePerspective = new JMenuItem("Save Perspective Layout");
         windowSavePerspective.addActionListener(this);
-        windowSavePerspective.setName(Messages.WI + ".persp.save");
+        windowSavePerspective.setName(Messages.WINDOW_KEY + ".persp.save");
         windowPerspective.add(windowSavePerspective);
         windowLoadPerspective = new JMenuItem("Load Perspective Layout");
         windowLoadPerspective.addActionListener(this);
-        windowLoadPerspective.setName(Messages.WI + ".persp.load");
+        windowLoadPerspective.setName(Messages.WINDOW_KEY + ".persp.load");
         windowPerspective.add(windowLoadPerspective);
         windowResizePerspective = new JMenuItem("Resize Perspective");
         windowResizePerspective.addActionListener(this);
-        windowResizePerspective.setName(Messages.WI + ".persp.resize");
+        windowResizePerspective.setName(Messages.WINDOW_KEY + ".persp.resize");
         windowPerspective.add(windowResizePerspective);
 
         // Help menu items
         helpMenu = new JMenu("Help");
-        helpMenu.setName(Messages.HE);
+        helpMenu.setName(Messages.HELP_KEY);
         this.add(helpMenu); // helpMenu -> this
         helpManual = new JMenuItem("Manual");
         helpManual.addActionListener(this);
-        helpManual.setName(Messages.HE + ".manual");
+        helpManual.setName(Messages.HELP_KEY + ".manual");
         helpMenu.add(helpManual);
         helpQuickStartGuide = new JMenuItem("Quick Start Guide");
         helpQuickStartGuide.addActionListener(this);
-        helpQuickStartGuide.setName(Messages.HE + ".guide");
+        helpQuickStartGuide.setName(Messages.HELP_KEY + ".guide");
         helpMenu.add(helpQuickStartGuide);
 
         helpLanguage = new JMenu("Languages");
-        helpLanguage.setName(Messages.HE + ".language");
+        helpLanguage.setName(Messages.HELP_KEY + ".language");
         helpMenu.add(helpLanguage);
         liLanguages = new ArrayList<JRadioButtonMenuItem>();
         langGroup = new ButtonGroup();
@@ -371,53 +372,94 @@ final class MenuBar extends JMenuBar implements ActionListener {
     }
 
     /**
-	 * Register the scene being used in the GUI so we can add shapes to it.
-	 * @param topScene
-	 */
-	public void registerTopScene(SceneGraphComponent topScene) {
-		scene = topScene;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Create New")) {
-			doCreateNew(scene);
-		} else if (e.getActionCommand().equals("Save As")) {
-			doSaveAs(true);
-		} else if (e.getActionCommand().equals("Save")) {
-			doSave(false);
-		} else if (e.getActionCommand().equals("Open")) {
-			doOpen(scene);
-		} else {
-			System.out.println(e.getActionCommand() + " is not yet implemented");
-		}
-		
-	}
-	
-	public void doCreateNew(SceneGraphComponent topScene) {
-		//TODO ask user if they want to save first
-		ShapeCollection allShapes = ShapeCollection.getInstance();
-		allShapes.removeAllShapes();
-		topScene.removeAllChildren();
-	}
-	
-	public void doSaveAs(boolean makeNewFile) {
-		FileParser fp = new FileParser();
-		fp.doSave(makeNewFile);
-	}
-	
-	public void doSave(boolean makeNewFile) {
-		FileParser fp = new FileParser();
-		fp.doSave(makeNewFile);
-	}
-	
-	public void doOpen(SceneGraphComponent topScene) {
-		FileParser fp = new FileParser();
-		try {
-			fp.loadInput(topScene);
-		} catch (Exception inputException) {
-			new ErrorHandler("Unknown input error." );
-		}
-	}
+     * Register the scene being used in the GUI so we can add shapes to it.
+     * 
+     * @param topScene
+     */
+    public void registerTopScene(SceneGraphComponent topScene) {
+
+        scene = topScene;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        String src = ((Component) e.getSource()).getName();
+        src = (src == null) ? "" : src;
+        if (src.equals(fileNew.getName())) {
+            doCreateNew(scene);
+        } else if (src.equals(fileSaveAs.getName())) {
+            doSaveAs(true);
+        } else if (src.equals(fileSave.getName())) {
+            doSave(false);
+        } else if (src.equals(fileOpen.getName())) {
+            doOpen(scene);
+        } else if (src.equals(fileClose.getName())) {
+            doClose(GUI.getInstance());
+        } else {
+            for (JMenuItem jmi : liLanguages) {
+                if (jmi.getText().equals(e.getActionCommand())) {
+                    Messages.setBundle(MessagesUtils.getInstance().getLocale(e.getActionCommand()));
+                    GUI.getInstance().label();
+                    return;
+                }
+            }
+            System.out.println(e.getActionCommand() + " is not yet implemented");
+        }
+
+    }
+
+    /**
+     * @param topScene
+     */
+    public void doCreateNew(SceneGraphComponent topScene) {
+
+        // TODO ask user if they want to save first
+        ShapeCollection allShapes = ShapeCollection.getInstance();
+        allShapes.removeAllShapes();
+        topScene.removeAllChildren();
+    }
+
+    /**
+     * @param makeNewFile
+     */
+    public void doSaveAs(boolean makeNewFile) {
+
+        FileParser fp = new FileParser();
+        fp.doSave(makeNewFile);
+    }
+
+    /**
+     * @param makeNewFile
+     */
+    public void doSave(boolean makeNewFile) {
+
+        FileParser fp = new FileParser();
+        fp.doSave(makeNewFile);
+    }
+
+    /**
+     * @param topScene
+     */
+    public void doOpen(SceneGraphComponent topScene) {
+
+        FileParser fp = new FileParser();
+        try {
+            fp.loadInput(topScene);
+        } catch (Exception inputException) {
+            new ErrorHandler("Unknown input error.");
+        }
+    }
+
+    /**
+     * @param gui
+     */
+    public void doClose(GUI gui) {
+
+        gui.setVisible(false);
+        gui.dispose();
+        System.exit(0); // FIXME can't figure out how to stop JReality threads
+                        // so I have to call System.exit
+    }
 
 }
