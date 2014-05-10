@@ -79,7 +79,7 @@ public class Converter {
 			return 90;
 		} else if (shapeOne.getVertexCount() == 4
 				&& shapeTwo.getVertexCount() == 3) {
-			return 33.33;
+			return 65;
 		}
 
 		return 0;
