@@ -1,7 +1,5 @@
 package test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import de.jreality.scene.SceneGraphComponent;
@@ -9,11 +7,18 @@ import de.jreality.util.SceneGraphUtility;
 import foldr.shape.Converter;
 import foldr.shape.Shape;
 
+/**
+ * Class with an attempt to test rotating with vectors BUGS: This really is not
+ * possible with the way JReality is set up
+ * 
+ * @author Ellery Addington-White
+ * 
+ */
 public class VectorRotationTest {
 
 	@Test
 	public void test() {
-		
+
 		Converter convert = new Converter();
 		SceneGraphComponent scene = SceneGraphUtility
 				.createFullSceneGraphComponent("scene");
