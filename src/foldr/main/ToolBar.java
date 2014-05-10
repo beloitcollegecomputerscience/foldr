@@ -21,6 +21,8 @@ import foldr.utility.Tool.ToolType;
  * 
  * @author Nick, Hunter, and Tyler
  * 
+ * updated tool tips on 5/9/14 - Hunter
+ * 
  */
 
 public class ToolBar implements ActionListener {
@@ -76,21 +78,21 @@ public class ToolBar implements ActionListener {
 
 		// add tool tips
 		paletteSelect
-				.setToolTipText("Selects a shape or shapes to manipulate or move later. Can select individual points, lines, and shapes. If you click and drag you can select multiple points, lines, and shapes.");
+				.setToolTipText("<html>Selects a shape or shapes to manipulate or move later.<br> Can select individual points, lines, and shapes. If you click<br> and drag you can select multiple points, lines, and shapes.</html>");
 		paletteMove.setToolTipText("Allows user to move selected object.");
 		paletteFill
-				.setToolTipText("Allows user to fill shapes with a particular color. When selected a color option will appear in the information panel.");
+				.setToolTipText("<html>Allows user to fill shapes with a particular color. When<br> selected a color option will appear in the information panel.</html>");
 		paletteJoinEdge
-				.setToolTipText("Allows the user to join together the edge of two shapes, creating a hinge along an edge.");
+				.setToolTipText("<html>Allows the user to join together the edge of<br> two shapes, creating a hinge along an edge.</html>");
 		paletteErase.setToolTipText("Destroys selected shape");
 		palettePoint
-				.setToolTipText("When selected allows the user to create a single point on the model by clicking on a particular part of any of the perspectives.");
+				.setToolTipText("<html>When selected allows the user to create a single point on the <br>model by clicking on a particular part of any of the perspectives.</html>");
 		paletteLine
-				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the views/perspectives.");
+				.setToolTipText("<html>When selected allows the user to click-and-drag<br> to create a line in any of the views/perspectives.</html>");
 		paletteShape
-				.setToolTipText("When selected allows the user to click-and-drag to create a line in any of the perspectives that is not the freeview perspective. By clicking and holding on this tool you can select more polygons from a drop-down menu, or select a ���������������������������custom��������������������������� option which would allow you to specify how many faces your object has.");
+				.setToolTipText("<html>When selected allows the user to click-and-drag to create a line<br> in any of the perspectives that is not the freeview perspective. <br>By clicking and holding on this tool you can select more polygons<br> from a drop-down menu, or select an option which would allow you<br> to specify how many faces your object has.</html>");
 		paletteMoveCamera
-				.setToolTipText(" By using using WASD, and the scroll-wheel the user can move the Freeview camera along the three dimensions.");
+				.setToolTipText("<html>By using using WASD, and the scroll-wheel the user can<br> move the Freeview camera along the three dimensions.</html>");
 
 		// add them to the pane
 		palettePane.add(paletteSelect);
