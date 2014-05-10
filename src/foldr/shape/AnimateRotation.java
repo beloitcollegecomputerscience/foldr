@@ -44,6 +44,16 @@ public class AnimateRotation extends AbstractTool {
 
 	}
 
+	/**
+	 * Rotates a shape on a given axis a given amount.
+	 * 
+	 * @param newShapeToMove
+	 *            the shape to rotate
+	 * @param angleToRotate
+	 *            the amount to rotate
+	 * @param plane
+	 *            the plane in which to rotate the shape.
+	 */
 	public void setEndPoints(Shape newShapeToMove, double angleToRotate,
 			char plane) {
 		shapeToMove = newShapeToMove;
@@ -56,6 +66,9 @@ public class AnimateRotation extends AbstractTool {
 
 	}
 
+	/**
+	 * Performs the action on the shape this tool was applied to.
+	 */
 	@Override
 	public void perform(ToolContext tc) {
 
