@@ -14,12 +14,13 @@ import foldr.messages.MessagesUtils;
  * Running class.
  * 
  * @author couretn
+ * @category Run
  */
 public class Driver {
 
     public static void main(String[] args) {
 
-        Messages.setBundle(Locale.CHINA);
+        Messages.setBundle(Locale.getDefault());
         MessagesUtils.getInstance().init(MessagesUtils.DEFAULT_PATH);
 
         // set the look & feel to the use the system one since swing look & feel

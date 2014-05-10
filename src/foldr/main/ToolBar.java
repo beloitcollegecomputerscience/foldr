@@ -19,7 +19,10 @@ import foldr.utility.Tool.ToolType;
 
 /**
  * 
- * @author Nick, Hunter, and Tyler
+ * @author Nick
+ * @author Hunter
+ * @author Tyler
+ * @category GUI
  * 
  */
 
@@ -33,9 +36,12 @@ public class ToolBar implements ActionListener {
 	protected JPanel palettePane, popUp;
 	JTextField textField;
 	SceneGraphComponent scene;
+	GUI parentProgram;
 	
 	protected void initPalettePane(GUI theProgram) {
 
+		parentProgram = theProgram;
+		
 		palettePane = new JPanel();
 		palettePane.setBounds(300, 300, 250, 500);
 		palettePane.setLayout(new GridLayout(3, 3));
@@ -187,6 +193,7 @@ public class ToolBar implements ActionListener {
 	public void doSelect() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.SELECTION);
+		parentProgram.enableSelectTool();
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 
 	}
@@ -194,40 +201,47 @@ public class ToolBar implements ActionListener {
 	public void doMove() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.MOVE);
+		parentProgram.disableSelectTool();
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doFill() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.FILL);
+		parentProgram.disableSelectTool();
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doJoinEdge() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.MOVE);
+		parentProgram.disableSelectTool();
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doErase() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.ERASE);
+		parentProgram.disableSelectTool();
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doPoint() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.ADD_POINT);
+		parentProgram.disableSelectTool();
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doLine() {
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.ADD_LINE);
+		parentProgram.disableSelectTool();
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 
 	public void doShape() {
+		parentProgram.disableSelectTool();
 		popUpPanel();
 	}
 	
