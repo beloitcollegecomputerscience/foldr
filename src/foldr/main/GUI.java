@@ -53,7 +53,7 @@ import foldr.utility.Tool.ToolType;
 
 /**
  *
- * 
+ * @category GUI
  */
 public final class GUI extends JFrame
     implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener {

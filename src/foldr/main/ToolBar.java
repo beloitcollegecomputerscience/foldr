@@ -18,7 +18,10 @@ import foldr.utility.Tool.ToolType;
 
 /**
  * 
- * @author Nick, Hunter, and Tyler
+ * @author Nick
+ * @author Hunter
+ * @author Tyler
+ * @category GUI
  * 
  */
 
