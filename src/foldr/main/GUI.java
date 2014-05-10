@@ -4,37 +4,20 @@ package foldr.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDesktopPane;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
 
 import de.jreality.plugin.JRViewer;
@@ -42,11 +25,11 @@ import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
 import foldr.messages.Messages;
-import foldr.messages.MessagesUtils;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
+
 import foldr.utility.SelectTool;
 import foldr.utility.Tool;
 import foldr.utility.Tool.ToolType;
@@ -56,7 +39,7 @@ import foldr.utility.Tool.ToolType;
  * @category GUI
  */
 public final class GUI extends JFrame
-    implements ActionListener, MouseListener, MouseMotionListener, MouseWheelListener {
+    implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private static final long          serialVersionUID  = 1L;
 
@@ -96,6 +79,19 @@ public final class GUI extends JFrame
 
     private JDialog                    dialog, popUpDialog;
     private JTextField                 textField;
+    
+    private static GUI instance;
+    
+    public static GUI getInstance() {
+        if(instance == null) {
+            synchronized(GUI.class) {
+                if(instance == null) {
+                    instance = new GUI();
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * <p>
@@ -104,9 +100,9 @@ public final class GUI extends JFrame
      * @param title
      *            The window's title.
      */
-    public GUI(String title) {
+    private GUI() {
 
-        super(title);
+        super();
     }
 
     /**
@@ -325,7 +321,6 @@ public final class GUI extends JFrame
 		pack();
 		setSize(1000, 700);
 		setVisible(true);
-		
 		toolBar.initPalettePane(this);
 	}
 
@@ -335,9 +330,10 @@ public final class GUI extends JFrame
      * <p>
      * Change the GUI text according to the current <tt>Locale</tt> used.
      */
-    private void label() {
+    void label() {
 
         menuBar.label();
+        toolBar.label();
 		// panels titles FIXME make it work.
 		((TitledBorder) freeViewPanel.getBorder()).setTitle(Messages
 				.getString("panels.freeview"));
@@ -412,20 +408,6 @@ public final class GUI extends JFrame
             freeCamera.applyChangesTo(freeCameraContainer);
         }
 
-    }
-
-    @Override
-    public void mouseExited(MouseEvent arg0) {
-
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        // TODO Auto-generated method stub
-        
     }
     
     /**
@@ -514,6 +496,12 @@ public final class GUI extends JFrame
                 }
             }
         }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent arg0) {
+
+        // TODO Auto-generated method stub
     }
 
 }
