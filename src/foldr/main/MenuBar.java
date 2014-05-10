@@ -19,8 +19,12 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
+import de.jreality.scene.SceneGraphComponent;
 import foldr.messages.Messages;
 import foldr.messages.MessagesUtils;
+import foldr.shape.ShapeCollection;
+import foldr.utility.ErrorHandler;
+import foldr.utility.FileParser;
 
 /**
  * <p>
@@ -78,14 +82,13 @@ import foldr.messages.MessagesUtils;
  * @author couretn
  * @category GUI
  */
-final class MenuBar extends JMenuBar {
+final class MenuBar extends JMenuBar implements ActionListener {
 
     /**
      * 
      */
     private static final long  serialVersionUID = -8724966099923583862L;
 
-    private ActionListener     actionManager;
 
     JMenu                      fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
     JMenuItem                  fileOpen, fileNew, fileSave, fileSaveAs, fileExport, fileClose;
@@ -102,14 +105,15 @@ final class MenuBar extends JMenuBar {
     JMenuItem                  helpManual, helpQuickStartGuide;
     ButtonGroup                langGroup;
     List<JRadioButtonMenuItem> liLanguages;
-
+    
+    SceneGraphComponent scene;
+    
     /**
-     * @param actionManager
+     * @param this
      */
-    public MenuBar(ActionListener actionManager) {
+    public MenuBar() {
 
         super();
-        this.actionManager = actionManager;
         init();
     }
 
@@ -124,31 +128,31 @@ final class MenuBar extends JMenuBar {
         this.add(fileMenu);// fileMenu -> this
         fileNew = new JMenuItem("New");
         fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.META_MASK));
-        fileNew.addActionListener(actionManager);
+        fileNew.addActionListener(this);
         fileNew.setName(Messages.FI + ".new");
         fileMenu.add(fileNew);
         fileOpen = new JMenuItem("Open");
         fileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
-        fileOpen.addActionListener(actionManager);
+        fileOpen.addActionListener(this);
         fileOpen.setName(Messages.FI + ".open");
         fileMenu.add(fileOpen);
         fileSave = new JMenuItem("Save");
         fileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.META_MASK));
-        fileSave.addActionListener(actionManager);
+        fileSave.addActionListener(this);
         fileSave.setName(Messages.FI + ".save");
         fileMenu.add(fileSave);
         fileSaveAs = new JMenuItem("Save As");
-        fileSaveAs.addActionListener(actionManager);
+        fileSaveAs.addActionListener(this);
         fileSaveAs.setName(Messages.FI + ".saveas");
         fileMenu.add(fileSaveAs);
         fileExport = new JMenuItem("Export");
         fileExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.META_MASK));
-        fileExport.addActionListener(actionManager);
+        fileExport.addActionListener(this);
         fileExport.setName(Messages.FI + ".export");
         fileMenu.add(fileExport);
         fileClose = new JMenuItem("Close");
         fileClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.META_MASK));
-        fileClose.addActionListener(actionManager);
+        fileClose.addActionListener(this);
         fileClose.setName(Messages.FI + ".close");
         fileMenu.add(fileClose);
 
@@ -158,29 +162,29 @@ final class MenuBar extends JMenuBar {
         this.add(editMenu); // editMenu -> this
         editCopy = new JMenuItem("Copy");
         editCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.META_MASK));
-        editCopy.addActionListener(actionManager);
+        editCopy.addActionListener(this);
         editCopy.setName(Messages.ED + ".copy");
         editMenu.add(editCopy);
         editCut = new JMenuItem("Cut");
         editCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.META_MASK));
-        editCut.addActionListener(actionManager);
+        editCut.addActionListener(this);
         editCut.setName(Messages.ED + ".cut");
         editMenu.add(editCut);
         editPaste = new JMenuItem("Paste");
         editPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.META_MASK));
-        editPaste.addActionListener(actionManager);
+        editPaste.addActionListener(this);
         editPaste.setName(Messages.ED + ".paste");
         editMenu.add(editPaste);
         editMenu.add(new JSeparator()); // separate
         editDelete = new JMenuItem("Delete");
         editDelete.setAccelerator(KeyStroke.getKeyStroke(
             KeyEvent.VK_BACK_SPACE, ActionEvent.META_MASK));
-        editDelete.addActionListener(actionManager);
+        editDelete.addActionListener(this);
         editDelete.setName(Messages.ED + ".delete");
         editMenu.add(editDelete);
         editSelectAll = new JMenuItem("Select All");
         editSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.META_MASK));
-        editSelectAll.addActionListener(actionManager);
+        editSelectAll.addActionListener(this);
         editSelectAll.setName(Messages.ED + ".selectall");
         editMenu.add(editSelectAll);
 
@@ -192,28 +196,28 @@ final class MenuBar extends JMenuBar {
         foldingAngle.setName(Messages.FO + ".angle");
         foldingMenu.add(foldingAngle);
         foldingThirty = new JMenuItem("Rotate 30 Degrees");
-        foldingThirty.addActionListener(actionManager);
+        foldingThirty.addActionListener(this);
         foldingThirty.setName(Messages.FO + ".angle.30");
         foldingAngle.add(foldingThirty);
         foldingFortyFive = new JMenuItem("Rotate 45 Degrees");
-        foldingFortyFive.addActionListener(actionManager);
+        foldingFortyFive.addActionListener(this);
         foldingFortyFive.setName(Messages.FO + ".angle.45");
         foldingAngle.add(foldingFortyFive);
         foldingNinety = new JMenuItem("Rotate 90 Degrees");
-        foldingNinety.addActionListener(actionManager);
+        foldingNinety.addActionListener(this);
         foldingNinety.setName(Messages.FO + ".angle.90");
         foldingAngle.add(foldingNinety);
         foldingCustomAngle = new JMenuItem("Custom Angle");
-        foldingCustomAngle.addActionListener(actionManager);
+        foldingCustomAngle.addActionListener(this);
         foldingCustomAngle.setName(Messages.FO + ".angle.custom");
         foldingAngle.add(foldingCustomAngle);
         foldingMenu.add(new JSeparator()); // separate
         foldingEdgeSelect = new JMenuItem("Edge Select");
-        foldingEdgeSelect.addActionListener(actionManager);
+        foldingEdgeSelect.addActionListener(this);
         foldingEdgeSelect.setName(Messages.FO + ".edgesel");
         foldingMenu.add(foldingEdgeSelect);
         foldingPointSelect = new JMenuItem("Point Select");
-        foldingPointSelect.addActionListener(actionManager);
+        foldingPointSelect.addActionListener(this);
         foldingPointSelect.setName(Messages.FO + ".pointsel");
         foldingMenu.add(foldingPointSelect);
         foldingMenu.add(new JSeparator()); // separate
@@ -221,19 +225,19 @@ final class MenuBar extends JMenuBar {
         foldingShape.setName(Messages.FO + ".shape");
         foldingMenu.add(foldingShape); // foldShape -> foldMenu
         foldingFoldShapes = new JMenuItem("Fold Shapes");
-        foldingFoldShapes.addActionListener(actionManager);
+        foldingFoldShapes.addActionListener(this);
         foldingFoldShapes.setName(Messages.FO + ".shape.fold");
         foldingShape.add(foldingFoldShapes);
         foldingConnectShapes = new JMenuItem("Connect Shapes");
-        foldingConnectShapes.addActionListener(actionManager);
+        foldingConnectShapes.addActionListener(this);
         foldingConnectShapes.setName(Messages.FO + ".shape.connect");
         foldingShape.add(foldingConnectShapes);
         foldingDetachShapes = new JMenuItem("Detach Shapes");
-        foldingDetachShapes.addActionListener(actionManager);
+        foldingDetachShapes.addActionListener(this);
         foldingDetachShapes.setName(Messages.FO + ".shape.detach");
         foldingShape.add(foldingDetachShapes);
         foldingResizeShape = new JMenuItem("Resize shape");
-        foldingResizeShape.addActionListener(actionManager);
+        foldingResizeShape.addActionListener(this);
         foldingResizeShape.setName(Messages.FO + ".shape.resize");
         foldingShape.add(foldingResizeShape);
 
@@ -245,24 +249,24 @@ final class MenuBar extends JMenuBar {
         windowView.setName(Messages.WI + ".view");
         windowMenu.add(windowView); // winView -> winMenu
         windowShowTop = new JCheckBoxMenuItem("Show top", true);
-        windowShowTop.addActionListener(actionManager);
+        windowShowTop.addActionListener(this);
         windowShowTop.setName(Messages.WI + ".view.top");
         windowView.add(windowShowTop);
         windowShowBack = new JCheckBoxMenuItem("Show Back", true);
-        windowShowBack.addActionListener(actionManager);
+        windowShowBack.addActionListener(this);
         windowShowBack.setName(Messages.WI + ".view.back");
         windowView.add(windowShowBack);
         windowShowLeft = new JCheckBoxMenuItem("Show Left", true);
-        windowShowLeft.addActionListener(actionManager);
+        windowShowLeft.addActionListener(this);
         windowShowLeft.setName(Messages.WI + ".view.left");
         windowView.add(windowShowLeft);
         windowMenu.add(new JSeparator()); // separate
         windowShowHideTools = new JMenuItem("Show/Hide Tools");
-        windowShowHideTools.addActionListener(actionManager);
+        windowShowHideTools.addActionListener(this);
         windowShowHideTools.setName(Messages.WI + ".tools");
         windowMenu.add(windowShowHideTools);
         windowShowHideInfo = new JMenuItem("Show/Hide Information Panel");
-        windowShowHideInfo.addActionListener(actionManager);
+        windowShowHideInfo.addActionListener(this);
         windowShowHideInfo.setName(Messages.WI + ".info");
         windowMenu.add(windowShowHideInfo);
         windowMenu.add(new JSeparator()); // separate
@@ -270,19 +274,19 @@ final class MenuBar extends JMenuBar {
         windowPerspective.setName(Messages.WI + ".persp");
         windowMenu.add(windowPerspective); // winPersp -> winMenu
         windowChangePerspective = new JMenuItem("Change Perspective Layout");
-        windowChangePerspective.addActionListener(actionManager);
+        windowChangePerspective.addActionListener(this);
         windowChangePerspective.setName(Messages.WI + ".persp.change");
         windowPerspective.add(windowChangePerspective);
         windowSavePerspective = new JMenuItem("Save Perspective Layout");
-        windowSavePerspective.addActionListener(actionManager);
+        windowSavePerspective.addActionListener(this);
         windowSavePerspective.setName(Messages.WI + ".persp.save");
         windowPerspective.add(windowSavePerspective);
         windowLoadPerspective = new JMenuItem("Load Perspective Layout");
-        windowLoadPerspective.addActionListener(actionManager);
+        windowLoadPerspective.addActionListener(this);
         windowLoadPerspective.setName(Messages.WI + ".persp.load");
         windowPerspective.add(windowLoadPerspective);
         windowResizePerspective = new JMenuItem("Resize Perspective");
-        windowResizePerspective.addActionListener(actionManager);
+        windowResizePerspective.addActionListener(this);
         windowResizePerspective.setName(Messages.WI + ".persp.resize");
         windowPerspective.add(windowResizePerspective);
 
@@ -291,11 +295,11 @@ final class MenuBar extends JMenuBar {
         helpMenu.setName(Messages.HE);
         this.add(helpMenu); // helpMenu -> this
         helpManual = new JMenuItem("Manual");
-        helpManual.addActionListener(actionManager);
+        helpManual.addActionListener(this);
         helpManual.setName(Messages.HE + ".manual");
         helpMenu.add(helpManual);
         helpQuickStartGuide = new JMenuItem("Quick Start Guide");
-        helpQuickStartGuide.addActionListener(actionManager);
+        helpQuickStartGuide.addActionListener(this);
         helpQuickStartGuide.setName(Messages.HE + ".guide");
         helpMenu.add(helpQuickStartGuide);
 
@@ -306,7 +310,7 @@ final class MenuBar extends JMenuBar {
         langGroup = new ButtonGroup();
         for (String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
             JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
-            jrbmi.addActionListener(actionManager);
+            jrbmi.addActionListener(this);
             if (s.equals(Messages.getLocale().getDisplayLanguage(Messages.getLocale()))) {
                 jrbmi.setSelected(true);
             }
@@ -365,5 +369,55 @@ final class MenuBar extends JMenuBar {
         helpQuickStartGuide.setText(Messages.getString(helpQuickStartGuide.getName()));
         helpLanguage.setText(Messages.getString(helpLanguage.getName()));
     }
+
+    /**
+	 * Register the scene being used in the GUI so we can add shapes to it.
+	 * @param topScene
+	 */
+	public void registerTopScene(SceneGraphComponent topScene) {
+		scene = topScene;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Create New")) {
+			doCreateNew(scene);
+		} else if (e.getActionCommand().equals("Save As")) {
+			doSaveAs(true);
+		} else if (e.getActionCommand().equals("Save")) {
+			doSave(false);
+		} else if (e.getActionCommand().equals("Open")) {
+			doOpen(scene);
+		} else {
+			System.out.println(e.getActionCommand() + " is not yet implemented");
+		}
+		
+	}
+	
+	public void doCreateNew(SceneGraphComponent topScene) {
+		//TODO ask user if they want to save first
+		ShapeCollection allShapes = ShapeCollection.getInstance();
+		allShapes.removeAllShapes();
+		topScene.removeAllChildren();
+	}
+	
+	public void doSaveAs(boolean makeNewFile) {
+		FileParser fp = new FileParser();
+		fp.doSave(makeNewFile);
+	}
+	
+	public void doSave(boolean makeNewFile) {
+		FileParser fp = new FileParser();
+		fp.doSave(makeNewFile);
+	}
+	
+	public void doOpen(SceneGraphComponent topScene) {
+		FileParser fp = new FileParser();
+		try {
+			fp.loadInput(topScene);
+		} catch (Exception inputException) {
+			new ErrorHandler("Unknown input error." );
+		}
+	}
 
 }
