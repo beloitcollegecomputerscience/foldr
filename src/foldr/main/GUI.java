@@ -180,6 +180,7 @@ public final class GUI extends JFrame
     public void createJRViewers() {
         // TESTING with a visible shape
     	Shape octogon = new Shape(8, scene);
+    	//snarf
 
     	//register the top scene with the tool bar
     	toolBar.registerTopScene(scene);
