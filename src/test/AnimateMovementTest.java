@@ -141,9 +141,9 @@ public class AnimateMovementTest {
 		yOriginal = shapeOne.getCurrentVertexCoordinates(0)[1];
 		zOriginal = shapeOne.getCurrentVertexCoordinates(0)[2];
 
-		shapeOne.rotateShape(30, 'x');
-		shapeOne.rotateShape(30, 'y');
-		shapeOne.rotateShape(30, 'z');
+		shapeOne.rotateShapeOnAxis(30, 'x');
+		shapeOne.rotateShapeOnAxis(30, 'y');
+		shapeOne.rotateShapeOnAxis(30, 'z');
 
 		xNew = shapeOne.getCurrentVertexCoordinates(0)[0];
 		yNew = shapeOne.getCurrentVertexCoordinates(0)[1];
@@ -162,9 +162,9 @@ public class AnimateMovementTest {
 		yOriginal = shapeTwo.getCurrentVertexCoordinates(0)[1];
 		zOriginal = shapeTwo.getCurrentVertexCoordinates(0)[2];
 
-		shapeOne.rotateShape(-30, 'x');
-		shapeOne.rotateShape(-30, 'y');
-		shapeOne.rotateShape(-30, 'z');
+		shapeOne.rotateShapeOnAxis(-30, 'x');
+		shapeOne.rotateShapeOnAxis(-30, 'y');
+		shapeOne.rotateShapeOnAxis(-30, 'z');
 
 		xNew = shapeOne.getCurrentVertexCoordinates(0)[0];
 		yNew = shapeOne.getCurrentVertexCoordinates(0)[1];

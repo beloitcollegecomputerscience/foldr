@@ -219,7 +219,7 @@ public class Shape {
 	 *            The axis the shape will be rotated on
 	 * @return false if the shape is already in motion.
 	 */
-	public boolean rotateShape(double angleToRotate, char planeOfRotation) {
+	public boolean rotateShapeOnAxis(double angleToRotate, char planeOfRotation) {
 		if (inMotion) {
 			return false;
 		} else {
@@ -244,7 +244,7 @@ public class Shape {
 	 *            The second point of the axis the shape will be rotated on.
 	 * @return
 	 */
-	public boolean rotateShapeOtherWay(double angleToRotate,
+	public boolean rotateShapeOnLine(double angleToRotate,
 			double[] vertexToMatch1, double[] vertexToMatch2) {
 		if (inMotion) {
 			return false;
