@@ -202,21 +202,24 @@ public final class GUI extends JFrame implements MouseListener,
 
 		// Rotate shapes along edges grabbed from base calculating angle to
 		// rotate by converter method.
+		
+		// Rotate side1
 		testShape2.rotateShapeOnLine(Math.toRadians(myConvert.angleToRotateBy(
 				testShape1, testShape2)), testShape1
 				.getCurrentVertexCoordinates(0), testShape1
 				.getCurrentVertexCoordinates(3));
-
+		// Rotate side2
 		testShape3.rotateShapeOnLine(Math.toRadians(myConvert.angleToRotateBy(
 				testShape1, testShape3)), testShape1
 				.getCurrentVertexCoordinates(3), testShape1
 				.getCurrentVertexCoordinates(2));
 
+		// Rotate side3
 		testShape4.rotateShapeOnLine(Math.toRadians(myConvert.angleToRotateBy(
 				testShape1, testShape4)), testShape1
 				.getCurrentVertexCoordinates(2), testShape1
 				.getCurrentVertexCoordinates(1));
-
+		// Rotate side 4
 		testShape5.rotateShapeOnLine(Math.toRadians(myConvert.angleToRotateBy(
 				testShape1, testShape5)), testShape1
 				.getCurrentVertexCoordinates(1), testShape1
@@ -224,7 +227,6 @@ public final class GUI extends JFrame implements MouseListener,
 
 		// Move top of cube in to place
 		double[] top = { 0, 0, -1.4 };
-
 		testShape6.animateShape(top);
 
 		/*
