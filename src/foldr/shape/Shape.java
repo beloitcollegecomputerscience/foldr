@@ -252,7 +252,7 @@ public class Shape {
 			inMotion = true;
 			// attach rotate shape tool
 			shapeSGC.addTool(rotateShapeTheOtherWay);
-			rotateShapeTheOtherWay.setEndPoints(this, angleToRotate,
+			rotateShapeTheOtherWay.setRotationAmount(this, angleToRotate,
 					vertexToMatch1, vertexToMatch2);
 		}
 		return true;

@@ -53,9 +53,11 @@ public class AnimateRotationAroundLine extends AbstractTool {
 	 * @param angleToRotate
 	 *            Use Radians!
 	 * @param vertexToMatch1
+	 *            first point that defines a line
 	 * @param vertexToMatch2
+	 *            second point that defines a line
 	 */
-	public void setEndPoints(Shape newShapeToMove, double angleToRotate,
+	public void setRotationAmount(Shape newShapeToMove, double angleToRotate,
 			double[] vertexToMatch1, double[] vertexToMatch2) {
 		shapeToMove = newShapeToMove;
 		sgcToMove = shapeToMove.getShapeSGC();
