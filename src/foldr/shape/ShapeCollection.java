@@ -44,6 +44,14 @@ public class ShapeCollection {
 		return instance;
 	}
 
+	public void removeAllShapes() {
+		shapes.clear();
+	}
+	
+	//returns the number of shapes stored
+	public int getLength() {
+		return shapes.size();
+	}
 	// return the collection of shapes
 	public Shape getShapeFromCollection(int index) {
 		return shapes.get(index);

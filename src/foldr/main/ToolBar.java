@@ -155,9 +155,8 @@ public class ToolBar implements ActionListener {
 		scene = topScene;
 	}
 	
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
-
 		JButton theCommand = (JButton) e.getSource();
 		String buttonName = theCommand.getName();
 

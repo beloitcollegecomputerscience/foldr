@@ -249,7 +249,8 @@ public final class GUI extends JFrame
 	 * Create the panes, panels and other gui elements and pack them up.
 	 */
 	public void initPanesAndGui() {
-	    menuBar = new MenuBar(this);
+	    menuBar = new MenuBar();
+	    menuBar.registerTopScene(scene);
 		setJMenuBar(menuBar);
 
 		// Adding the view panels (free, top, side, front)
