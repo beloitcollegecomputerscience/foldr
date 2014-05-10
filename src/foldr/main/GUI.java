@@ -29,15 +29,17 @@ import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
-import java.util.ResourceBundle;
+
+import foldr.utility.SelectTool;
+import foldr.utility.Tool;
+import foldr.utility.Tool.ToolType;
 
 /**
  *
- * 
+ * @category GUI
  */
 public final class GUI extends JFrame
     implements MouseListener, MouseMotionListener, MouseWheelListener {
-    private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("foldr.messages.messages"); //$NON-NLS-1$
 
     private static final long          serialVersionUID  = 1L;
 
@@ -70,6 +72,10 @@ public final class GUI extends JFrame
     // menu component
     private MenuBar menuBar;
 	static ToolBar toolBar = new ToolBar();
+	
+	//Tool for selection, and the Shape selected.
+	SelectTool selectTool;
+	Shape selectedShape;
 
     private JDialog                    dialog, popUpDialog;
     private JTextField                 textField;
@@ -152,93 +158,107 @@ public final class GUI extends JFrame
         // System.out.println("X error: " + errorX + ", Y error: " + errorY +
         // ", Z error: " + errorZ);
     }
+    
+    public void enableSelectTool() {
+		//Adding the SelectTool
+		 selectTool = new SelectTool();
+		 topCameraContainer.addTool(selectTool);
+		 sideCameraContainer.addTool(selectTool);
+		 frontCameraContainer.addTool(selectTool);
+		 freeCameraContainer.addTool(selectTool);
+    }
+    
+    public void disableSelectTool() {
+		//Adding the SelectTool
+		 topCameraContainer.removeTool(selectTool);
+		 sideCameraContainer.removeTool(selectTool);
+		 frontCameraContainer.removeTool(selectTool);
+		 freeCameraContainer.removeTool(selectTool);
+    }
 
- 
-	// Create the jReality viewers for each panel
-	public void createJRViewers() {
+    // Create the jReality viewers for each panel
+    public void createJRViewers() {
+        // TESTING with a visible shape
+    	Shape octogon = new Shape(8, scene);
 
-		//register the top scene with the tool bar
-		toolBar.registerTopScene(scene);
+    	//register the top scene with the tool bar
+    	toolBar.registerTopScene(scene);
 
-		// TESTING with a visible shape @TODO: Remove this.
-		/*IndexedFaceSet octo = Primitives.regularPolygon(8);
-		SceneGraphComponent octoOne = SceneGraphUtility
-				.createFullSceneGraphComponent("octogon1");
-		octoOne.setGeometry(octo);
-		scene.addChild(octoOne);*/
+        // Setting up the free view
+        freeJRViewer = new JRViewer();
+        freeJRViewer.setContent(scene);
+        freeJRViewer.startupLocal();
+        freeViewer = freeJRViewer.getViewer();
+        freeCameraContainer =
+            (SceneGraphComponent) freeViewer.getCameraPath().get(
+                freeViewer.getCameraPath().getLength() - 2);
+        freeViewPanel.setLayout(new GridLayout());
+        freeViewPanel.add((Component) freeViewer.getViewingComponent());
+        freeViewPanel.setVisible(true);
+        freeViewPanel.getComponent(0).addMouseMotionListener(this);
+        freeViewPanel.getComponent(0).addMouseListener(this);
+        freeViewPanel.getComponent(0).addMouseWheelListener(this);
+        freeViewPanel.getComponent(0).setName("freeViewPanel");
 
-		// Setting up the free view
-		freeJRViewer = new JRViewer();
-		freeJRViewer.setContent(scene);
-		freeJRViewer.startupLocal();
-		freeViewer = freeJRViewer.getViewer();
-		freeCameraContainer = (SceneGraphComponent) freeViewer.getCameraPath()
-				.get(freeViewer.getCameraPath().getLength() - 2);
-		freeViewPanel.setLayout(new GridLayout());
-		freeViewPanel.add((Component) freeViewer.getViewingComponent());
-		freeViewPanel.setVisible(true);
-		freeViewPanel.getComponent(0).addMouseMotionListener(this);
-		freeViewPanel.getComponent(0).addMouseListener(this);
-		freeViewPanel.getComponent(0).addMouseWheelListener(this);
-		freeViewPanel.getComponent(0).setName("freeViewPanel");
+        // Setting up the top view
+        topJRViewer = new JRViewer();
+        topJRViewer.setContent(scene);
+        topJRViewer.startupLocal();
+        topViewer = topJRViewer.getViewer();
+        topCameraContainer =
+            (SceneGraphComponent) topViewer.getCameraPath().get(
+                topViewer.getCameraPath().getLength() - 2);
+        topPanel.setLayout(new GridLayout());
+        topPanel.add((Component) topViewer.getViewingComponent());
+        topPanel.setVisible(true);
+        topPanel.getComponent(0).addMouseMotionListener(this);
+        topPanel.getComponent(0).addMouseListener(this);
+        topPanel.getComponent(0).addMouseWheelListener(this);
+        topPanel.getComponent(0).setName("topPanel");
 
-		// Setting up the top view
-		topJRViewer = new JRViewer();
-		topJRViewer.setContent(scene);
-		topJRViewer.startupLocal();
-		topViewer = topJRViewer.getViewer();
-		topCameraContainer = (SceneGraphComponent) topViewer.getCameraPath()
-				.get(topViewer.getCameraPath().getLength() - 2);
-		topPanel.setLayout(new GridLayout());
-		topPanel.add((Component) topViewer.getViewingComponent());
-		topPanel.setVisible(true);
-		topPanel.getComponent(0).addMouseMotionListener(this);
-		topPanel.getComponent(0).addMouseListener(this);
-		topPanel.getComponent(0).addMouseWheelListener(this);
-		topPanel.getComponent(0).setName("topPanel");
+        // Setting up the side view
+        sideJRViewer = new JRViewer();
+        sideJRViewer.setContent(scene);
+        sideJRViewer.startupLocal();
+        sideViewer = sideJRViewer.getViewer();
+        sideCameraContainer =
+            (SceneGraphComponent) sideViewer.getCameraPath().get(
+                sideViewer.getCameraPath().getLength() - 2);
+        sidePanel.setLayout(new GridLayout());
+        sidePanel.add((Component) sideViewer.getViewingComponent());
+        sidePanel.setVisible(true);
+        sidePanel.getComponent(0).addMouseMotionListener(this);
+        sidePanel.getComponent(0).addMouseListener(this);
+        sidePanel.getComponent(0).addMouseWheelListener(this);
+        sidePanel.getComponent(0).setName("sidePanel");
 
-		// Setting up the side view
-		sideJRViewer = new JRViewer();
-		sideJRViewer.setContent(scene);
-		sideJRViewer.startupLocal();
-		sideViewer = sideJRViewer.getViewer();
-		sideCameraContainer = (SceneGraphComponent) sideViewer.getCameraPath()
-				.get(sideViewer.getCameraPath().getLength() - 2);
-		sidePanel.setLayout(new GridLayout());
-		sidePanel.add((Component) sideViewer.getViewingComponent());
-		sidePanel.setVisible(true);
-		sidePanel.getComponent(0).addMouseMotionListener(this);
-		sidePanel.getComponent(0).addMouseListener(this);
-		sidePanel.getComponent(0).addMouseWheelListener(this);
-		sidePanel.getComponent(0).setName("sidePanel");
+        // Setting up the front view
+        frontJRViewer = new JRViewer();
+        frontJRViewer.setContent(scene);
+        frontJRViewer.startupLocal();
+        frontViewer = frontJRViewer.getViewer();
+        frontCameraContainer =
+            (SceneGraphComponent) frontViewer.getCameraPath().get(
+                frontViewer.getCameraPath().getLength() - 2);
+        frontPanel.setLayout(new GridLayout());
+        frontPanel.add((Component) frontViewer.getViewingComponent());
+        frontPanel.setVisible(true);
+        frontPanel.getComponent(0).addMouseMotionListener(this);
+        frontPanel.getComponent(0).addMouseListener(this);
+        frontPanel.getComponent(0).addMouseWheelListener(this);
+        frontPanel.getComponent(0).setName("frontPanel");
 
-		// Setting up the front view
-		frontJRViewer = new JRViewer();
-		frontJRViewer.setContent(scene);
-		frontJRViewer.startupLocal();
-		frontViewer = frontJRViewer.getViewer();
-		frontCameraContainer = (SceneGraphComponent) frontViewer
-				.getCameraPath().get(
-						frontViewer.getCameraPath().getLength() - 2);
-		frontPanel.setLayout(new GridLayout());
-		frontPanel.add((Component) frontViewer.getViewingComponent());
-		frontPanel.setVisible(true);
-		frontPanel.getComponent(0).addMouseMotionListener(this);
-		frontPanel.getComponent(0).addMouseListener(this);
-		frontPanel.getComponent(0).addMouseWheelListener(this);
-		frontPanel.getComponent(0).setName("frontPanel");
+        topCamera.setLocation(0, 7, -4.5);
+        topCamera.setRotationX(-90);
+        topCamera.applyChangesTo(topCameraContainer);
 
-		topCamera.setLocation(0, 7, -4.5);
-		topCamera.setRotationX(-90);
-		topCamera.applyChangesTo(topCameraContainer);
+        sideCamera.setLocation(7, 0, -4.5);
+        sideCamera.setRotationY(90);
+        sideCamera.applyChangesTo(sideCameraContainer);
 
-		sideCamera.setLocation(7, 0, -4.5);
-		sideCamera.setRotationY(90);
-		sideCamera.applyChangesTo(sideCameraContainer);
-
-		frontCamera.setLocation(0, 0, 4.5);
-		frontCamera.applyChangesTo(frontCameraContainer);
-	}	
+        frontCamera.setLocation(0, 0, 4.5);
+        frontCamera.applyChangesTo(frontCameraContainer);
+    }
 	
 	
 	/**
@@ -327,41 +347,12 @@ public final class GUI extends JFrame
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
-        // Flip camera to other side on double-click
-        if (e.getClickCount() == 2) {
-            if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-                topCamera.flipOnAxis("x");
-                topCamera.applyChangesTo(topCameraContainer);
-                if (topCamera.flipped) {
-                    topPanel.setBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createEmptyBorder(), "Bottom Camera"));
-                } else {
-                    topPanel.setBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createEmptyBorder(), "Top Camera"));
-                }
-            } else if (e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-                sideCamera.flipOnAxis("y");
-                sideCamera.applyChangesTo(sideCameraContainer);
-                if (sideCamera.flipped) {
-                    sidePanel.setBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createEmptyBorder(), "Left Camera"));
-                } else {
-                    sidePanel.setBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createEmptyBorder(), "Right Camera"));
-                }
-            } else if (e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-                frontCamera.flipOnAxis("z");
-                frontCamera.applyChangesTo(frontCameraContainer);
-                if (frontCamera.flipped) {
-                    frontPanel.setBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createEmptyBorder(), "Back Camera"));
-                } else {
-                    frontPanel.setBorder(BorderFactory.createTitledBorder(
-                        BorderFactory.createEmptyBorder(), "Front Camera"));
-                }
-            }
-        }
+    	switch (toolBar.currentTool.getCurrentTool()) {
+			case CAMERA_MOVE:
+				handleMouseDoubleClickForCameraMove(e);
+			case SELECTION:
+				selectedShape = selectTool.getSelectedShape(allShapes);
+    	}
     }
 
     @Override
@@ -373,7 +364,56 @@ public final class GUI extends JFrame
 
     @Override
     public void mouseDragged(MouseEvent e) {
+    	switch (toolBar.currentTool.getCurrentTool()) {
+    		case CAMERA_MOVE:
+    			handleMouseDragForCameraMove(e);
+    	}
+    }
 
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+
+        // System.out.println("Mouse Pressed: " + arg0.toString());
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+
+        // Reset the previous mouse location between drags, so we're only
+        // recording drag position
+        mouseDragLocation = null;
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+        // System.out.println("Mouse Moved: " + e.toString());
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+    	//We always allow the user to zoom the camera, regardless of tool selection.
+        double amountZoom = e.getWheelRotation();
+        if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
+            topCamera.setLocationY(topCamera.location.y + amountZoom / 20);
+            topCamera.applyChangesTo(topCameraContainer);
+        } else if (e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
+            sideCamera.setLocationX(sideCamera.location.x + amountZoom / 20);
+            sideCamera.applyChangesTo(sideCameraContainer);
+        } else if (e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
+            frontCamera.setLocationZ(frontCamera.location.z + amountZoom / 20);
+            frontCamera.applyChangesTo(frontCameraContainer);
+        } else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
+            freeCamera.setLocationZ(freeCamera.location.z + amountZoom / 20);
+            freeCamera.applyChangesTo(freeCameraContainer);
+        }
+
+    }
+    
+    /**
+     * Handles camera changes for when the mouse is dragged, and the CAMERA_MOVE tool is selected
+    */
+    public void handleMouseDragForCameraMove(MouseEvent e) {
         int flipCoefficient = 1;
         if (mouseDragLocation == null) {
             mouseDragLocation = new Point(e.getX(), e.getY());
@@ -417,52 +457,51 @@ public final class GUI extends JFrame
             mouseDragLocation.setLocation(e.getX(), e.getY());
         }
     }
-
-    @Override
-    public void mousePressed(MouseEvent arg0) {
-
-        // System.out.println("Mouse Pressed: " + arg0.toString());
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent arg0) {
-
-        // Reset the previous mouse location between drags, so we're only
-        // recording drag position
-        mouseDragLocation = null;
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-
-        // System.out.println("Mouse Moved: " + e.toString());
-    }
-
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) {
-
-        double amountZoom = e.getWheelRotation();
-        if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
-            topCamera.setLocationY(topCamera.location.y + amountZoom / 20);
-            topCamera.applyChangesTo(topCameraContainer);
-        } else if (e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
-            sideCamera.setLocationX(sideCamera.location.x + amountZoom / 20);
-            sideCamera.applyChangesTo(sideCameraContainer);
-        } else if (e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
-            frontCamera.setLocationZ(frontCamera.location.z + amountZoom / 20);
-            frontCamera.applyChangesTo(frontCameraContainer);
-        } else if (e.getComponent().getParent().getParent().getName().equals("freeViewPanel")) {
-            freeCamera.setLocationZ(freeCamera.location.z + amountZoom / 20);
-            freeCamera.applyChangesTo(freeCameraContainer);
+    
+    /**
+     * Handles camera changes for when the mouse is double clicked, and the CAMERA_MOVE tool is selected
+    */
+    public void handleMouseDoubleClickForCameraMove(MouseEvent e) {
+    	// Flip camera to other side on double-click
+        if (e.getClickCount() == 2) {
+            if (e.getComponent().getParent().getParent().getName().equals("topPanel")) {
+                topCamera.flipOnAxis("x");
+                topCamera.applyChangesTo(topCameraContainer);
+                if (topCamera.flipped) {
+                    topPanel.setBorder(BorderFactory.createTitledBorder(
+                        BorderFactory.createEmptyBorder(), "Bottom Camera"));
+                } else {
+                    topPanel.setBorder(BorderFactory.createTitledBorder(
+                        BorderFactory.createEmptyBorder(), "Top Camera"));
+                }
+            } else if (e.getComponent().getParent().getParent().getName().equals("sidePanel")) {
+                sideCamera.flipOnAxis("y");
+                sideCamera.applyChangesTo(sideCameraContainer);
+                if (sideCamera.flipped) {
+                    sidePanel.setBorder(BorderFactory.createTitledBorder(
+                        BorderFactory.createEmptyBorder(), "Left Camera"));
+                } else {
+                    sidePanel.setBorder(BorderFactory.createTitledBorder(
+                        BorderFactory.createEmptyBorder(), "Right Camera"));
+                }
+            } else if (e.getComponent().getParent().getParent().getName().equals("frontPanel")) {
+                frontCamera.flipOnAxis("z");
+                frontCamera.applyChangesTo(frontCameraContainer);
+                if (frontCamera.flipped) {
+                    frontPanel.setBorder(BorderFactory.createTitledBorder(
+                        BorderFactory.createEmptyBorder(), "Back Camera"));
+                } else {
+                    frontPanel.setBorder(BorderFactory.createTitledBorder(
+                        BorderFactory.createEmptyBorder(), "Front Camera"));
+                }
+            }
         }
-
     }
 
     @Override
     public void mouseExited(MouseEvent arg0) {
 
         // TODO Auto-generated method stub
-
     }
 
 }

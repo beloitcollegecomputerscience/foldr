@@ -84,32 +84,6 @@ public class Shape {
 		group = new ShapeGroup();
 		group.shapesInGroup.add(this);
 
-		/**
-		 * Experimenting around with pre-made listeners. This tells you how many
-		 * shapes are in a shapegroup when you click on a face.
-		 */
-		shapeClicked.addFaceDragListener(new FaceDragListener() {
-
-			@Override
-			public void faceDragged(FaceDragEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void faceDragEnd(FaceDragEvent e) {
-				System.out.println("This shape group has "
-						+ group.shapesInGroup.size() + " shapes in it");
-			}
-
-			@Override
-			public void faceDragStart(FaceDragEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-		shapeSGC.addTool(shapeClicked);
-
 	}
 
 	/**
@@ -352,6 +326,10 @@ public class Shape {
 		return set;
 	}
 
+	public int getShapeHashcode() {
+		 return shapeSGC.hashCode();
+	}
+	
 	/**
 	 * <p>
 	 * Returns the ShapeGroup that the Shape is in.
