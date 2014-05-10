@@ -2,7 +2,7 @@ package foldr.shape;
 
 /**
  * 
- * My class for doing conversions
+ * My utility class for doing conversions and other methods of importance.
  * 
  * @author Ellery Addington-White
  * 
@@ -48,6 +48,15 @@ public class Converter {
 
 	}
 
+	/**
+	 * Calculates a cross product of two given vectors.
+	 * 
+	 * @param vector1
+	 *            first vector to use in calculation
+	 * @param vector2
+	 *            second vector to use in calculation
+	 * @return the calculated cross-product
+	 */
 	public double[] crossProduct(double[] vector1, double[] vector2) {
 		double[] crossProduct = new double[3];
 
@@ -60,6 +69,17 @@ public class Converter {
 		return crossProduct;
 	}
 
+	/**
+	 * Converts Cartesian coordinates to spherical coordinates
+	 * 
+	 * TODO: Does not really work
+	 * 
+	 * @param vector1
+	 *            the first vector to convert
+	 * @param vector2
+	 *            the second vector to convert
+	 * @return the converted vector
+	 */
 	public double[] calculateCartisanChange(double[] vector1, double[] vector2) {
 
 		// double[] cartisan1, cartisan2;
@@ -73,10 +93,20 @@ public class Converter {
 		return null;
 	}
 
+	/**
+	 * Calculate what angle we should rotate by based off of two shapes given.
+	 * 
+	 * @param shapeOne
+	 *            this first shape to compare
+	 * @param shapeTwo
+	 *            the second shape to compare
+	 * @return the correct angle you should rotate two shapes.
+	 */
 	public double angleToRotateBy(Shape shapeOne, Shape shapeTwo) {
-
+		// Case for cube
 		if (shapeOne.getVertexCount() == 4 && shapeTwo.getVertexCount() == 4) {
 			return 90;
+			// Case for pyramid
 		} else if (shapeOne.getVertexCount() == 4
 				&& shapeTwo.getVertexCount() == 3) {
 			return 65;
