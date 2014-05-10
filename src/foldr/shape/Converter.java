@@ -61,15 +61,28 @@ public class Converter {
 	}
 
 	public double[] calculateCartisanChange(double[] vector1, double[] vector2) {
-		
-//		double[] cartisan1, cartisan2;
-//		cartisan1 = JSci.maths.CoordinateMath.cartesianToSpherical(vector1[0],
-//				vector1[1], vector1[2]);
-//		cartisan2 = JSci.maths.CoordinateMath.cartesianToSpherical(vector2[0],
-//				vector2[1], vector2[2]);
-		
-		
+
+		// double[] cartisan1, cartisan2;
+		// cartisan1 =
+		// JSci.maths.CoordinateMath.cartesianToSpherical(vector1[0],
+		// vector1[1], vector1[2]);
+		// cartisan2 =
+		// JSci.maths.CoordinateMath.cartesianToSpherical(vector2[0],
+		// vector2[1], vector2[2]);
+
 		return null;
+	}
+
+	public double angleToRotateBy(Shape shapeOne, Shape shapeTwo) {
+
+		if (shapeOne.getVertexCount() == 4 && shapeTwo.getVertexCount() == 4) {
+			return 90;
+		} else if (shapeOne.getVertexCount() == 4
+				&& shapeTwo.getVertexCount() == 3) {
+			return 33.33;
+		}
+
+		return 0;
 	}
 
 }

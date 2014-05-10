@@ -25,11 +25,11 @@ import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
 import foldr.messages.Messages;
+import foldr.shape.Converter;
 import foldr.shape.Shape;
 import foldr.shape.ShapeCollection;
 import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
-
 import foldr.utility.SelectTool;
 import foldr.utility.Tool;
 import foldr.utility.Tool.ToolType;
@@ -180,7 +180,44 @@ public final class GUI extends JFrame
     public void createJRViewers() {
         // TESTING with a visible shape
     	Shape octogon = new Shape(8, scene);
-    	//snarf
+    	
+//		Shape testShape1 = new Shape();
+//		Shape testShape2 = new Shape();
+//		testShape1.translate(x, y, z);
+
+
+		Shape testShape1 = new Shape(4, scene);
+		Shape testShape2 = new Shape(4, scene);
+		Shape testShape3 = new Shape(4, scene);
+		Shape testShape4 = new Shape(4, scene);
+		Shape testShape5 = new Shape(3, scene);
+		Shape testShape6 = new Shape(4, scene);
+		
+		
+
+		
+		testShape2.rotateShapeOtherWay(Math.toRadians(90),
+				testShape1.getCurrentVertexCoordinates(0),
+				testShape1.getCurrentVertexCoordinates(3));
+
+		testShape3.rotateShapeOtherWay(Math.toRadians(90),
+				testShape1.getCurrentVertexCoordinates(3),
+				testShape1.getCurrentVertexCoordinates(2));
+		
+		testShape4.rotateShapeOtherWay(Math.toRadians(90),
+				testShape1.getCurrentVertexCoordinates(2),
+				testShape1.getCurrentVertexCoordinates(1));
+		
+		// Create converter object
+		Converter myConvert = new Converter();
+		
+		// Convert given points to usable vectors
+		double[] vector1 = myConvert.convertPointsToVectorOnOrigin(testShape5.getCurrentVertexCoordinates(2),
+				testShape5.getCurrentVertexCoordinates(1));
+		double[] vector2 = myConvert.convertPointsToVectorOnOrigin(testShape1.getCurrentVertexCoordinates(0),
+				testShape2.getCurrentVertexCoordinates(3));
+		
+
 
     	//register the top scene with the tool bar
     	toolBar.registerTopScene(scene);
