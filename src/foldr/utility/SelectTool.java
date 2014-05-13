@@ -158,7 +158,7 @@ public class SelectTool extends AbstractTool {
 	/**
 	 * Gets the index of the point selected.
 	 * 
-	 * WARNING: Check selection type first or you're going to get a bad index (928463989).
+	 * WARNING: Check selection type first or you'll get a bad index (928463989).
 	 * */
 	public int getPointSelection() {
 		if (type == SelectionType.POINT) {

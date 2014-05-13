@@ -97,7 +97,7 @@ public class FileHandler {
 	}
 	
 	
-/* ------------------- Methods for opening and reading a file --------------------- */
+/* ----------------- Methods for opening and reading a file ------------------- */
 
 	
 	/**
@@ -151,9 +151,9 @@ public class FileHandler {
 				bufferedReader = new BufferedReader(new FileReader(toOpen));
 			} catch (IOException ioe) {
 				if (ioe.getMessage().contains("(Permission denied)")) {
-					throw new FileException("Permissions on that file do not allow you to read it.");
+					throw new FileException("No read permission for that file.");
 				} else {
-					throw new FileException("The file you specified could not be read.");
+					throw new FileException("The specified file could not be read.");
 				}
 			}
 

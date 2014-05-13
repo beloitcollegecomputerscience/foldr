@@ -24,13 +24,13 @@ public class Converter {
 		double[] returnVector = new double[3];
 
 		// figure out which point is closer to origin
-		double dist1 = Math
-				.sqrt(((cordinate1[0] * cordinate1[0])
-						+ (cordinate1[0] * cordinate1[0]) + (cordinate1[0] * cordinate1[0])));
+		double dist1 = Math.sqrt(
+				((cordinate1[0] * cordinate1[0]) + (cordinate1[0] * cordinate1[0])
+						 + (cordinate1[0] * cordinate1[0])) );
 
-		double dist2 = Math
-				.sqrt(((cordinate2[0] * cordinate2[0])
-						+ (cordinate2[0] * cordinate2[0]) + (cordinate2[0] * cordinate2[0])));
+		double dist2 = Math.sqrt(
+				((cordinate2[0] * cordinate2[0]) + (cordinate2[0] * cordinate2[0])
+						 + (cordinate2[0] * cordinate2[0])));
 
 		// which ever point is closer to origin is gets put on the origin with
 		// the other point determining the vector.

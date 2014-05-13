@@ -25,9 +25,8 @@ public class FileParser {
 	/* Objects from which we read, and to which we send the input: */
 	private FileHandler fileHandler;
 
-	final public String commaSymbol = new String("_COMMA_"); // Could be useful
-																// for encoding
-																// commas.
+	// This could be useful for encoding commas.
+	final public String commaSymbol = new String("_COMMA_"); 
 
 	/**
 	 * For the FileParser to do its job, we must know the fileHandler class to

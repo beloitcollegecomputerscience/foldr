@@ -20,8 +20,8 @@ import java.util.Scanner;
  */
 public final class MessagesUtils {
 
-    private ArrayList<String>             names            = null;
-    private ArrayList<Locale>             locales          = null;
+    private ArrayList<String> names    = null;
+    private ArrayList<Locale>  locales = null;
 
     /**
      * <p>
@@ -34,7 +34,7 @@ public final class MessagesUtils {
      * <code>foldr.messages</code> package and thus adding a language without
      * adding the corresponding message file can lead to undefined behaviors.
      */
-    public static final String            DEFAULT_PATH     = "languages";
+    public static final String DEFAULT_PATH  = "languages";
 
     /**
      * <p>
@@ -43,10 +43,10 @@ public final class MessagesUtils {
      * <p>
      * Used in case the languages can't be retrieved from the file.
      */
-    public static final ArrayList<String> DEFAULT_LANGUAGE = new ArrayList<String>(
-                                                               Arrays.asList("en_US"));
+    public static final ArrayList<String> DEFAULT_LANGUAGE = 
+    		new ArrayList<String>( Arrays.asList("en_US"));
     
-    private static MessagesUtils          INSTANCE         = null;
+    private static MessagesUtils INSTANCE = null;
 
     /**
      * Singleton.
@@ -140,7 +140,7 @@ public final class MessagesUtils {
      * Examples:<br>
      * <ul>
      * <li>en_US - English</li>
-     * <li>fr_FR - français</li>
+     * <li>fr_FR - franÃ§ais</li>
      * </ul>
      * 
      * @return The list of language names.
@@ -174,13 +174,17 @@ public final class MessagesUtils {
     public Locale getLocale(String displayed) {
 
         ArrayList<String> languages = getDisplayedLanguages();
-        if (languages.contains(displayed)) { return locales.get(languages.indexOf(displayed)); }
+        if (languages.contains(displayed)) { 
+        	return locales.get(languages.indexOf(displayed));
+        }
         return Messages.getLocale();
     }
 
     /**
      * <p>
-     * Create the <tt>Locale</tt> list based on the list of names contained in the language list files and return all available <tt>Locale</tt>.
+     * Create the <tt>Locale</tt> list based on the list of names contained in the 
+     * language list files and return all available <tt>Locale</tt>.
+     * 
      * @return a <tt>List</tt> of available <tt>locale</tt>.
      */
     private ArrayList<Locale> buildLocaleList() {

@@ -1,22 +1,10 @@
 package foldr.main;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Scanner;
 
-import javax.swing.BorderFactory;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 import de.jreality.plugin.JRViewer;
@@ -24,14 +12,10 @@ import de.jreality.scene.SceneGraphComponent;
 import de.jreality.scene.Viewer;
 import de.jreality.util.SceneGraphUtility;
 import foldr.messages.Messages;
-import foldr.shape.Converter;
+import foldr.shape.*;
 import foldr.shape.Shape;
-import foldr.shape.ShapeCollection;
-import foldr.shape.ShapeGroup;
 import foldr.utility.CustomCamera;
 import foldr.utility.SelectTool;
-import foldr.utility.Tool;
-import foldr.utility.Tool.ToolType;
 
 /**
  * 
@@ -49,9 +33,7 @@ public final class GUI extends JFrame implements MouseListener,
 	// the main scene graph component. All other SGC's will be a child of this.
 	static SceneGraphComponent scene = SceneGraphUtility
 			.createFullSceneGraphComponent("scene");
-	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel,
-			popUp;
-	private JPanel palettePane;
+	private JPanel mainPanel, freeViewPanel, topPanel, sidePanel, frontPanel;
 
 	// the viewer components that render the difference camera views
 	JRViewer freeJRViewer, topJRViewer, sideJRViewer, frontJRViewer;
@@ -520,11 +502,10 @@ public final class GUI extends JFrame implements MouseListener,
 					flipCoefficient = -1;
 				}
 				topCamera.setLocationX(topCamera.location.x
-						+ ((double) e.getX() - mouseDragLocation.x) / -100);
-				topCamera
-						.setLocationZ(topCamera.location.z
-								+ (((double) e.getY() - mouseDragLocation.y) * flipCoefficient)
-								/ -100);
+					+ ((double) e.getX() - mouseDragLocation.x) / -100);
+				topCamera.setLocationZ(
+					topCamera.location.z + (((double)e.getY() - mouseDragLocation.y) 
+							* flipCoefficient) / -100);
 				topCamera.applyChangesTo(topCameraContainer);
 			} else if (e.getComponent().getParent().getParent().getName()
 					.equals("sidePanel")) {
@@ -532,21 +513,19 @@ public final class GUI extends JFrame implements MouseListener,
 					flipCoefficient = -1;
 				}
 				sideCamera.setLocationY(sideCamera.location.y
-						+ ((double) e.getY() - mouseDragLocation.y) / 100);
-				sideCamera
-						.setLocationZ(sideCamera.location.z
-								+ (((double) e.getX() - mouseDragLocation.x) * flipCoefficient)
-								/ 100);
+					+ ((double) e.getY() - mouseDragLocation.y) / 100);
+				sideCamera.setLocationZ(
+					sideCamera.location.z + (((double)e.getX() -mouseDragLocation.x) 
+							* flipCoefficient) / 100);
 				sideCamera.applyChangesTo(sideCameraContainer);
 			} else if (e.getComponent().getParent().getParent().getName()
 					.equals("frontPanel")) {
 				if (frontCamera.flipped) {
 					flipCoefficient = -1;
 				}
-				frontCamera
-						.setLocationX(frontCamera.location.x
-								+ (((double) e.getX() - mouseDragLocation.x) * flipCoefficient)
-								/ -100);
+				frontCamera.setLocationX(
+					frontCamera.location.x + (((double)e.getX()-mouseDragLocation.x) 
+							* flipCoefficient) / -100);
 				frontCamera.setLocationY(frontCamera.location.y
 						+ ((double) e.getY() - mouseDragLocation.y) / 100);
 				frontCamera.applyChangesTo(frontCameraContainer);

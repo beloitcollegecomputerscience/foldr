@@ -20,13 +20,13 @@ import foldr.shape.ShapeCollection;
  */
 public class Tool {
 	
-	/** This class is responsible for knowing what the tool is that has been selected
-	 *  by the user. It has nothing to do with the GUI presentation of that tool, just
-	 *  remembers what it is.
+	/** This class is responsible for knowing what the tool is that has been 
+	 *  selected by the user. It has nothing to do with the GUI presentation of that
+	 *  tool, just remembers what it is.
 	 *  
-	 *  Optionally, we could make this class know about the icons to use for the various
-	 *  tools when they are or are not selected, and/or what cursors to use when those
-	 *  tools have been selected. If you need these capabilities, let me know.
+	 *  Optionally, we could make this class know about the icons to use for the 
+	 *  various tools when they are or are not selected, and/or what cursors to use
+	 *  when those tools have been selected. (A future version enhancement.)
 	 *  
 	 *  @author Darrah Chavey
 	 *
@@ -34,8 +34,8 @@ public class Tool {
 	
 	// defines the tools
 	
-	public enum ToolType { SELECTION, ADD_SHAPE, ADD_LINE, PAN_CAMERA, FLY_MODE, ERASE, MOVE, FILL, JOIN_EDGE, ADD_POINT, ROTATE_CAMERA, 
-		 CAMERA_MOVE}
+	public enum ToolType { SELECTION, ADD_SHAPE, ADD_LINE, PAN_CAMERA, FLY_MODE, 
+		ERASE, MOVE, FILL, JOIN_EDGE, ADD_POINT, ROTATE_CAMERA, CAMERA_MOVE }
 	
 	private ToolType previousTool, selectedTool;
 	

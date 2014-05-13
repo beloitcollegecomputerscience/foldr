@@ -5,21 +5,11 @@
 package foldr.main;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 import de.jreality.scene.SceneGraphComponent;
 import foldr.messages.Messages;
@@ -91,19 +81,19 @@ final class MenuBar extends JMenuBar implements ActionListener {
      */
     private static final long  serialVersionUID = -8724966099923583862L;
 
-    JMenu                      fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
-    JMenuItem                  fileOpen, fileNew, fileSave, fileSaveAs, fileExport, fileClose;
-    JMenuItem                  editCopy, editCut, editPaste, editDelete, editSelectAll;
-    JMenu                      foldingAngle, foldingShape;
-    JMenuItem                  foldingThirty, foldingFortyFive, foldingNinety, foldingCustomAngle,
-                    foldingEdgeSelect, foldingPointSelect, foldingFoldShapes, foldingConnectShapes,
-                    foldingDetachShapes, foldingResizeShape;
-    JMenu                      windowView, windowPerspective;
-    JMenuItem                  windowShowTop, windowShowBack, windowShowLeft, windowShowHideTools,
-                    windowShowHideInfo, windowChangePerspective, windowSavePerspective,
-                    windowLoadPerspective, windowResizePerspective;
-    JMenu                      helpLanguage;
-    JMenuItem                  helpManual, helpQuickStartGuide;
+    JMenu        fileMenu, editMenu, foldingMenu, windowMenu, helpMenu;
+    JMenuItem    fileOpen, fileNew, fileSave, fileSaveAs, fileExport, fileClose;
+    JMenuItem    editCopy, editCut, editPaste, editDelete, editSelectAll;
+    JMenu        foldingAngle, foldingShape;
+    JMenuItem    foldingThirty, foldingFortyFive, foldingNinety, foldingCustomAngle,
+                 foldingEdgeSelect, foldingPointSelect, foldingFoldShapes, 
+                 foldingConnectShapes, foldingDetachShapes, foldingResizeShape;
+    JMenu        windowView, windowPerspective;
+    JMenuItem    windowShowTop, windowShowBack, windowShowLeft, windowShowHideTools,
+                 windowShowHideInfo, windowChangePerspective, windowSavePerspective,
+                 windowLoadPerspective, windowResizePerspective;
+    JMenu        helpLanguage;
+    JMenuItem    helpManual, helpQuickStartGuide;
     ButtonGroup                langGroup;
     List<JRadioButtonMenuItem> liLanguages;
 
@@ -128,17 +118,20 @@ final class MenuBar extends JMenuBar implements ActionListener {
         fileMenu.setName(Messages.FILE_KEY);
         this.add(fileMenu);// fileMenu -> this
         fileNew = new JMenuItem("New");
-        fileNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.META_MASK));
+        fileNew.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_N, ActionEvent.META_MASK));
         fileNew.addActionListener(this);
         fileNew.setName(Messages.FILE_KEY + ".new");
         fileMenu.add(fileNew);
         fileOpen = new JMenuItem("Open");
-        fileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.META_MASK));
+        fileOpen.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_O, ActionEvent.META_MASK));
         fileOpen.addActionListener(this);
         fileOpen.setName(Messages.FILE_KEY + ".open");
         fileMenu.add(fileOpen);
         fileSave = new JMenuItem("Save");
-        fileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.META_MASK));
+        fileSave.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_S, ActionEvent.META_MASK));
         fileSave.addActionListener(this);
         fileSave.setName(Messages.FILE_KEY + ".save");
         fileMenu.add(fileSave);
@@ -147,12 +140,14 @@ final class MenuBar extends JMenuBar implements ActionListener {
         fileSaveAs.setName(Messages.FILE_KEY + ".saveas");
         fileMenu.add(fileSaveAs);
         fileExport = new JMenuItem("Export");
-        fileExport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.META_MASK));
+        fileExport.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_E, ActionEvent.META_MASK));
         fileExport.addActionListener(this);
         fileExport.setName(Messages.FILE_KEY + ".export");
         fileMenu.add(fileExport);
         fileClose = new JMenuItem("Close");
-        fileClose.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.META_MASK));
+        fileClose.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_Q, ActionEvent.META_MASK));
         fileClose.addActionListener(this);
         fileClose.setName(Messages.FILE_KEY + ".close");
         fileMenu.add(fileClose);
@@ -162,17 +157,20 @@ final class MenuBar extends JMenuBar implements ActionListener {
         editMenu.setName(Messages.EDIT_KEY);
         this.add(editMenu); // editMenu -> this
         editCopy = new JMenuItem("Copy");
-        editCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.META_MASK));
+        editCopy.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_C, ActionEvent.META_MASK));
         editCopy.addActionListener(this);
         editCopy.setName(Messages.EDIT_KEY + ".copy");
         editMenu.add(editCopy);
         editCut = new JMenuItem("Cut");
-        editCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.META_MASK));
+        editCut.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_X, ActionEvent.META_MASK));
         editCut.addActionListener(this);
         editCut.setName(Messages.EDIT_KEY + ".cut");
         editMenu.add(editCut);
         editPaste = new JMenuItem("Paste");
-        editPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.META_MASK));
+        editPaste.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_V, ActionEvent.META_MASK));
         editPaste.addActionListener(this);
         editPaste.setName(Messages.EDIT_KEY + ".paste");
         editMenu.add(editPaste);
@@ -184,7 +182,8 @@ final class MenuBar extends JMenuBar implements ActionListener {
         editDelete.setName(Messages.EDIT_KEY + ".delete");
         editMenu.add(editDelete);
         editSelectAll = new JMenuItem("Select All");
-        editSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.META_MASK));
+        editSelectAll.setAccelerator(KeyStroke.getKeyStroke(
+        		KeyEvent.VK_A, ActionEvent.META_MASK));
         editSelectAll.addActionListener(this);
         editSelectAll.setName(Messages.EDIT_KEY + ".selectall");
         editMenu.add(editSelectAll);
@@ -312,7 +311,8 @@ final class MenuBar extends JMenuBar implements ActionListener {
         for (String s : MessagesUtils.getInstance().getDisplayedLanguages()) {
             JRadioButtonMenuItem jrbmi = new JRadioButtonMenuItem(s, false);
             jrbmi.addActionListener(this);
-            if (s.equals(Messages.getLocale().getDisplayLanguage(Messages.getLocale()))) {
+            if (s.equals(Messages.getLocale().
+            		getDisplayLanguage(Messages.getLocale()))) {
                 jrbmi.setSelected(true);
             }
             liLanguages.add(jrbmi);

@@ -27,7 +27,8 @@ public class CustomCamera {
 	boolean originLock = false;
 	
 	/**
-	 * Constructor. If we want the camera to lock on the origin of the scene set to true.
+	 * Constructor. 
+	 * @param originLock True to lock the camera on the origin of the scene.
 	 **/
 	public CustomCamera(boolean originLock) {
 		this.originLock = originLock;
@@ -123,7 +124,8 @@ public class CustomCamera {
 			.rotateY(Math.toRadians(-rotation.x))
 			.conjugateBy(
 				MatrixBuilder.euclidean()
-				.translate(location.x, location.y, location.z - 4.5) //4.5 is the x distance to the origin
+				// 4.5 is the x distance to the origin
+				.translate(location.x, location.y, location.z - 4.5) 
 				.getMatrix().getArray())
 			.assignTo(cameraContainer);
 		} else {
