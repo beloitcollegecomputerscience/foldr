@@ -1,5 +1,6 @@
 package foldr.main;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,7 +19,7 @@ import foldr.utility.Tool;
 import foldr.utility.Tool.ToolType;
 
 /**
- * 
+ * TODO externalize strings
  * @author Nick
  * @author Hunter
  * @author Tyler
@@ -26,7 +27,7 @@ import foldr.utility.Tool.ToolType;
  * 
  */
 
-public class ToolBar implements ActionListener {
+public class ToolBar implements ActionListener, Internationalizable {
 	// Testing
 	public static Tool currentTool = new Tool();
 	protected JDialog dialog, popUpDialog;
@@ -138,7 +139,7 @@ public class ToolBar implements ActionListener {
 		JPanel popUp = new JPanel();
 
 		textField = new JTextField(1);
-
+		//TODO externalize strings
 		JButton selectNumSides = new JButton("OK");
 		selectNumSides.addActionListener((ActionListener) this);
 		selectNumSides.setName("selectNumSides");
@@ -166,7 +167,7 @@ public class ToolBar implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton theCommand = (JButton) e.getSource();
 		String buttonName = theCommand.getName();
-
+		// TODO externalize strings and use names
 		if (buttonName.equals("select")) {
 			doSelect();
 		} else if (buttonName.equals("move")) {
@@ -252,6 +253,7 @@ public class ToolBar implements ActionListener {
 		
 		//check if number is within a certain legal range
 		//TODO catch errors for input that aren't integers
+		// TODO externalize strings
 		if (numSides < 3 || numSides > 10) {
 			System.out.println("Please submit a number of sides between 3 and 10.");
 			System.out.println("Defaulting to 3 sides.");
@@ -267,14 +269,22 @@ public class ToolBar implements ActionListener {
 
 
 	public void doMoveCamera() {
+	    //TODO externalize strings
 		System.out.println("Previous tool was: " + currentTool.getCurrentTool());
 		currentTool.setTool(ToolType.CAMERA_MOVE);
 		System.out.println("Current tool is now: " + currentTool.getCurrentTool());
 	}
 	
-	public void label() {
+	@Override
+	public void updateTexts() {
 	    if(dialog != null) {
 	        dialog.setTitle(Messages.getString("toolbar.title"));
+	        
+	        for(Component c : dialog.getComponents()) {
+	            if(c instanceof Internationalizable) {
+	                ((Internationalizable)c).updateTexts();
+	            }
+	        }
 	    }
 	}
 

@@ -72,9 +72,10 @@ import foldr.utility.FileParser;
  * | |-<tt>List of languages</tt>
  * 
  * @author couretn
+ * @author lizlevy
  * @category GUI
  */
-final class MenuBar extends JMenuBar implements ActionListener {
+final class MenuBar extends JMenuBar implements ActionListener, Internationalizable {
 
     /**
      * 
@@ -321,11 +322,14 @@ final class MenuBar extends JMenuBar implements ActionListener {
         }
     }
 
-    /**
-     * <p>
-     * Update the text of the menu items.
-     */
-    public void label() {
+    @Override
+    public void updateTexts() {
+        
+        for(Component c : this.getComponents()) {
+            if(c instanceof Internationalizable) {
+                ((Internationalizable)c).updateTexts();
+            }
+        }
 
         // menu bar
         // file submenu
@@ -386,6 +390,7 @@ final class MenuBar extends JMenuBar implements ActionListener {
 
         String src = ((Component) e.getSource()).getName();
         src = (src == null) ? "" : src;
+        System.out.println(src);
         if (src.equals(fileNew.getName())) {
             doCreateNew(scene);
         } else if (src.equals(fileSaveAs.getName())) {
@@ -400,7 +405,7 @@ final class MenuBar extends JMenuBar implements ActionListener {
             for (JMenuItem jmi : liLanguages) {
                 if (jmi.getText().equals(e.getActionCommand())) {
                     Messages.setBundle(MessagesUtils.getInstance().getLocale(e.getActionCommand()));
-                    GUI.getInstance().label();
+                    GUI.getInstance().updateTexts();
                     return;
                 }
             }

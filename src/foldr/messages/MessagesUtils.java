@@ -31,7 +31,7 @@ public final class MessagesUtils {
      * for example).
      * <p>
      * Keep in mind that messages files are contained inside the
-     * <code>foldr.messages</code> package and thus adding a language without
+     * <tt>foldr.messages</tt> package and thus adding a language without
      * adding the corresponding message file can lead to undefined behaviors.
      */
     public static final String DEFAULT_PATH  = "languages";
@@ -79,7 +79,7 @@ public final class MessagesUtils {
      * <p>
      * The file located at {@link Utils#DEFAULT_PATH} is loaded if :<br>
      * <ul>
-     * <li>The argument is <code>null</code>;</li>
+     * <li>The argument is <tt>null</tt>;</li>
      * <li>The file is a directory;</li>
      * <li>The file doesn't exist.</li>
      * </ul>
@@ -121,7 +121,7 @@ public final class MessagesUtils {
      * <p>
      * Give the {@link Locale} available for the software.
      * 
-     * @return a list of <code>Locale</code> available.
+     * @return a list of <tt>Locale</tt> available.
      */
     public ArrayList<Locale> getAvailableLocales() {
 
@@ -135,7 +135,7 @@ public final class MessagesUtils {
     /**
      * <p>
      * Give a list of languages supported in their displayed form according to
-     * the <code>Locale</code>. This method should be used for GUI display.
+     * the <tt>Locale</tt>. This method should be used for GUI display.
      * <p>
      * Examples:<br>
      * <ul>
@@ -160,16 +160,16 @@ public final class MessagesUtils {
     }
 
     /**
-     * Get the <code>Locale</code> associated to the given displayed language.
-     * If no <code>Locale</code> is found, the current <code>Locale</code>
+     * Get the <tt>Locale</tt> associated to the given displayed language.
+     * If no <tt>Locale</tt> is found, the current <tt>Locale</tt>
      * returned by {@link Messages#getLocale()} is used.
      * 
      * @param displayed
-     *            The displayed language whose <code>Locale</code> must be
+     *            The displayed language whose <tt>Locale</tt> must be
      *            found.
-     * @return The <code>Locale</code> returning the given Displayed language,
-     *         or the <code>Locale</code> currently used by the
-     *         <code>MessageBundle</code>.
+     * @return The <tt>Locale</tt> returning the given Displayed language,
+     *         or the <tt>Locale</tt> currently used by the
+     *         <tt>MessageBundle</tt>.
      */
     public Locale getLocale(String displayed) {
 
