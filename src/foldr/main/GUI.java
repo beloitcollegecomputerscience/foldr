@@ -22,7 +22,7 @@ import foldr.utility.SelectTool;
  * @category GUI
  */
 public final class GUI extends JFrame implements MouseListener,
-		MouseMotionListener, MouseWheelListener, Internationalizable {
+		MouseMotionListener, MouseWheelListener {
 
 	private static final long serialVersionUID = 1L;
 
@@ -63,10 +63,6 @@ public final class GUI extends JFrame implements MouseListener,
 
 	private static GUI instance;
 
-	/**
-	 * 
-	 * @return
-	 */
 	public static GUI getInstance() {
 		if (instance == null) {
 			synchronized (GUI.class) {
@@ -393,25 +389,21 @@ public final class GUI extends JFrame implements MouseListener,
 		// Create the top frame to store desktop
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(mainPanel, "Center");
-		updateTexts(); // write the messages
+		label(); // write the messages
 		pack();
 		setSize(1000, 700);
 		setVisible(true);
 		toolBar.initPalettePane(this);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @author couretn
+
+	/**
+	 * <p>
+	 * Change the GUI text according to the current <tt>Locale</tt> used.
 	 */
-	@Override
-	public void updateTexts() {
-	    
-	    for(Component c : this.getComponents()) {
-	        if(c instanceof Internationalizable) {
-	            ((Internationalizable)c).updateTexts();
-	        }
-	    }
+	void label() {
+
+		menuBar.label();
+		toolBar.label();
 		// panels titles FIXME make it work.
 		((TitledBorder) freeViewPanel.getBorder()).setTitle(Messages
 				.getString("panels.freeview"));

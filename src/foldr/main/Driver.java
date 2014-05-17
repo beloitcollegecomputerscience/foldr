@@ -1,11 +1,9 @@
 
 package foldr.main;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -30,7 +28,7 @@ public class Driver {
         // system's look&feel may improve performance.)
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            // UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+     // UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -40,23 +38,9 @@ public class Driver {
         } catch (UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    GUI gui = GUI.getInstance();
-                    gui.setName("Polyhedra");
-                    gui.initPanesAndGui();
-                    gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                }
-            });
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        GUI gui = GUI.getInstance();
+        gui.setName("Polyhedra");
+        gui.initPanesAndGui();
+        gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
